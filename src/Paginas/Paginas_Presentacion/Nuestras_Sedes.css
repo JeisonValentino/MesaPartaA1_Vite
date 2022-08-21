@@ -1,0 +1,8 @@
+.Container_Nuestras_Sedes{
+    width: 80%;
+    height: 30rem;
+    margin-top: 7rem;
+    margin-left: 10%;
+    display: flex;
+    justify-content: center;
+}
