@@ -70,3 +70,9 @@ margin-top: 100px;
     margin-inline-end: auto;
 line-height: 1.5;
 }
+
+ ul li {
+
+    list-style-image:url(./Imagenes/Cuadrado.png) !important;
+ 
+}

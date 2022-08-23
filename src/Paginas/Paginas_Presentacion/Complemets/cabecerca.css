@@ -194,6 +194,25 @@ height: 100%;
       transition: all 600ms ease;
       z-index: 4;
         }
+
+        .navCabeceraMovil{
+          display: flex;
+          justify-content: center;
+        }
+.logo3{
+width: 50%;
+height: 50%;
+margin-top:30px;
+}
+        .navCabeceraMovil ul{
+
+          display: inline-block;
+          margin-top: 20px;
+        }
+        .navCabeceraMovil ul li {
+
+display: block;
+        }
       
         .nav_PresentacionMovil.show{
       

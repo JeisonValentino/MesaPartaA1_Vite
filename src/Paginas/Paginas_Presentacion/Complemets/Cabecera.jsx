@@ -5,6 +5,7 @@ import { faFacebook,faInstagram,faTiktok} from '@fortawesome/free-brands-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react';
 import imagenCole from './../Imagenes/imagenCole.png'
+import Logo from '../Imagenes/Logo.png'
 import './cabecerca.css'
 import './CabeceraSass.scss'
 import { Style_link }from './Style_link.jsx';
@@ -129,6 +130,23 @@ return (
 
 <div className={"nav_PresentacionMovil " + CambiarEstadoCabecera()}>
 <span className='CerrarNav'  onClick={()=> SetMenuIcon(!menuIcon) }><FontAwesomeIcon style={{width:"50px",height:"50px"}} icon={faXmark} /></span>
+
+<nav className={ 'navCabeceraMovil'}>
+<img className="logo3"  src={Logo} ></img>
+<ul className={ ''}>
+    <li >
+    <Style_link to="/" className='linkCabecera'  ><div >PAGINA DE INICIO </div></Style_link></li>
+    <li><Style_link to="/El-Colegio" className='linkCabecera' s>El colegio  </Style_link></li>
+    <li><Style_link to="/Proceso-Matricula" className='linkCabecera' >Proceso de matricula  </Style_link></li>
+    <li><Style_link to="/Nuestras-Sedes" className='linkCabecera' >Nuestras sedes  </Style_link></li>
+ 
+    <li><Style_link to="/Servicios-Adicionales" className='linkCabecera' >Servicios adicionales  </Style_link></li>
+  
+    <li><div className='iconfanpages' onClick={ () =>{setBajarEvento(!bajarEvento)}}><FontAwesomeIcon icon={faShareNodes}/> </div></li>
+    </ul>
+</nav>
+
+
 </div>
 <div className="menu-Icon-Header">
 <span className='menu-Icon' onClick={()=> SetMenuIcon(!menuIcon) }><FontAwesomeIcon icon={faList} /></span>

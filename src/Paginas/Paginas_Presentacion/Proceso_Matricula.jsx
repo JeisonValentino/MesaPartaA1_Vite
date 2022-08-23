@@ -69,15 +69,13 @@ console.log(bajarEvento)
                 </p>
                 <ul>
                   <li>
-                    INICIAL DE 4 AÑOS: Cumplir 4 años hasta el 31 de marzo de
-                    2018.
+                    INICIAL DE 4 AÑOS: Cumplir hasta los 4 años de edad
                   </li>
                   <li>
-                    INICIAL DE 5 AÑOS: Cumplir 5 años hasta el 31 de marzo de
-                    2018.
+                    INICIAL DE 5 AÑOS: Cumplir 5 años  de edad
                   </li>
                   <li>
-                    1er GRADO: Cumplir 6 años hasta el 31 de marzo de 2018.
+                    1er GRADO: Cumplir hasta los 6 años  de edad
                   </li>
                 </ul>
 
@@ -94,14 +92,13 @@ console.log(bajarEvento)
                   postulante en un folder manila:
                 </p>
              
-              <ul>
+              <ul style={{listStyleImage:"/Imagenes/58afdac9829958a978a4a691.gif"}}>
                 <li>
                   Copia simple de la partida de nacimiento y copia simple del
                   DNI.
                 </li>
                 <li>
-                  Copia simple de la libreta o Boleta de notas del niño(a) del
-                  año 2017.
+                  Copia simple de la libreta o Boleta de notas del niño(a) 
                 </li>
                 <li>
                   Fotos tamaño carné (2) (con nombres y apellidos escritos en la
@@ -110,14 +107,14 @@ console.log(bajarEvento)
                 <li>
                   Constancia de no adeudo a I.E. procedencia (solo nuevos).
                 </li>
-                <li>Acta de Compromiso del PP.FF. 2018.</li>
-                <li>Llenar Ficha Informativa del alumno (a) 2018.</li>
+                <li>Acta de Compromiso del PP.FF. </li>
+                <li>Llenar Ficha Informativa del alumno (a) </li>
                 <li>
                   Certificado de estudios visado por UGEL que corresponde a I.E.
                   de procedencia (solo nuevos).
                 </li>
                 <li>
-                  Constancia de matrícula año 2017 de I.E. de procedencia.
+                  Constancia de matrícula  de I.E. de procedencia.
                 </li>
                 <li>Evaluación o informe psicológico (solo nuevos) .</li>
                 <li>
