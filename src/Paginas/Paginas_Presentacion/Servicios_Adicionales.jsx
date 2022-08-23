@@ -35,17 +35,22 @@ const Servicios_Adicionales = ()=>{
         setBajarEvento(v1);
       }
     
-    
+      const [ElevarEvento,setElevarEvento]=useState(true);
+      const MostrarEvento=(v1)=>{
+          setElevarEvento(v1)
+      }
     
     return(
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
 
     {loading ? <Loading/>:<div> 
 
     {bajarEvento ? (<></>):(<>  
+    
+    {ElevarEvento ? (<>
     <div className='main_Servicios_Adicionales'>
             
             <div className='parrafo1_Servicios_Adicionales'>
@@ -85,7 +90,10 @@ const Servicios_Adicionales = ()=>{
             </div>
             </div>
 
-            <Suelo/> </>)}
+            <Suelo/>
+            
+            </>) : (<></>)}
+             </>)}
             
             
             </div>

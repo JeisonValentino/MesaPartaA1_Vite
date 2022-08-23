@@ -25,11 +25,18 @@ const [bajarEvento,setBajarEvento]=useState(false)
     setBajarEvento(v1);
   }
 
+
+  const [ElevarEvento,setElevarEvento]=useState(true);
+  const MostrarEvento=(v1)=>{
+      setElevarEvento(v1)
+  }
+
+
 console.log(bajarEvento)
 
   return (
     <Fragment>
-      <Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+      <Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
       {loading ? (
         <Loading />
       ) : (
@@ -37,6 +44,8 @@ console.log(bajarEvento)
 
         <div>
         {bajarEvento ?(<> </>):(<>
+
+        {ElevarEvento ? (<>
           <div className='main_Proceso_Matricula'>
             <div className='parrafo1_Proceso_Matricula'>
               PROCESO DE MATRÍCULA
@@ -140,7 +149,10 @@ console.log(bajarEvento)
               </div> 
           </div>
 
-          <Suelo/> </>)}
+          <Suelo/>
+          
+          </>):(<></>)}
+           </>)}
         </div> 
       )}
     </Fragment>

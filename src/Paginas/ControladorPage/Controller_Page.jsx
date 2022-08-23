@@ -46,7 +46,7 @@ function Controller_Page() {
   
       <Routes>
 
-
+   
       <Route path='/' element={<PaginaEntrada/>} />
       <Route path='/El-Colegio' element={<ElColegio/>} />
       <Route path='/Nuestras-Sedes' element={<Nuestras_Sedes/>} />

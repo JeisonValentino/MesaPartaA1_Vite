@@ -29,17 +29,23 @@ import { Suelo } from "./Complemets/Suelo"
     
     
     
-    
+      const [ElevarEvento,setElevarEvento]=useState(true);
+      const MostrarEvento=(v1)=>{
+          setElevarEvento(v1)
+      }
     
     return(
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento}/>
 
     {loading ? <Loading/>:<div>
 
     {bajarEvento ? (<></>):(<>  
+
+
+    {ElevarEvento ? (<></>) : (<></>)}
     <Suelo/> </>)}
   
 

@@ -47,6 +47,12 @@ const  bajarEventoEvaluacion=(v1)=>{
     setBajarEvento(v1);
   }
 
+  const [ElevarEvento,setElevarEvento]=useState(true);
+  const MostrarEvento=(v1)=>{
+      setElevarEvento(v1)
+  }
+
+
 return(
 
     <Fragment>
@@ -55,15 +61,17 @@ return(
 <div>
     <FontAwesomeIcon icon={faXmark}/></div>
 </div>
-<video  ref={vidRef} id="myvideo" controls style={{with:"800px" , height:"550px",position:"relative",top:"7%",left:"30%"}} >
+<video  ref={vidRef} id="myvideo" controls style={{width:"50%" , height:"90%",position:"relative",top:"7%",left:"30%"}} >
     <source  style={{with:"100%" , height:"100%" }}  src={videoColegioVentas} type="video/mp4" ></source>
                     </video>
 </div>
- <Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+ <Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
 
 {loading ? <Loading/>: 
 <>
 {bajarEvento ? (<></>):(<>
+
+{ElevarEvento ? (<>
 <div className="main">
 
   <div className="container_Presentacion" >
@@ -77,6 +85,8 @@ return(
   </div> 
 </div> 
 {play?<></>:<Suelo/>}
+
+</>) : (<></>)}
 </> )}
 </>
 }

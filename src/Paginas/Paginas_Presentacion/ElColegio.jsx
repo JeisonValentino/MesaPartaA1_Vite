@@ -29,8 +29,10 @@ import imagenCole from './Imagenes/imagenCole.png'
         setBajarEvento(v1);
       }
     
-    
-    
+      const [ElevarEvento,setElevarEvento]=useState(true);
+    const MostrarEvento=(v1)=>{
+        setElevarEvento(v1)
+    }
     
     
     
@@ -38,11 +40,13 @@ import imagenCole from './Imagenes/imagenCole.png'
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
 
 {loading ? <Loading/>:<div>
 
 {bajarEvento ? (<></>):(<>
+
+{ElevarEvento ? (<>
 <div className="main_Elcolegio">
 <div className="parrafo1_Elcolegio">
 EL COLEGIO
@@ -58,7 +62,10 @@ EL COLEGIO
 <p>Anhelamos seguir creciendo no solo en cantidad, sino también en calidad educativa para hacer de nuestros alumnos y de nuestro país, más grandes.</p></div>
     
 </div>
-</div></>)}
+</div>
+
+</>):(<></>)}
+</>)}
     <Suelo/>
 </div>
 

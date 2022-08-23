@@ -31,23 +31,31 @@ import './Nuestras_Sedes.css'
         setBajarEvento(v1);
       }
     
-    
+      const [ElevarEvento,setElevarEvento]=useState(true);
+      const MostrarEvento=(v1)=>{
+          setElevarEvento(v1)
+      }
     
     
     return(
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
     {loading ? <Loading/>:<div>
     {bajarEvento ? (<></>):(<>  
 
+{ElevarEvento  ? (<>
 <div className="Container_Nuestras_Sedes">
     <img style={{width:"100%" , height:"100%"}} src={Sede}  />
 </div>
 
 
-    <Suelo/> </>)}  </div>
+    <Suelo/>
+    
+    </>) :(<></>)}
+    
+     </>)}  </div>
 
 }
 
