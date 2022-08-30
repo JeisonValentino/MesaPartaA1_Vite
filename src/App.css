@@ -222,28 +222,7 @@ color:rgb(255, 255, 255);
     }
  
 
-    @media only screen and  (min-width: 280px) and (max-width: 550px) {
-        .cabecera{
-            height:41rem;
-        }
-        .cabecera .items{
-            display: block;
-        }
-        .cabecera .items .items_Inferior{
-            display: block;
-            font-size: 8px;  letter-spacing: 5px;
-          margin: 1rem;height: auto; width: 7rem;
-        }
-
-
-        .cabecera .items .items_Inferior2{
-            display: block;
-            font-size: 20px;
-            letter-spacing: 10px;
-         width: 100%;
-            margin: 2rem;
-        }
-    }
+  
 
 
 .cuerpo-post-mesa{

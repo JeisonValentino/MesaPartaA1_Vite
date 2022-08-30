@@ -87,6 +87,7 @@ axios({
   data: formData,
   headers: { 'Content-Type': 'multipart/form-data' }
 })
+console.log("se envio formulario")
 
 
     setEnviarFormulario(false)  
@@ -107,8 +108,8 @@ if(quejaFormulario.nombre !=='' && quejaFormulario.apellidoMaterno !=='' && quej
 enviarPost()}
 }else if(quejaFormulario.tipoReclamo ==='CERTIFICADOS'){
   
-  if(quejaFormulario.nombreEstudiante !== '' && quejaFormulario.apellidoMaternoEstudiante !=='' && quejaFormulario.apellidoPaternoEstudiante !== '' && quejaFormulario.tipoDocumentoEstudiante !=='' && quejaFormulario.numeroDocumentoEstudiante !== '' && quejaFormulario.tipoMatricula !==''){
-
+  if(quejaFormulario.nombreEstudiante !== '' && quejaFormulario.apellidoMaternoEstudiante !=='' && quejaFormulario.apellidoPaternoEstudiante !== '' && quejaFormulario.tipoDocumentoEstudiante !=='' && quejaFormulario.numeroDocumentoEstudiante !== '' ){
+console.log("esta enviando certificado")
     enviarPost()}
 
 }else if(quejaFormulario.tipoReclamo ==='MATRICULA'){

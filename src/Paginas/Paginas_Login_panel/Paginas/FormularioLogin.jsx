@@ -1,12 +1,12 @@
 import { Fragment ,useEffect,useRef,useState} from "react"
 import PropTypes from 'prop-types';
 import { loginUser } from "./Login";
-import { useDispatch, useSelector } from "react-redux";
-import { isObjEmpty } from "../ConfigurationAuthenticacion/helpers/helpers";
+
+
 import { useNavigate } from "react-router-dom";
 import { Toast } from 'primereact/toast';
  const  FormularioLogin = ({IngresarLogintodo}) => {
-const dispatch=useDispatch();
+
     const [ingresar, setIngresar]=useState({correo:'',contraseña:''});
     const toast = useRef(null);
     const toast2 = useRef(null);
@@ -17,7 +17,7 @@ const dispatch=useDispatch();
     const {correo,contraseña}=ingresar;
     const [ errors, actualizarError ] = useState({})
     const navegate = useNavigate();
-    const loggedIn=useSelector(state =>state.auth.loggedIn);
+    const loggedIn=""
     const showSuccess = () => {
         toast.current.show({severity:'info', summary: 'El correo no puede estar vacios ', detail:'Message Content', life: 2000});
     }
@@ -30,13 +30,7 @@ const dispatch=useDispatch();
     const showSuccess3 = (a) => {
         toast.current.show({severity:'error', summary:"Error : Tus credenciales estan incorrectas ", detail:'Message Content', life: 3000});
     }
-useEffect(()=>{
-    if(loggedIn){
-       
-        navegate('/Entrada')
-      
- }
-})
+
     const sumitLogin = e =>{
         e.preventDefault();
         const errors={};
@@ -64,7 +58,7 @@ if( contraseña.trim()===''){
 
  
 
-    dispatch(loginUser(ingresar)).then(response =>{}).catch(err =>{
+    loginUser(ingresar).then(response =>{}).catch(err =>{
 
         console.log("aqui 3")
         actualizarError({ auth :"no se puede iniciar sesion con esas credenciales"});

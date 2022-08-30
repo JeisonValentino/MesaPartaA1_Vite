@@ -1,8 +1,12 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import { Cabecera } from './ExtencionesCompartidas/Cabecera';
 import FondoNiños from './../../../../Imagenes/FondoNiños.jpg'
+
 export const  Entrada = ()=>{
 
+
+
+ 
 return(
 <Fragment>
 <Cabecera/>

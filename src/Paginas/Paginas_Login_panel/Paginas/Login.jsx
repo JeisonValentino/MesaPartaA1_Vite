@@ -1,75 +1,45 @@
 import  FormularioLogin  from "./FormularioLogin.jsx";
-import setAuchToken from "../ConfigurationAuthenticacion/setAuchToken";
-import store from '../ConfigurationAuthenticacion/store';
-import {SET_CURRENT_USER }from '../ConfigurationAuthenticacion/types';
-
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
 
 
+let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
 
-export const loginUser = (userData)=> dispatch=>{
-    return new Promise((resolve,reject)=>{
-        console.log(userData)
-       axios.post('http://localhost:8080/users/login', userData, {
-  
-        headers:{'Accept':'application/json','Content-type':'application/json'}
-       }).then(response => {
-           const{authorization,userId}=response.headers;
-  
-        
-  
-  
-  
-  
-           localStorage.setItem('jwtToken',authorization);
-           setAuchToken(authorization);
-            const decoded= jwt_decode (authorization);
-           
-            dispatch(setCurrentUser({user:decoded,loggedIn:true}))
-  
-  
-            
-           
-  resolve(response)      
-  
-  }).catch(error =>{
-  
+export const loginUser = (userData)=>{
+
+    let response =  axios.post('http://127.0.0.1:8000/api/token/',userData, {
+        headers:{
+            'Content-Type':'application/json'
+        },
+       
+    })
+
+    let data =  response.json()
+
+    if(response.status === 200){
+        setAuthTokens(data)
+        setUser(jwt_decode(data.access))
+        localStorage.setItem('authTokens', JSON.stringify(data))
+
+       
+    }else{
+        alert('Something went wrong!')
+    }
+
     
-    console.log(error)
-        reject(error);
-       })
-    });
-  }
+ 
+}
 
-
-  export const  checkToken =() => {
-          
-    if(localStorage.jwtToken){
-    setAuchToken(localStorage.jwtToken);
-    const decoded=jwt_decode (localStorage.jwtToken);
-    
-        store.dispatch(setCurrentUser({
-
-        user:decoded,loggedIn:true
-
-  
-    }));
-    const currentTime=Math.floor(Date.now()/1000);
-    if(decoded.exp < currentTime){
-        store.dispatch(logoutUser());
-        window.location.href="/Login";
-    }
-
-    }
-   
-    }
 
 export const Login = () =>  {
 
 
 
-
+    
     
 
       const IngresarLogintodo = ingresar => {
@@ -96,24 +66,3 @@ return (
 )
 
 }
-
-
-export const logoutUser=() => dispatch=> {
-    localStorage.removeItem('jwtToken')
-    setAuchToken(false);
-    
-    dispatch(setCurrentUser({
-    
-        user:{},loggedIn:false
-    }));
-    
-            }
-  
-  export const setCurrentUser=({user , loggedIn}) =>{
-    return {  
-        type:SET_CURRENT_USER,
-        payload:{user,loggedIn}
-      
-    };
-   
-        }

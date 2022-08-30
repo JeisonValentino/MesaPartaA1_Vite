@@ -1,14 +1,12 @@
 import { QuejaFormulario } from '../Paginas_Login_panel/Paginas/QuejaFormulario';
 import { Route, Routes } from 'react-router-dom';
 import '../../App.css';
-import { useSelector } from 'react-redux';
-import { checkToken, Login } from '../Paginas_Login_panel/Paginas/Login';
+
 import { MesaPartes } from '../Paginas_Login_panel/Paginas/MesaPartes';
 import { Busqueda } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/Busqueda';
 import { Entrada } from '../Paginas_Login_panel/Paginas/pagesLogin/Entrada';
 import { MesaPartes_Post } from '../Paginas_Login_panel/Paginas/pagesLogin/ExtencionesCompartidas/MesaPartes_Post';
 import React ,{ useRef } from 'react';
-import { Toast } from 'primereact/toast';
 import Session_Invalid from './Session_Invalid';
 import PaginaEntrada from '../Paginas_Presentacion/PaginaEntrada';
 import  ElColegio  from '../Paginas_Presentacion/ElColegio';
@@ -17,12 +15,16 @@ import Proceso_Matricula from '../Paginas_Presentacion/Proceso_Matricula';
 import Servicios_Adicionales from '../Paginas_Presentacion/Servicios_Adicionales';
 import Testimonios from '../Paginas_Presentacion/Testimonios'
 import Noticias from '../Paginas_Presentacion/Noticias'
+import CRM from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/CRM';
+import Estudiantes from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Estudiantes';
+import Perfil from '../Paginas_Login_panel/Paginas/pagesLogin/Perfil';
+import Error404 from './Error404';
+import {Login} from './../Paginas_Login_panel/Paginas/Login.jsx'
 function Controller_Page() {
 
-  const loggedin=useSelector(state =>state.auth.loggedIn);
-  const toast = useRef(null).current;
- 
-  checkToken();
+  const loggedin=false
+  
+
   
   function eleccion1(a){
     if(loggedin===true){
@@ -42,10 +44,10 @@ function Controller_Page() {
 
   return (
     <div  className="App">
-    <Toast ref={toast} />
+   
   
       <Routes>
-
+<Route path='*' element={<Error404/>}/>
    
       <Route path='/' element={<PaginaEntrada/>} />
       <Route path='/El-Colegio' element={<ElColegio/>} />
@@ -55,11 +57,23 @@ function Controller_Page() {
       <Route path='/Testimonios' element={<Testimonios/>} />
       <Route path='/Noticias' element={<Noticias/>} />
     <Route path='/Login' element={<Login/>} />
-    <Route path='/Entrada' element={ eleccion1(<Entrada/>) } />
-    <Route path='/MesaPartes/Respuesta' element={eleccion1(<MesaPartes_Post/>)} />
+ 
     <Route path='/MesaPartes/Formulario' element={<QuejaFormulario/>} />
     <Route path='/MesaPartes/Busqueda-Solicitud' element={<Busqueda/>} />
 <Route path='/MesaPartes' element={ <MesaPartes/>}  />
+
+{/* RUTAS DEL SISTEMA WEB POR SESSION  */}
+<Route path='/Sistema-Administrador/Entrada' element={ eleccion1(<Entrada/>) } />
+    <Route path='/Sistema-Administrador/Atencion-Cliente/MesaPartes' element={eleccion1(<MesaPartes_Post/>)} />
+
+    <Route path='/Sistema-Administrador/Atencion-Cliente/CRM' element={eleccion1(<CRM/>)} />
+
+    <Route path='/Sistema-Administrador/Atencion-Cliente/Estudiantes' element={eleccion1(<Estudiantes/>)} />
+
+
+    <Route path='/Sistema-Administrador/Perfil' element={eleccion1(<Perfil/>)} />
+
+
 </Routes>
   
     </div>
