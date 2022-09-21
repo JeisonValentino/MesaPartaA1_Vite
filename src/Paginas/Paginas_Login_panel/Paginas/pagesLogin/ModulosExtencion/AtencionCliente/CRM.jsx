@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Cabecera } from "../ExtencionesCompartidas/Cabecera";
+import { Cabecera } from "../../ExtencionesCompartidas/Cabecera";
 
 
 export default function CRM (){
@@ -8,7 +8,7 @@ return(
 
     <Fragment>
 <Cabecera/>
-ASD
+
 
     </Fragment>
 )

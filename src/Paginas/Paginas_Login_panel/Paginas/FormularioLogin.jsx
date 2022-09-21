@@ -1,11 +1,14 @@
 import { Fragment ,useEffect,useRef,useState} from "react"
 import PropTypes from 'prop-types';
-import { loginUser } from "./Login";
-
-
+import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { Toast } from 'primereact/toast';
- const  FormularioLogin = ({IngresarLogintodo}) => {
+import axios from "axios";
+
+import setAuchToken from "../ConfigurationAuthenticacion/setAuchToken";
+import { useDispatch } from "react-redux";
+import { SET_CURRENT_USER } from "../ConfigurationAuthenticacion/types";
+ const  FormularioLogin = () => {
 
     const [ingresar, setIngresar]=useState({correo:'',contraseña:''});
     const toast = useRef(null);
@@ -14,10 +17,12 @@ import { Toast } from 'primereact/toast';
     
         setIngresar({...ingresar,[e.target.name]: e.target.value })
     }
+
+    const dispatch=useDispatch();
+
     const {correo,contraseña}=ingresar;
     const [ errors, actualizarError ] = useState({})
-    const navegate = useNavigate();
-    const loggedIn=""
+
     const showSuccess = () => {
         toast.current.show({severity:'info', summary: 'El correo no puede estar vacios ', detail:'Message Content', life: 2000});
     }
@@ -31,7 +36,7 @@ import { Toast } from 'primereact/toast';
         toast.current.show({severity:'error', summary:"Error : Tus credenciales estan incorrectas ", detail:'Message Content', life: 3000});
     }
 
-    const sumitLogin = e =>{
+    const sumitLogin = async e =>{
         e.preventDefault();
         const errors={};
         actualizarError(errors)
@@ -47,29 +52,36 @@ if( contraseña.trim()===''){
     errors.contraseña="la contraseña no puede estra vacia "
 }
 
-    if(!isObjEmpty(errors)){
-        actualizarError(errors)
-       
-        
+
+const {data}= await axios.post(`http://localhost:8080/System/login?correo=${ingresar.correo}&contraseña=${ingresar.contraseña}`,{
+
+    withCredentials:true,
+        headers:{'Accept':'application/json','Content-type':'application/json'}
     
-        return ;
-      
-    }
+    }).catch( response =>{
 
- 
-
-    loginUser(ingresar).then(response =>{}).catch(err =>{
-
-        console.log("aqui 3")
         actualizarError({ auth :"no se puede iniciar sesion con esas credenciales"});
         showSuccess3(errors.auth)
+    })
+
+
+
+    console.log(data['access_token']);
+
+    localStorage.setItem("jwtToken",'Bearer '+data['access_token']);
+    localStorage.setItem("jwtToken-Refresh",'Bearer '+data['refrest_Token']);
+
+    setAuchToken('Bearer '+data['access_token'])
+    const decoded= jwt_decode ('Bearer '+data['access_token']);
+
+    dispatch(setCurrentUser({user:decoded,loggedIn:true}))
    
-    });
-  
-    setIngresar({correo:'',contraseña:''})
+
+
+ 
     }
   
-
+   
 return(
 <Fragment>  <Toast ref={toast} 
  />    <Toast ref={toast2} style={{marginTop:"11%"}}  
@@ -94,7 +106,13 @@ return(
 </Fragment>
 )
 } 
-FormularioLogin.prototype={
-    IngresarLogintodo:PropTypes.func.isRequired
-}
+
 export default FormularioLogin;
+
+
+export const setCurrentUser=({user , loggedIn}) =>{
+    return {  
+        type:SET_CURRENT_USER,
+        payload:{user,loggedIn}
+    }
+    };

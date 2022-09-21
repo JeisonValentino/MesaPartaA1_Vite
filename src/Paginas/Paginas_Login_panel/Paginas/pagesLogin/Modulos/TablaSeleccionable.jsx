@@ -154,7 +154,7 @@ return(
 <Block key={i} {...block} value={value} />
 
          ))}
-			
+  
             </tr>
             )})}
 

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { Toast } from 'primereact/toast';
 import { useEffect, useRef, useState } from "react";
 import { Accordion, AccordionTab } from 'primereact/accordion';
@@ -10,9 +10,10 @@ import './Cabecera.css'
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from "primereact/button";
 import { Buffer } from "buffer";
-
+import {useSelector,useDispatch} from 'react-redux'
 import styled from 'styled-components';
 import { Service } from "../Service";
+import { checkToken, logout } from "../../../../ControladorPage/authContext";
 
 
  const Style_link = styled(Link)`
@@ -34,12 +35,25 @@ color: #6c757d;
 
 
 
-export const Cabecera = ()=>{
-  const navegate = useNavigate();
+export const Cabecera = (props)=>{
+
+
+  const dispach = useDispatch();
   const [visible,setVisibleRight]=useState(false)
 const [validaUrl,setValidaUrl]=useState(false);
 
 const [perfil,setPerfil]=useState({});
+
+const dispatch=useDispatch()
+
+const [name, setName] = useState('');
+const [navigate, setNavigate] = useState(false);
+
+var URLactual = window.location.pathname;
+const {pruebaConsole , pruebaConsole2,pruebaConsole3 , pruebaConsole4} = props;
+
+
+
 
 
 
@@ -55,12 +69,7 @@ useState(async ()=>{
 
 },[])
 
-  const funcionSalir = ()=>{
 
-    
-    
-    navegate('/Login')
-  }
     useEffect(()=>{
     
         document.getElementById("cabecera").addEventListener("mouseleave" , ()=>{
@@ -97,10 +106,11 @@ const validarUrl=(va)=>{
 }
 
 
+
 const onchangeImage= (dat)=>{
 
 
-console.log(dat)
+
 
 
   var reader =new FileReader();
@@ -133,66 +143,86 @@ console.log(dat)
 
 
     const toast = useRef(null);
-    const [activeIndex, setActiveIndex] = useState(null);
-    const dispatch = useDispatch()
+   
    
     function getAbsolutePath() {
         var loc = window.location;
         var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
         return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
     }
+
+
+    
+    const loggedin=useSelector(state =>state.auth.loggedIn);
+
+
     const showInfo = () => {
         toast.current.show({severity:'info', summary: 'Mensaje informativo ', detail:`Ya se encuentra en la pagina    ${getAbsolutePath()} `, life: 3000});
     }
 return(
-<div id="cabecera" className='cabecera'>
 
-<Sidebar visible={visible} onHide={() => setVisibleRight(false)}>
-<div className="Usuario">
-{perfil?.photo ? (
-  <img style={{width:"60%",height:"40%"}} src={onchangeImage(perfil.photo)} />
-
-):(
-<FontAwesomeIcon style={{width:"60%",height:"40%"}} icon={faUser}/>
-
-)}
-
-<div className="nombrePefil">
-{`${perfil.nombre}  ${perfil.apellidoPaterno} ${perfil.apellidoMaterno}`}
-</div>
-<Link to="/Sistema-Administrador/Perfil">
-<div className={validarUrl("/Sistema-Administrador/Perfil")}>Ver perfil</div></Link>
-</div>
-<Link to="/Sistema-Administrador/Entrada">
-<div className={validarUrl("/Sistema-Administrador/Entrada")}>Inicio</div></Link>
-<Accordion multiple>
-    <AccordionTab header="Atencion al cliente ">
-    <div className="barrasLinks">
+<div className="cabeceraFija" >
+  <div id="cabecera" className='cabecera'>
+  
+  <Sidebar visible={visible} onHide={() => setVisibleRight(false)}>
+  <div className="Usuario">
+  {perfil?.photo ? (
+    <img style={{width:"60%",height:"40%"}} src={onchangeImage(perfil.photo)} />
+  
+  ):(
+  <FontAwesomeIcon style={{width:"60%",height:"40%"}} icon={faUser}/>
+  
+  )}
+  
+  <div className="nombrePefil">
+  {`${perfil.nombre}  ${perfil.apellidoPaterno} ${perfil.apellidoMaterno}`}
+  </div>
+  <Link to="/Sistema-Administrador/Perfil">
+  <div className={validarUrl("/Sistema-Administrador/Perfil")}>Ver perfil</div></Link>
+  </div>
+  <Link to="/Sistema-Administrador">
+  <div className={validarUrl("/Sistema-Administrador")}>Inicio</div></Link>
+  <Accordion multiple>
+  <AccordionTab header="Administrador ">
+      <div className="barrasLinks">
+  
+      <Style_link to="/Sistema-Administrador/Administrador/Usuarios"> <div className={validarUrl("/Sistema-Administrador/Administrador/Usuarios")} >Usuarios</div> </Style_link>
+  
+      <Style_link to="/Sistema-Administrador/Administrador/Empleado"> <div className={validarUrl("/Sistema-Administrador/Administrador/Empleado")} >Empleados</div> </Style_link>
+  </div>
+      </AccordionTab>
+      <AccordionTab header="Atencion al cliente ">
+      <div className="barrasLinks">
+      
+          <Style_link to="/Sistema-Administrador/Atencion-Cliente/MesaPartes"><div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/MesaPartes")}>Mesa de partes</div> </Style_link>
+  
+          
+          <Style_link to="/Sistema-Administrador/Atencion-Cliente/CRM"><div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/CRM")}>CRM</div></Style_link>
+          
+           <Style_link to="/Sistema-Administrador/Atencion-Cliente/Estudiantes"> <div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/Estudiantes")} >Estudiantes</div> </Style_link></div>
+  
+       
+      </AccordionTab>
     
-        <Style_link to="/Sistema-Administrador/Atencion-Cliente/MesaPartes"><div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/MesaPartes")}>Mesa de partes</div> </Style_link>
-
-        
-        <Style_link to="/Sistema-Administrador/Atencion-Cliente/CRM"><div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/CRM")}>CRM</div></Style_link>
-        
-         <Style_link to="/Sistema-Administrador/Atencion-Cliente/Estudiantes"> <div className={validarUrl("/Sistema-Administrador/Atencion-Cliente/Estudiantes")} >Estudiantes</div> </Style_link></div>
-
-     
-    </AccordionTab>
+  
+  </Accordion>
+  
+   <div className="contenido CerrarSession" onClick={()=>
+  dispatch(logout())} >Salir <FontAwesomeIcon icon={faDoorOpen}/> </div>
    
-</Accordion>
+  </Sidebar>
+          <div id="cabecera2"   className="cabecera2">
+      
+          <Button id='botonActivadorLateral' onClick={() => setVisibleRight(true) } >
+          <FontAwesomeIcon
+            icon={ faAlignJustify }
+          ></FontAwesomeIcon>
+          </Button>
+          {URLactual==='/Sistema-Administrador/Administrador/Empleado' ? <div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => pruebaConsole2(true)} >Mostrar Filtro</Button></div> :<></>}
+          {URLactual==='/Sistema-Administrador/Administrador/Usuarios' ? <div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => pruebaConsole(true)} >Mostrar Filtro</Button></div> :<></>}
 
- <div className="contenido CerrarSession" onClick={()=>
- funcionSalir()} >Salir <FontAwesomeIcon icon={faDoorOpen}/> </div>
- 
-</Sidebar>
-        <div id="cabecera2"   className="cabecera2">
-    
-        <Button id='botonActivadorLateral' onClick={() => setVisibleRight(true) } className="mr-2">
-        <FontAwesomeIcon
-          icon={ faAlignJustify }
-        ></FontAwesomeIcon>
-        </Button>
-        </div>
-        </div>
+          </div>
+          </div>
+</div>
 )
 }

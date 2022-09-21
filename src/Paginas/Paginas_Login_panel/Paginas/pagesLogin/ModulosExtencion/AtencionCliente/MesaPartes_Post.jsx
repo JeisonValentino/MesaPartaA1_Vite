@@ -3,101 +3,50 @@ import { Column } from 'primereact/column'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { classNames } from 'primereact/utils'
-import { Fragment, useEffect, useState } from 'react'
-import { Cabecera } from './Cabecera'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Cabecera } from '../../ExtencionesCompartidas/Cabecera'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Toast } from 'primereact/toast'
 import { useRef } from 'react'
 import { Dialog } from 'primereact/dialog'
-import descarga from './../../../../../Imagenes/descarga.jpg'
+import descarga from './../../../../../../Imagenes/descarga.jpg'
 import { InputNumber } from 'primereact/inputnumber'
 import axios from 'axios'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { RadioButton } from 'primereact/radiobutton'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { FileUpload } from 'primereact/fileupload'
 import { Tag } from 'primereact/tag'
-import {TablaSeleccionable} from '../Modulos/TablaSeleccionable.jsx';
-import Loading from '../../../../ControladorPage/Loading'
-
+import Loading from '../../../../../ControladorPage/Loading'
+import { debounce } from "debounce";
+import { Service } from '../../Service'
 export const MesaPartes_Post = () => {
   const toast = useRef(null)
   const [displayBasic2, setDisplayBasic2] = useState(false)
   const [displayBasic3, setDisplayBasic3] = useState(false)
   const [solicitud, setSolicitudes] = useState()
 const [dataUser ,setDataUser]=useState([]);
-const 
-  dataHead=[{
-    type:"header"
-  ,data:{
-      text:"Nombre"
-  }
-  },{
-    type:"header"
-  ,data:{
-      text:"Numero de documento"
-  }
-  },{
-    type:"header"
-  ,data:{
-      text:"Correo"
-  }
-  },{
-    type:"header"
-  ,data:{
-      text:"Tipo de reclamo"
-  }
-  }
-  ]
+const dt = useRef(null);
 
-
-
-  const 
-  dataBody=[{
-    type:"table"
-  ,data:{
-    text:"nombreCompleto",
-    position:"right"
-  }
-  },{
-    type:"table"
-  ,data:{
-    text:"numeroDocumento",
-    position:"left"
-  }
-  },{
-   
-    type:"table"
-  ,data:{
-    text:"correoPersonal",
-    position:"left"
-  }
-  },{
-
-    type:"table"
-  ,data:{
-    text:"tipoReclamo",
-    position:"left"
-  }
-  }
-  ]
-
-
-
+const def=useRef(null);
 const [loading, setLoading]=useState(false);
+const[post ,setPost]=useState([])
+const [selectedData, setSelectedData] = useState(null);
   let file = ([])
   const [solicitar, setSolicitar] = useState({
     id: '',
     titulo: '',
     concepto: '',
     mensaje: '',
-    idSolicitud: '',files:file
+    idSolicitud: '',photo:[]
   })
   const [files2, setFiles] = useState([])
   const [submitted, setSubmitted] = useState()
-const {files}=solicitar;
-  const [validacion, setValidacion] = useState()
+const {photo}=solicitar;
+  const [validacion, setValidacion] = useState("todos")
   const [value1, setValue1] = useState(10)
+
+  const [DisplayBasic4,setDisplayBasic4]=useState(false)
   const onHide = () => {
     setDisplayBasic2(false)
     setSolicitar({
@@ -110,8 +59,8 @@ const {files}=solicitar;
   }
   const onCategoryChange = e => {
     setValidacion(e.value)
-    filter(' ')
-    filter('')
+    console.log(e.value)
+ 
   }
 
   const onchangeSolicitud = (e, name) => {
@@ -132,12 +81,21 @@ const {files}=solicitar;
       concepto: ''
     })
   }
+
+
+
+  const onHide3 = () => {
+  
+    setDisplayBasic4(false)
+ 
+  }
+
   const [totalSize, setTotalSize] = useState(0)
 
   const onTemplateRemove = (file, callback) => {
     setTotalSize(totalSize - file.size)
 
-    var file3 = Array.from(files2.files).filter(item => item.name !== file.name)
+    var file3 = Array.from(files2?.files).filter(item => item.name !== file.name)
     setFiles({ ...files2, file3 })
     console.log(file3)
     callback()
@@ -157,12 +115,13 @@ const {files}=solicitar;
         type: 'application/json'
       })
       formData.append('obj', fileTosave2)
-
-      for (var i = 0; i < files2.files.length; i++) {
+if(!files2?.files===null||!files2?.files===undefined){
+      for (var i = 0; i < files2?.files.length; i++) {
         console.log(files2.files[i])
         formData.append('files', files2.files[i])
       }
-      console.log(fileTosave2)
+    }
+      
 
       axios({
         method: 'POST',
@@ -170,11 +129,15 @@ const {files}=solicitar;
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
-
+      
+    
       onHide2()
     }
-
+   
     setSubmitted(true)
+    setLoading(false);
+    onHide3()
+    showData();
   }
   const [expandedRows, setExpandedRows] = useState(null)
   const isMounted = useRef(false)
@@ -256,11 +219,12 @@ const {files}=solicitar;
   }
 
   const globalFilterOnchange = e => {
-    filter(e.target.value)
+   debounceFn(e.target.value)
   }
 
   function filter (e) {
-    var resultadoBusqueda = globalFilterArray.filter(elemento => {
+  console.log(e)
+    var resultadoBusqueda = !e ? dataUser:  dataUser.filter(elemento => {
       console.log(validacion)
 
       if (validacion === 'todos') {
@@ -314,21 +278,19 @@ const {files}=solicitar;
         }
       }
     })
-    setSolicitudes(resultadoBusqueda)
+    console.log(resultadoBusqueda)
+  
+setSolicitudes(resultadoBusqueda)
+
   }
 
   const renderFooter = name => {
     return (
       <div>
+      
         <Button
-          label='No'
-          icon='pi pi-times'
-          onClick={() => onHide(name)}
-          className='p-button-text'
-        />
-        <Button
-          label='Si'
-          icon='pi pi-check'
+          label='Cerrar'
+        
           onClick={() => onHide(name)}
           autoFocus
         />
@@ -374,53 +336,40 @@ const {files}=solicitar;
     />
   )
 const[parametroStyle ,setParametroStyle]=useState()
-  const onClickDetaller = (e,d) =>{
-      console.log(e.id)
-      setParametroStyle(d.nombreCompleto)
+  const onClickDetaller = (e) =>{
+     
+      setParametroStyle(post.nombreCompleto)
       setSolicitar(e)
     setDisplayBasic2(true)
   }
 
-const MostrarData=(rowData,data)=>{
+const MostrarData=(rowData)=>{
 
     return(
 <Fragment>
                 <Button
                   label='Mostrar detalle '
-                  onClick={() => onClickDetaller(rowData,data) }
+                  onClick={() => onClickDetaller(rowData) }
                 />
               </Fragment>
 
     )
 }
 
-  const rowExpansionTemplate = data => {
+  const rowExpansionTemplate = rowData => {
+
+  
+
     return (
       <div className='orders-subtable'>
-        <h5>Orden de respuestas de {data.nombreCompleto}</h5>
-        <Button
-          label={
-            <>
-              <FontAwesomeIcon icon={faPlus} /> Crear Respuesta{' '}
-            </>
-          }
-          onClick={() => setDisplayBasicClick(true, data)}
-        />
-        <DataTable value={data.post} responsiveLayout='scroll'>
-          <Column field='id' header='Id' sortable></Column>
-          <Column field='titulo' header='Customer' sortable></Column>
-          <Column field='nombreEmpleado' header='Date' sortable></Column>
-          <Column field='cargo' header='Date' sortable></Column>
-          <Column
-            field='action1'
-            header=''
-            body={(e)=>MostrarData(e,data)
-              
-            } sortable
-          >
-            {' '}
-          </Column>
-        </DataTable>
+
+                
+                <React.Fragment>
+                <Button icon={<><FontAwesomeIcon icon={faMagnifyingGlass}/></>} className="p-button-rounded " onClick={() => MostrarPosts(rowData)} />
+            </React.Fragment>
+            
+
+        
       </div>
     )
   }
@@ -456,23 +405,73 @@ return URL.createObjectURL(blob)
 
 
 
-useEffect(()=>{
-  const peticionDataUser = async () =>{
-   await axios.get('http://localhost:8080/respuesta/ObtenerSolicitud').then(response =>{
-    
-    setDataUser( response.data);
-    setLoading(true);
+
+
+
+const showData = async ()=>{
+
+  
+
+  
+  const response =await Service.ListaMesaPartes().then(response =>{
+    console.log(response)
+    return response
     })
-    }
-  peticionDataUser().catch(console.error)
-}, [])
+    setDataUser( response);
+    setLoading(true);
+   
+ 
+
+}
+
+let debounceFn = debounce(filter, 500);
+
 
 
 
   useEffect(() => {
-    setSolicitudes(dataUser)
-    setGlobalFilterArray(dataUser)
-  }, [dataUser])
+
+    showData()
+    
+    
+        
+  }, [])
+  function renderizaValor (){
+    let newState = dataUser.map((e) => e); // map your state here
+   
+   
+setSolicitudes(newState)
+}
+
+  useEffect(() => {
+
+renderizaValor();
+  },[dataUser])
+
+
+
+
+
+ const  MostrarPosts =(daw)=>{
+  setDisplayBasic4(true)
+
+  showDataPost(daw.id)
+
+
+  }
+
+
+  const showDataPost = async (value)=>{
+
+  
+
+  
+    const response =await Service.ConsultarPost(value).then(response =>{
+      console.log(response)
+      return response
+      })
+      setPost( response);
+  }
 
 
 
@@ -481,12 +480,39 @@ useEffect(()=>{
     <Fragment>
       <Toast ref={toast} />
 
+     <Dialog
+     visible={DisplayBasic4}
+        onHide={() => onHide3()}
      
+     >
+
+     <h5>Orden de respuestas de {post?.nombreCompleto}</h5>
+        <Button
+          label={
+            <>
+              <FontAwesomeIcon icon={faPlus} /> Crear Respuesta{' '}
+            </>
+          }
+          onClick={() => setDisplayBasicClick(true, post)}
+        />
+        
+        <DataTable   value={post.post} dataKey="id" responsiveLayout="scroll" >
+        <Column field="titulo" header="titulo "></Column>
+        <Column field="cargo" header="cargo "></Column>
+        <Column field="nombreEmpleado" header="Nombre de empleado "></Column>
+
+     <Column body={MostrarData}></Column>
+        </DataTable>
+
+     </Dialog>
+
+
+
       <Dialog
         header={<div>{parametroStyle}</div>}
         visible={displayBasic2}
         style={{ width: '50vw' }}
-        footer={renderFooter('displayBasic2')}
+  
         onHide={() => onHide('displayBasic2')}
       ><div>
 <div className='DataMuestra' > <h5>Titulo : {solicitar.titulo}</h5> </div>
@@ -496,10 +522,9 @@ useEffect(()=>{
 <div className='DataMuestra' > <h5>Mensaje : {solicitar.mensaje}</h5> </div>
 
 
-{  files?.map((data)=> (
-<div className="DataMuestra" key={data.id} >
-{data.name}
-<img src={onchangeImage(data.data)} />
+{  photo?.map((data,i)=> (
+<div className="DataMuestra" key={i} >
+<img src={onchangeImage(data)} />
   </div>)) 
 }
 </div>
@@ -668,7 +693,17 @@ useEffect(()=>{
 
 {loading ? <Fragment>
 
-  <TablaSeleccionable dataHead={dataHead} dataUser={dataUser} dataBody={dataBody} ></TablaSeleccionable> </Fragment>
+  <DataTable ref={dt} value={solicitud} selection={selectedData} onSelectionChange={(e) => setSelectedData(e.value)}
+                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} dataUser"
+                      responsiveLayout="scroll">
+                    
+                    <Column field="id" header="Codigo de solicitud" sortable style={{ minWidth: '12rem' }}></Column>
+                    <Column field="nombreCompleto" header="Nombre Reclamante" sortable style={{ minWidth: '12rem' }}></Column>
+                    <Column field="tipoReclamo" header="tipo de Reclamo" sortable style={{ minWidth: '12rem' }}></Column>
+                    <Column body={rowExpansionTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
+                </DataTable></Fragment>
 :<Loading/>}
 </div>
 

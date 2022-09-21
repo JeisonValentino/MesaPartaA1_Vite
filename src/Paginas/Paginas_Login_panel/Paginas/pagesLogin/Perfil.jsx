@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown"
-import { Fragment, useRef, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { Cabecera } from "./ExtencionesCompartidas/Cabecera"
 
 import { Service } from "./Service"
@@ -8,6 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import axios from "axios"
 import { Toast } from 'primereact/toast';
+import Loading from "../../../ControladorPage/Loading"
+import useSound from 'use-sound'
+import notificacionAprob from './Modulos/notificacionAprob.mp3'
+import fallo from './Modulos/fallo.mp3'
 export default function Perfil(){
     const toast = useRef(null);
 let Datos_Empletado={
@@ -36,18 +40,16 @@ userId: ""
     const[empleado,setEmpleado]=useState(Datos_Empletado)
     const[empleado3,setEmpleado3]=useState()
     const [_empleado2 ,setEmpleado2]=useState()
+    const [loading,setLoading]=useState(true);
+    const [playSound] = useSound(notificacionAprob)
+    const [fallosonund]=useSound(fallo)
     const [files, setFiles] = useState({
         files: null })
-    useState(async ()=>{
-
-
-        await Service.retornarPerfl().then(response =>{
-            setEmpleado(response)
-         
-        })
-      
-      
-      },[])
+       
+        
+        useEffect(() => {
+        obtenerSession()
+        }, []);
 
 
 
@@ -74,8 +76,9 @@ const dataTipoDocumento=[{name:'DNI',code:'1'},{name:'Extrangero',code:'2'}]
 
 
 
-     const onsubmitForm =(e)=>{
-        e.preventDefault();
+     const onsubmitForm = async(e)=>{
+      let error= false;
+      e.preventDefault();
         const formData = new FormData()
     console.log(empleado)
         var fileTosave2 = new Blob([JSON.stringify(empleado)], {
@@ -86,25 +89,42 @@ const dataTipoDocumento=[{name:'DNI',code:'1'},{name:'Extrangero',code:'2'}]
     
         formData.append('files',files.files)
     
-        axios({
-          method: 'put',
-          url: 'http://localhost:8080/users/GuardarPorPerfil',
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
 
-        Service.retornarPerfl().then(response =>{
-            setEmpleado(response)
-        })
-        ActualizarDialog()
+     await Service.ActualizarPerfil(formData).catch(res =>{
+      console.log(res.response.data.message)
+error=true
+      toast.current.show({ severity: 'error', summary: 'Algo salio mal', detail: `${res.response.data.message}`, life: 4000 });
+      fallosonund()
+     })
+     if(!error){
+      obtenerSession()
+      
+      playSound()
+      ActualizarDialog()
+     }
+     
     return true;
  }
+
+const obtenerSession=async ()=>{
+
+  const valor= await Service.retornarPerfl().then(response =>{
+    return response
+})
+setEmpleado(valor)
+setLoading(false)
+
+
+
+
+}
+
 
 const contructorValor = ()=>{
 
     let code
     console.log(empleado.idTipoDocumentoIdentidad)
-    if(empleado.idTipoDocumentoIdentidad===1){
+    if(empleado.idTipoDocumentoIdentidad==1){
  code = {name:'DNI',code:'1'}
     return code
 }else{
@@ -116,7 +136,7 @@ const contructorValor = ()=>{
 const onchangeImage= (dat)=>{
 
 
-    console.log(dat)
+    
     
     
       var reader =new FileReader();
@@ -174,6 +194,11 @@ const onchangeImage= (dat)=>{
         toast.current.show({ severity: 'success', summary: 'Operacion Exitosa', detail: 'Sus datos fueron actualizados', life: 4000 });
     }
 
+    const ingresarStado3=(e,name)=>{
+      console.log(e.target.value)
+      setEmpleado  ({...empleado,[`${name}`]: e.target.value })
+   }
+
 
 return(
 
@@ -186,6 +211,7 @@ return(
 <div className="card" >
 
             <div  className="container-sm">
+            {loading ? (<div style={{marginTop:"20%"}}><Loading /></div>):(
             <form className=" row g-3 was-validated" onSubmit={onsubmitForm}>
             <h5 style={{marginTop:"15%",marginLeft:"45%",letterSpacing:"5px"}}>PERFIL</h5>
 
@@ -214,7 +240,7 @@ return(
     <label  className="form-label">Correo</label>
     <div className="input-group has-validation">
       <span className="input-group-text" id="inputGroupPrepend">@</span>
-      <input onChange={ingresarStado} value={empleado.correo} type="text" className="form-control" id="validationCustomUsername" name= 'correo' aria-describedby="inputGroupPrepend" required/>
+      <input onChange={(e)=>ingresarStado(e)} value={empleado?.correo} type="text" className="form-control" id="validationCustomUsername" name= 'correo' aria-describedby="inputGroupPrepend" required/>
       <div className="invalid-feedback">
        por favor escoge tu correo 
       </div>
@@ -223,7 +249,7 @@ return(
 
   <div className="col-6">
     <label  className="form-label">Contraseña</label>
-    <input onChange={ingresarStado} value={empleado.contraseña} type="password" className="form-control" id="validationCustom01" name="contraseña" required
+    <input onChange={(e)=>ingresarStado(e)} value={empleado?.contraseña} type="password" className="form-control" id="validationCustom01" name="contraseña" required
 
     />
     <div className="valid-feedback">
@@ -233,21 +259,21 @@ return(
 
   <div className="col-6">
     <label  className="form-label">Nombre</label>
-    <input onChange={ingresarStado} value={empleado.nombre} type="text" className="form-control" id="validationCustom02" name="nombre" required/>
+    <input onChange={(e)=>ingresarStado(e)} value={empleado?.nombre} type="text" className="form-control" id="validationCustom02" name="nombre" required/>
     <div className="valid-feedback">
       Looks good!
     </div>
   </div>
   <div className="col-6">
     <label  className="form-label">Apellido paterno</label>
-    <input type="text" onChange={ingresarStado} value={empleado.apellidoPaterno} name="apellidoPaterno" className="form-control" id="validationCustom03"  required/>
+    <input type="text" onChange={(e)=>ingresarStado(e)} value={empleado.apellidoPaterno} name="apellidoPaterno" className="form-control" id="validationCustom03"  required/>
     <div className="valid-feedback">
       Looks good!
     </div>
   </div>
   <div className="col-6">
     <label  className="form-label">Apellido Materno</label>
-    <input type="text" onChange={ingresarStado} value={empleado.apellidoMaterno} name="apellidoMaterno" className="form-control" id="validationCustom04"  required/>
+    <input type="text" onChange={(e)=>ingresarStado(e)} value={empleado?.apellidoMaterno} name="apellidoMaterno" className="form-control" id="validationCustom04"  required/>
     <div className="valid-feedback">
       Looks good!
     </div>
@@ -260,14 +286,14 @@ return(
 
   <div className="col-3" style={{marginLeft:"85px"}}>
     <label  className="form-label">Numero Documento</label>
-    <input type="text" onChange={ingresarStado} value={empleado.numeroDocumento} name="apellidoPaterno" className="form-control" id="validationCustom06"  required/>
+    <input type="text" onChange={(e)=>ingresarStado3(e,'numeroDocumento')} value={empleado?.numeroDocumento} name="numeroDocumento" className="form-control" id="validationCustom06"  required/>
     <div className="valid-feedback">
       Looks good!
     </div>
   </div>
   <div className="col-6">
     <label  className="form-label">Direccion</label>
-    <input type="text" onChange={ingresarStado} value={empleado.direccion} name="direccion" className="form-control" id="validationCustom07"        required/>
+    <input type="text" onChange={(e)=>ingresarStado(e)} value={empleado?.direccion} name="direccion" className="form-control" id="validationCustom07"        required/>
     <div className="valid-feedback">
       Looks good!
     </div>
@@ -275,7 +301,7 @@ return(
  
   <div className="col-6">
     <label  className="form-label">Estado Civil</label>
-    <input onChange={ingresarStado} value={empleado.estadoCivil} name="estadoCivil" type="text" className="form-control" id="validationCustom08" required/>
+    <input onChange={(e)=>ingresarStado(e)} value={empleado?.estadoCivil} name="estadoCivil" type="text" className="form-control" id="validationCustom08" required/>
     <div className="invalid-feedback">
       Please provide a valid city.
     </div>
@@ -283,7 +309,7 @@ return(
  
   <div className="col-6">
     <label  className="form-label">grado Intruccion</label>
-    <input type="text"  onChange={ingresarStado} value={empleado.gradoInstruccion}  name="gradoInstruccion" className="form-control" id="validationCustom09" required/>
+    <input type="text"  onChange={(e)=>ingresarStado(e)} value={empleado?.gradoInstruccion}  name="gradoInstruccion" className="form-control" id="validationCustom09" required/>
     <div className="invalid-feedback">
       Please provide a valid zip.
     </div>
@@ -291,7 +317,7 @@ return(
 
   <div className="col-6">
     <label className="form-label">Conocimiento Informatico</label>
-    <input type="text"  onChange={ingresarStado} value={empleado.conocimientoInformatico}  name="conocimientoInformatico" className="form-control" id="validationCustom10" required/>
+    <input type="text"  onChange={(e)=>ingresarStado(e)} value={empleado?.conocimientoInformatico}  name="conocimientoInformatico" className="form-control" id="validationCustom10" required/>
     <div className="invalid-feedback">
       Please provide a valid zip.
     </div>
@@ -299,21 +325,11 @@ return(
 
  
 
+ 
   <div className="col-12">
-    <div className="form-check">
-      <input  className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
-      <label className="form-check-label" >
-        Agree to terms and conditions
-      </label>
-      <div className="invalid-feedback">
-        You must agree before submitting.
-      </div>
-    </div>
+    <button className="btn btn-primary" type="submit">Actualizar datos</button>
   </div>
-  <div className="col-12">
-    <button className="btn btn-primary" type="submit">Submit form</button>
-  </div>
-</form>
+</form>)}
             </div>
        
 </div>

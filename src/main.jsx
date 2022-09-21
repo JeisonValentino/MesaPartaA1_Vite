@@ -7,13 +7,19 @@ import Controller_Page from './Paginas/ControladorPage/Controller_Page.jsx';
 
 import { faFacebook,faInstagram,faTiktok} from '@fortawesome/free-brands-svg-icons';
 
-const rootElement = document.getElementById('root');
+
 library.add(faFacebook, faInstagram, faTiktok)
+const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 root.render(
-  <StrictMode>
+  <React.StrictMode>
 
-  <h1>hola a todos </h1>
 
-</StrictMode>
+
+
+<Controller_Page/>
+
+
+
+</React.StrictMode>
 )
