@@ -115,45 +115,50 @@ const saveProduct =async (e) => {
     setSubmitted(true);
     setCount(count + 1)
     let error= false;
+    let mensaje="";
     if(product.id){
    
         console.log("paso por el id")
-        await  Service.ModificarUser(product).catch(res=>{
+        await  Service.ModificarUser(product).then(res=>{
+mensaje = res.data.message
+        }) .catch(res=>{
             error=true;
-            console.log(res.response.data.message)
+          
             toast.current.show({ severity: 'error', summary: 'Ocurrio un error inesperado', detail: `${res.response.data.message}`, life: 3000 });
             fallosonund()
         })
         
 
         if(!error){
-            console.log("no hay error")
+           
     setProduct(emptyProduct);
         listarRoles()
         obtenerLista()
         setProductDialog(false);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Usuario Actualizado2', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: `${mensaje}`, life: 3000 });
         playSound()
         }
 
     }else{
-    if ( !validacionEmail() && ValidarCaracteres()&& !(product.contraseña.length<4) && !(product.role=='') && !product.idEmpleado=='' ) {
-
-       
-       
-
-          
-    
         
-       
-            console.log("no paso por el id")
-          
-          
+    if ( !validacionEmail() && ValidarCaracteres()&& !(product.contraseña.length<4) && !(product.role=='') && !product.idEmpleado=='' ) {
+ 
    
-            await EnviarUsuarioCreado(product);
+            await Service.CrearUsuario(product).then(res=>{
+                mensaje = res.data.message
+            }).catch(res=>{
+                error=true;
+          
+                toast.current.show({ severity: 'error', summary: 'Ocurrio un error inesperado', detail: `${res.response.data.message}`, life: 3000 });
+                fallosonund()
+            });
+
+
+            if(!error){
             setProduct(emptyProduct);
             setEmpleado(emptyEmpleado)
-            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Usuario Creado', life: 3000 });
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: `${mensaje}`, life: 3000 });
+            }
         
 listarRoles()
         obtenerLista()
@@ -163,9 +168,7 @@ listarRoles()
     }
 }}
 
-const EnviarUsuarioCreado =  (product)=>{
-     Service.CrearUsuario(product);
-}
+
 
 
 
@@ -186,8 +189,12 @@ const confirmDeleteProduct = (product) => {
 const deleteProduct = async () => {
    
 
-     await Service.EliminarUsuario(product).catch((res)=>{
-        console.log(res)
+     await Service.EliminarUsuario(product).then(data=>{
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: `${data.data.message}`, life: 3000 });
+        playSound()
+     }).catch((res)=>{
+           toast.current.show({ severity: 'error', summary: 'Ocurrio un error inesperado', detail: `${res.response.data.message}`, life: 3000 });
+            fallosonund()
      })
    
      listarRoles()
@@ -195,25 +202,28 @@ const deleteProduct = async () => {
 
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
-    playSound()
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Usuario Eliminado', life: 3000 });
+   
+   
    
 }
 
-const deleteSelectedProducts = () => {
+const deleteSelectedProducts = async () => {
    
-    
+  
+   await Service.EliminarUsuarioSeleccionados(selectedProducts).then(res=>{
+    toast.current.show({ severity: 'success', summary: 'Successful', detail: `${res.data.message}`, life: 3000 });
+    playSound()
+   }).catch(res=>{
+    toast.current.show({ severity: 'error', summary: 'Ocurrio un error inesperado', detail: `${res.response.data.message}`, life: 3000 });
+            fallosonund()
+   })
    
-    productService.eliminarListaDeusuarioSeleccionados(selectedProducts)
-    let _products = products.filter(val => !selectedProducts.includes(val));
-   
-   
-    
+    obtenerLista()
 
     setDeleteProductsDialog(false);
     setSelectedProducts(null);
   
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+   
     
 }
 
@@ -277,8 +287,8 @@ const leftToolbarTemplate = () => {
 const actionBodyTemplate = (rowData) => {
     return (
         <React.Fragment>
-            <Button icon="pi pi-pencil" style={{height:"10%",width:"30%",margin:"0",padding:"0"}} className="p-button-rounded p-button-success mr-2" onClick={() => editProduct(rowData)} />
-            <Button icon="pi pi-trash" className="p-button-rounded  p-button-warning" style={{height:"10%",width:"30%",margin:"0",padding:"0"}} onClick={() => confirmDeleteProduct(rowData)} />
+            <Button icon="pi pi-pencil" style={{height:"10%",width:"30%",margin:"0",padding:"0" , background:"blue"}} className="p-button-rounded p-button-success mr-2" onClick={() => editProduct(rowData)} />
+            <Button icon="pi pi-trash" className="p-button-rounded  p-button-warning" style={{height:"10%",width:"30%",margin:"0",padding:"0", background:"red"}} onClick={() => confirmDeleteProduct(rowData)} />
         </React.Fragment>
     );
 }
@@ -286,7 +296,7 @@ const actionBodyTemplate = (rowData) => {
 const header = (
     <div className="table-header">
     <div >
-        <h5 className="mx-0 my-1">Buscar usuario</h5>
+        <h5 className="mx-0 my-1" style={{color:"white"}}>Buscar usuario</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
             <InputText type="search" onInput={(e) => aww(e) } placeholder="Search..." />
@@ -306,12 +316,13 @@ const aww = (e) =>{
 }
 
 
-const productDialogFooter = (
-    <React.Fragment>
-        <Button rowReorder label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-        <Button rowReorder label="Guardar" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
-    </React.Fragment>
-);
+const productDialogFooter = ()=>{
+ 
+ return (<React.Fragment>
+        <Button  label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={()=>hideDialog()} />
+        <Button  label="Guardar" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+    </React.Fragment>)
+}
 const deleteProductDialogFooter = (
     <React.Fragment>
         <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
@@ -481,19 +492,19 @@ return (
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
                      header={header} responsiveLayout="scroll">
                
-                 <Column rowReorder selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
-                    <Column field="id" header="Id" sortable style={{ minWidth: '2rem' }}></Column>
-                    <Column field="correo" header="Correo" sortable style={{ minWidth: '10rem' }}></Column>
-                    <Column field="role" header="Role" sortable style={{ minWidth: '6rem' }}></Column>
-                    <Column field="action" body={actionBodyTemplate} sortable exportable={false} style={{ minWidth: '10rem' }} header="Acciones"></Column>
+                 <Column rowReorder selectionMode="multiple" style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}} exportable={false}></Column>
+                    <Column field="id" header="Id" sortable style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}}></Column>
+                    <Column field="correo" header="Correo" sortable style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}}></Column>
+                    <Column field="role" header="Role" sortable style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}}></Column>
+                    <Column field="action" body={actionBodyTemplate} sortable exportable={false} style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}} header="Acciones"></Column>
                     
                 </DataTable>
             
             </div>
 
-            <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                {product.image && <img src={`images/product/${product.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.image} className="product-image block m-auto pb-3" />}
-                <div className="field">
+            <Dialog visible={productDialog} style={{ width: '450px' }} header="Detalles de usuarios" modal className="p-fluid" onHide={()=>hideDialog()} footer={productDialogFooter()}  >
+             
+            <div className="field">
                     <label htmlFor="correo">Correo</label>
                     <InputText id="correo" value={product.correo} onChange={(e) => onInputChange(e, 'correo')} required autoFocus className={classNames({ 'p-invalid': submitted &&  !product.correo  || submitted && !ValidarCaracteres()})} />
 

@@ -26,10 +26,10 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../../../../ControladorPage/Loading';
 export default function Empleado  (){
 
-  
+  let sede={id: '', nombre: '', ruc: '', direccion: '', telefono: ''}
     let emptyProduct = {
         id:null,
-         nombre: '',apellidoPaterno:'',apellidoMaterno:'',numeroDocumento:null,telefono:null,idEstado:'',idTipoDocumentoIdentidad:'',idSede:'',direccion:'',estadoCivil:'',gradoInstruccion:'',conocimientoInformatico:'',photo:'',idRole:''
+         nombre: '',apellidoPaterno:'',apellidoMaterno:'',numeroDocumento:null,telefono:null,idEstado:'',idTipoDocumentoIdentidad:'',idSede:sede,direccion:'',estadoCivil:'',gradoInstruccion:'',conocimientoInformatico:'',photo:'',idRole:''
      
      };
   
@@ -118,59 +118,90 @@ export default function Empleado  (){
 
      const saveProduct =async (e) => {
 e.preventDefault();
-
+let mensaje="";
          setSubmitted(true);
          setCount(count + 1)
+
+         let error=false;
          if (product.nombre.trim()) {
           
              let _product = {...product};
              if (product.id) {
         console.log("modifica el empleado")
      const formData = new FormData()
+     console.log(product)
      var fileTosave2 = new Blob([JSON.stringify(product)], {
         type: 'application/json'
       })
-      console.log(product)
+      console.log(fileTosave2)
       formData.append('obj', fileTosave2)
   
       formData.append('files2',files.files)
 console.log(files.files)
-      await Service.ModificarEmpleado(formData);
-         playSound()
-         setLoading(false);
-         obtenerListaEmpleado()
-       
-        setLoading(true)
-                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Empleado Actualizado', life: 3000 });
-                 
-             }
+      await Service.ModificarEmpleado(formData).then(res=>{
+           
+                     
+
+        mensaje=res.data.message
+
+}).catch(res=>{
+        error=true;
+        toast.current.show({ severity: 'error', summary: 'Ocurrio un problema', detail: `${res.response.data.message}`, life: 3000 });
+        
+      });
+
+
+
+  
+            }
              else {
                  _product.image = 'product-placeholder.svg';
                
-                 console.log(product)
+             
                  const formData = new FormData()
                  var fileTosave2 = new Blob([JSON.stringify(product)], {
                     type: 'application/json'
                   })
                   formData.append('obj', fileTosave2)
-                  formData.append('files',files.files)
-                 await EnviarUsuarioCreado(formData);
-                 playSound()
-                 setLoading(false);
-         obtenerListaEmpleado()
-       
-                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Empleado Creado', life: 3000 });
-             }
-     setFiles({})
-             setProduct(emptyProduct);
-             setProductDialog(false);
+                  formData.append('files2',files.files)
+                 await Service.CrearEmpleado(formData).then(res=>{
+           
+                     
+
+                            mensaje=res.data.message
+
+                 }).catch(res=>{
+              
+                    error=true;
+                    toast.current.show({ severity: 'error', summary: 'Ocurrio un problema', detail: `${res.response.data.message}`, life: 3000 });
+                    
+                  });
+
+
+              
+               
+            }
+
+
+            if(!error){
+                playSound()
+             
+                obtenerListaEmpleado()
+                setFiles({})
+                setProduct(emptyProduct);
+                setProductDialog(false);
+        
+                        toast.current.show({ severity: 'success', summary: 'Successful', detail: `${mensaje}`, life: 3000 });
+                        
+                    }
+
           
             
          }
      }
      
      const EnviarUsuarioCreado =  (product)=>{
-          Service.CrearEmpleado(product);
+         return  Service.CrearEmpleado(product);
      }
      
      
@@ -196,16 +227,7 @@ if(product2.conocimientoInformatico === 'Usuario'){
 
 
 
-      if(product2.idSede === 'Salamanca'){
-          datoExtra={
-             name:'Salamanca',code:2
-         }
-        }else if(product2.idSede === 'San juan'){
-
-            datoExtra={
-                name:'San juan',code:1
-         }
-        }
+     
 
 if(product2.gradoInstruccion ==='Sin-estudios'){
     datoExtra2={
@@ -318,7 +340,7 @@ if(product2.gradoInstruccion ==='Sin-estudios'){
          let _product = {...product};
          console.log(val)
          _product[`${name}`] = val;
-     
+ 
          setProduct(_product);
          
         
@@ -363,12 +385,8 @@ setConocimientoInformatico(val2)
        
    console.log(val.name)
        let _product = {...product};
-       _product[`${name}`] = val.name;
+       _product[`${name}`] = val2
      
-      
-
-
-     setEmpleado(val2)
        setProduct(_product);
        console.log(val2)
      }
@@ -442,8 +460,8 @@ setConocimientoInformatico(val2)
      
      const productDialogFooter = (
          <React.Fragment>
-             <Button rowReorder label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-             <Button rowReorder label="Guardar" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+             <Button  label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+             <Button  label="Guardar" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
          </React.Fragment>
      );
      const deleteProductDialogFooter = (
@@ -477,9 +495,9 @@ console.log(data)
 }
 
      const listarSede= async()=>{
-let data =await Service.ListarSedesCode().then(res =>{
-    return res
-})
+        let data =await Service.ListarSedesCode().then(res =>{
+            return res
+        })
 console.log(data)
 setSedes(data)
      }
@@ -615,7 +633,7 @@ setSedes(data)
                        
                          <Column field="numeroDocumento" header="numero  Documento" sortable style={{ minWidth: '6rem' }}></Column>
                          <Column field="telefono" header="Telefono" sortable style={{ minWidth: '6rem' }}></Column>
-                         <Column field="idSede" header="Sede" sortable style={{ minWidth: '6rem' }}></Column>
+                   
                          <Column field="estadoCivil" header="Estado Civil" sortable style={{ minWidth: '6rem' }}></Column>
                          <Column field="gradoInstruccion" header="Grado de Instruccion" sortable style={{ minWidth: '6rem' }}></Column>
                          <Column field="direccion" header="Direccion" sortable style={{ minWidth: '6rem' }}></Column>
@@ -691,10 +709,10 @@ setSedes(data)
                      <label className="mb-3">Seleccion la sede</label>
                      <div className="formgrid grid card">
                     
-                     <Dropdown value={empleado} options={sedes} 
-                     onChange={(e)=>onEmpleadoChange(e, 'idSede')}   optionLabel="name"
+                     <Dropdown value={product.idSede} options={sedes} 
+                     onChange={(e)=>onInputChange(e, 'idSede')}   optionLabel="nombre"
                          />
-                       
+                       {console.log(product.idSede)}
      </div></div>
      
     

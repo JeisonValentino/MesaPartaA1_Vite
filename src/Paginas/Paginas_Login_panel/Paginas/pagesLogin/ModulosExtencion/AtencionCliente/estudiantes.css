@@ -1,0 +1,20 @@
+
+
+.MoverDerechaDialog{
+
+   position: relative;
+
+}
+
+.p-datatable .p-datatable-tbody > tr{
+
+   background-color: #1E2E86 !important;
+}
+.p-datatable .p-datatable-header {
+  background: #1646cb;
+   color: #343a40;
+   border: 1px solid #dee2e6;
+   border-width: 1px 0 1px 0;
+   padding: 1rem 1rem;
+   font-weight: 700;
+}

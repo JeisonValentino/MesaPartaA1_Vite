@@ -323,18 +323,7 @@ setSolicitudes(resultadoBusqueda)
     Product['idSolicitud'] = data.id
     setSolicitar(Product)
   }
-  const paginatorLeft = (
-    <Button type='button' icon='pi pi-refresh' className='p-button-text' />
-  )
-  const paginatorRight = (
-    <InputNumber
-      placeholder=''
-      size='2'
-      className='ml-1'
-      value={value1}
-      onChange={e => setValue1(e.value)}
-    />
-  )
+
 const[parametroStyle ,setParametroStyle]=useState()
   const onClickDetaller = (e) =>{
      

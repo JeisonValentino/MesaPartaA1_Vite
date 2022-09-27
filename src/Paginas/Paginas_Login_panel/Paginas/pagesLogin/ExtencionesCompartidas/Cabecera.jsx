@@ -50,7 +50,7 @@ const [name, setName] = useState('');
 const [navigate, setNavigate] = useState(false);
 
 var URLactual = window.location.pathname;
-const {pruebaConsole , pruebaConsole2,pruebaConsole3 , pruebaConsole4} = props;
+const {pruebaConsole , pruebaConsole2,MostrarToolbar , pruebaConsole4} = props;
 
 
 
@@ -63,7 +63,7 @@ useState(async ()=>{
 
   await Service.retornarPerfl().then(response =>{
     setPerfil(response)
-    console.log(response)
+    
   })
 
 
@@ -220,7 +220,9 @@ return(
           </Button>
           {URLactual==='/Sistema-Administrador/Administrador/Empleado' ? <div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => pruebaConsole2(true)} >Mostrar Filtro</Button></div> :<></>}
           {URLactual==='/Sistema-Administrador/Administrador/Usuarios' ? <div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => pruebaConsole(true)} >Mostrar Filtro</Button></div> :<></>}
-
+          {
+            URLactual==='/Sistema-Administrador/Atencion-Cliente/Estudiantes' ?<div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => MostrarToolbar(true)} >Mostrar Filtro</Button></div>:<></>
+          }
           </div>
           </div>
 </div>
