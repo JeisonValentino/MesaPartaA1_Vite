@@ -9,10 +9,11 @@ export const  Entrada = ()=>{
  
 return(
 <Fragment>
+<div style={{width:"100%" ,height:"100%" ,position:"absolute"}}>
 <Cabecera/>
 
-<div >
-<img className="fondoEntrada" src={FondoNiños} style={{width:"100%",height:"100%"}} />
+
+<img className="" src={FondoNiños} style={{width:"100%",height:"100%" }} />
 
 </div>
 

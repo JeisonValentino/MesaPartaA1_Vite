@@ -655,6 +655,7 @@ setSedes(data)
     
     ) :(<FontAwesomeIcon style={{width:"20%",height:"10%"}} icon={faUser}/>)}</>
 )}
+
 <input style={{marginTop:"15px"}}
                     type='file'
                     accept='image/*'

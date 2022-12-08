@@ -5,7 +5,7 @@ import '../../App.css';
 import { MesaPartes } from '../Paginas_Login_panel/Paginas/MesaPartes';
 import { Busqueda } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/Busqueda';
 import { Entrada } from '../Paginas_Login_panel/Paginas/pagesLogin/Entrada';
-import { MesaPartes_Post } from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/MesaPartes_Post';
+import { MesaPartes_Post } from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/ComponentMesaPartesPost/MesaPartes_Post';
 import React ,{ useRef } from 'react';
 import PaginaEntrada from '../Paginas_Presentacion/PaginaEntrada';
 import  ElColegio  from '../Paginas_Presentacion/ElColegio';
@@ -19,19 +19,21 @@ import Estudiantes from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtenc
 import Perfil from '../Paginas_Login_panel/Paginas/pagesLogin/Perfil';
 import Error404 from './Error404';
 import FormularioLogin from '../Paginas_Login_panel/Paginas/FormularioLogin'
-import { Provider} from 'react-redux';
+import { Provider, useSelector} from 'react-redux';
 import PublicRoute from './PublicRoute';
 import PrivateRouter from './PrivateRouter';
 
 import Salir from './Salir';
 import store from './../Paginas_Login_panel/ConfigurationAuthenticacion/store';
-import {  checkToken2 } from './authContext';
+
 import Usuarios from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Administrador/Usuarios';
 import  Empleado  from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Administrador/Empleado';
+import LoginControlador from './LoginControlador';
+import { PDF_Render } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/PDF/PDF_Render';
 
 function Controller_Page() {
 
-  checkToken2()
+
   return (
     
    <BrowserRouter>
@@ -50,14 +52,17 @@ function Controller_Page() {
       <Route path='Testimonios' element={<Testimonios/>} />
       <Route path='Noticias' element={<Noticias/>} />
     
- 
+      <Route path='pdf' element={<PDF_Render/>} />
     <Route path='MesaPartes/Formulario' element={<QuejaFormulario/>} />
     <Route path='MesaPartes/Busqueda-Solicitud' element={<Busqueda/>} />
 <Route path='MesaPartes' element={ <MesaPartes/>}  />
-<Route path='Login' element={<FormularioLogin/>}/>
 
+<Route path='Login' element={<LoginControlador/>} >
+<Route index element={  <FormularioLogin/>} />
 </Route>
 
+<Route path='salir' element={<Salir/>} />
+</Route>
 
 {/* RUTAS DEL SISTEMA WEB POR SESSION  */}
 <Route path={'Sistema-Administrador'}  element={<PrivateRouter/>} >

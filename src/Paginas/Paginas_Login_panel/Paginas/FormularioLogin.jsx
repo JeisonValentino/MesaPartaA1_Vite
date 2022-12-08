@@ -1,5 +1,5 @@
 import { Fragment ,useEffect,useRef,useState} from "react"
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { Toast } from 'primereact/toast';
@@ -8,8 +8,13 @@ import axios from "axios";
 import setAuchToken from "../ConfigurationAuthenticacion/setAuchToken";
 import { useDispatch } from "react-redux";
 import { SET_CURRENT_USER } from "../ConfigurationAuthenticacion/types";
+import { Service } from "./pagesLogin/Service";
  const  FormularioLogin = () => {
 
+
+
+
+const redirect  = useNavigate();
     const [ingresar, setIngresar]=useState({correo:'',contraseña:''});
     const toast = useRef(null);
     const toast2 = useRef(null);
@@ -22,6 +27,21 @@ import { SET_CURRENT_USER } from "../ConfigurationAuthenticacion/types";
 
     const {correo,contraseña}=ingresar;
     const [ errors, actualizarError ] = useState({})
+const [validaIp , setValidaIp]=useState(false)
+
+const  valida=async () =>{
+    let data = await Service.ping() .then(res=>{return res })
+    .catch(e=>console.log(e))
+    setValidaIp(data)
+
+}
+useEffect(()=>{
+
+     
+    valida()
+     
+
+},[])
 
     const showSuccess = () => {
         toast.current.show({severity:'info', summary: 'El correo no puede estar vacios ', detail:'Message Content', life: 2000});
@@ -76,13 +96,14 @@ const {data}= await axios.post(`http://localhost:8080/System/login?correo=${ingr
 
     dispatch(setCurrentUser({user:decoded,loggedIn:true}))
    
-
+    redirect("/Sistema-Administrador")
 
  
     }
   
-   
+    if(validaIp){
 return(
+
 <Fragment>  <Toast ref={toast} 
  />    <Toast ref={toast2} style={{marginTop:"11%"}}  
  /> 
@@ -104,7 +125,22 @@ return(
 </form>
 
 </Fragment>
+)}
+else{
+
+return(
+
+<>
+
+El servidor de servicios APACHE se cayo por favor contactar con soporte de sistema +926695038
+
+</>
+
+
 )
+
+
+}
 } 
 
 export default FormularioLogin;

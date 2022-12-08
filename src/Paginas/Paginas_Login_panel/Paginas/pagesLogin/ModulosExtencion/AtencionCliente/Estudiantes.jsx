@@ -1,4 +1,4 @@
-import { faFileExcel, faMagnifyingGlassMinus, faTrash, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import { faFileExcel, faMagnifyingGlassMinus, faTrash, faUser, faUserGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { debounce } from "debounce";
 import { Button } from "primereact/button";
@@ -22,12 +22,21 @@ import { classNames } from "primereact/utils";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import './estudiantes.css'
+;
+import parse from "html-react-parser";
+import { Tiptap } from "./Tiptap ";
+
+
+
+
 export default function Estudiantes (){
 
 const[loading,setLoading]=useState(true)
 const [selectedEstudiantes, setSelectedEstudiantes ] = useState(null);
 const dt = useRef(null);
 const [tamañoDialog,setTamañoDialog]= useState('40%');
+const [crearNotificacionCorreo,SetCrearNotificacionCorreo]=useState(false)
+const [configurationDialog,setConfigurationDialog]=useState(false)
 let emptyFile={
     id:'',name:'',type:'',data:''
 }
@@ -35,16 +44,22 @@ let emptyFile={
 let tipoDocumento ={
     id:'',nombreDocumento:''
 }
+
 let emptyEstudiantes={
 id:'',nombre:'',apellidoMaterno:'',apellidoPaterno:'',
 correo:'',numeroDocumento:'',idSede:'',idTipoDocumentoIdentidad:tipoDocumento,
 gradoEstudiante_id:'',id_files:emptyFile,direccion:'',idTipoSexo:'',gradoInstruccion:'',
-    estado:''
+estadoEstudiante_id:''
 }
 let emptyformaContacto={
     id:null,nombre:'',apellidoMaterno:'',apellidoPaterno:'',numeroDocumento:'',idEstudiante:'',idTipoDocumentoIdentidad:tipoDocumento,idrelacionfamiliar:'',numeroTelefono:''
 }
+let emptyConfiguracionEstudiante={
+    id:'' , tipoNotificacion_id:'',plataforma:'',data:'',estudiante_id:'',fechaCreacion:'',file:''
+}
 const [formaContacto,setFormaContacto]=useState(emptyformaContacto)
+const [configurarionFormularioEstudiante , setConfiracionFormularioEstudiante]=useState(emptyConfiguracionEstudiante);
+const [configurarionFormularioEstudiantes , setConfiracionFormularioEstudiantes]=useState();
 const [formaContactos,setFormaContactos]=useState([])
 const [estudiantes,setEstudiantes]=useState([])
 const [estudiante,setEstudiante]=useState(emptyEstudiantes)
@@ -55,13 +70,21 @@ const [visibleCustomToolbar, setVisibleCustomToolbar] = useState(false);
 const [submitted,setSubmitted]=useState()
 const [submitted2,setSubmitted2]=useState()
 const [estudianteDialog,setEstudianteDialog]=useState()
+const [detalleDialog,setDetalleDialog]=useState(false)
 const[eliminarEstudiantesDialog,setEliminarEstudiantesDialog]=useState(false);
 const [EnviarSonido] = useSound(notificacionAprob)
 const [fallosonido]=useSound(fallo)
+const [valueEstado,setValueEstado]=useState()
 const [estado, setEstado] = useState({
     step: 1
   })
 
+  let emptyLoginEstudiante ={
+id:'',
+correo:'', contraseña:'', estudiante_id:{},fechaRegistro:''
+
+  }
+const [loginEstudiante,setLoginEstudiante]=useState(emptyLoginEstudiante)
 const toast = useRef(null)
 const ListarEstudiante= async ()=>{
   const data= await Service.ListaEstudiantes().catch(res=>{
@@ -106,13 +129,17 @@ const header = (
 
    </div>
 );
-
+const [busqueda,setBusqueda]=useState('')
 const BuscarGlobal= (e)=>{
     debounceFn(e.target.value)
+   
 }
-let debounceFn = debounce(filtrador, 500);
+let debounceFn = debounce(filtrador, 0);
 function filtrador  (e){
+    setBusqueda(e)
     var resultadoBusqueda = !e ? estudiantes:  estudiantes.filter(elemento => {
+
+        if(tipoEstadoValidacion==='Todos'){
         if (
             elemento.nombre
               .toString()
@@ -129,6 +156,42 @@ function filtrador  (e){
               .includes(e.toLowerCase())){
                 return elemento
               }
+            }else if(tipoEstadoValidacion==="Activos"){
+                if (
+                    (elemento.nombre
+                      .toString()
+                      .toLowerCase()
+                      .includes(e.toLowerCase())&&(elemento.estadoEstudiante_id.conceptoEstado==="Habilitado"))||(elemento.correo.toString()
+                      .toLowerCase()
+                      .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")
+                      ||(elemento.numeroDocumento
+                      .toString()
+                      .toLowerCase()
+                      .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")||(elemento.id
+                      .toString()
+                      .toLowerCase()
+                      .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")){
+                        return elemento
+                      }
+
+            }else if(tipoEstadoValidacion==="Desabilitado"){
+                if (
+                    (elemento.nombre
+                        .toString()
+                        .toLowerCase()
+                        .includes(e.toLowerCase())&&(elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado"))||(elemento.correo.toString()
+                        .toLowerCase()
+                        .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")
+                        ||(elemento.numeroDocumento
+                        .toString()
+                        .toLowerCase()
+                        .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")||(elemento.id
+                        .toString()
+                        .toLowerCase()
+                        .includes(e.toLowerCase())&&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")){
+                        return elemento
+                      }
+            }
 
     })
     console.log(resultadoBusqueda)
@@ -146,7 +209,19 @@ const obtenerlistaRelaconFamiliar=async ()=>{
 useEffect(() => {
     obtenerlistaRelaconFamiliar()
 }, []);
+const cuerpoCorreo =(rowData)=>{
+return(
 
+    <>
+<div style={{display:"flex"
+}} className="correoTr" >
+    {rowData.correo}
+</div>
+
+    </>
+)
+
+}
 const MostrarOpciones=(rowData)=>{
 
     return(
@@ -158,9 +233,14 @@ const MostrarOpciones=(rowData)=>{
                    onClick={() => onClickDetalle(rowData) } style={{background:"#1646cb"}}
                  />
                  <Button
-                   label={<FontAwesomeIcon icon={faUserPen}/>}
-                   onClick={() => onClickEdit(rowData) } style={{background:"blue"}}
+                   label={<FontAwesomeIcon icon={faUserPen} style={{ color:"black"}}/>}
+                   onClick={() => onClickEdit(rowData) } style={{background:"yellow"}}
                  />
+                 <Button
+                   label={<FontAwesomeIcon icon={faUserGear}/>}
+                   style={{background:"black"}}
+                   onClick={() => onClickConfig(rowData) }
+                   />
                  <Button
                    label={<FontAwesomeIcon icon={faTrash}/>}
                    onClick={() => onClickDelete(rowData) } style={{background:"red"}}
@@ -170,6 +250,13 @@ const MostrarOpciones=(rowData)=>{
               </Fragment>
 
     )
+}
+
+
+const tableNotificacionDetalle=()=>{
+    hide(1000)
+setDisplay2(true)
+
 }
 
 const leftToolbarTemplate = () => {
@@ -187,7 +274,10 @@ const leftToolbarTemplate = () => {
         </React.Fragment>
     )
 }
-
+const buscarEstadoNotificacion= async(id)=>{
+let data =await Service.buscarEstadoNotificacion(id);
+return data.estado;
+}
 const deleteEstudiantesDialogFooter = (
     <React.Fragment>
         <Button label="No" icon="pi pi-times" className="p-button-text"
@@ -219,27 +309,44 @@ const EliminarEstudiantesSeleccionados = async () => {
  }
 
 
-const onClickDetalle= ()=>{
 
+
+const onClickDetalle= (data)=>{
+    setDetalleDialog(true);
+   
+    setEstudiante({...data})
 }
+
+const onClickConfig =(data)=>{
+    setEstudiante({...data})
+setConfigurationDialog(true)
+listaConfiguracion(data)
+}
+
+const onClickDelete= ()=>{
+    
+}
+
 const onClickEdit= (data)=>{
     setEstudiante({...data})
-    console.log(data)
+ 
 let dat = data.id
+console.log(data)
 BuscarListaformaContactoPorEstudiante(dat)
+BuscarLoginEstudiante(dat)
+let _loginEstudiante={...loginEstudiante}
+_loginEstudiante['estudiante_id']=data
+setLoginEstudiante(_loginEstudiante);
+console.log(loginEstudiante)
 let _formContacto={...formaContacto};
 _formContacto['idEstudiante']=data
+setValueEstado(data.estadoEstudiante_id.conceptoEstado)
 setFormaContacto(_formContacto)
 AbrirDialog()
     
 }
-console.log(formaContacto)
-const onClickDelete= ()=>{
-    
-}
-const onClickDesabilitar= ()=>{
-    
-}
+
+
 
 
 function MostrarToolbar(valor){
@@ -251,6 +358,7 @@ const AbrirDialog = () => {
    
     setSubmitted(false);
     setEstudianteDialog(true);
+
     
 }
 
@@ -258,11 +366,26 @@ const ocultarDialog= ()=>{
     setEstudiante(emptyEstudiantes);
     setFormaContacto(emptyformaContacto)
    setFormaContactos([])
+   setLoginEstudiante(emptyLoginEstudiante)
+   setValueEstado("")
 setEstado({ step: 1 })
     setSubmitted(false);
     setEstudianteDialog(false);
     setTamañoDialog('40%')
 
+}
+
+const ocultarDialogDetalle=()=>{
+
+
+    setEstudiante(emptyEstudiantes);
+    setFormaContacto(emptyformaContacto)
+   setFormaContactos([])
+   setLoginEstudiante(emptyLoginEstudiante)
+    setDetalleDialog(false)
+}
+const ocultarDialogConfiguration= ()=>{
+    setConfigurationDialog(false)
 }
 const hideDeleteEstudiantesDialog = () => {
   
@@ -271,16 +394,95 @@ const hideDeleteEstudiantesDialog = () => {
 }
 
 
+const listaConfiguracion=async(id)=>{
+    let data = await Service.obtenerListaConfiguracion(id);
+    setConfiracionFormularioEstudiantes(data)
+}
 
 const onEstadoChange = (e) => {
     
     setTipoEstadoValidacion(e.value);
+
    
 }
 
+useEffect(()=>{
+
+    
+    var resultadoBusqueda =   estudiantes.filter(elemento => {
+        if(tipoEstadoValidacion==='Todos'){
+            if (
+                elemento.nombre
+                  .toString()
+                  .toLowerCase()
+            ||elemento.correo
+                  .toString()
+                  .toLowerCase()
+          ||elemento.numeroDocumento
+                  .toString()
+                  .toLowerCase()
+    ||elemento.id
+                  .toString()
+                  .toLowerCase()
+      ){
+                    return elemento
+                  }
+                }else
+        if(tipoEstadoValidacion==="Activos"){
+           if (
+               (elemento.nombre
+                 .toString()
+                 .toLowerCase()
+                 &&(elemento.estadoEstudiante_id.conceptoEstado==="Habilitado"))||(elemento.correo.toString()
+                 .toLowerCase()
+                &&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")
+                 ||(elemento.numeroDocumento
+                 .toString()
+                 .toLowerCase()
+              &&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")||(elemento.id
+                 .toString()
+                 .toLowerCase()
+                &&elemento.estadoEstudiante_id.conceptoEstado==="Habilitado")){
+                   return elemento
+                 }
+
+       }else if(tipoEstadoValidacion==="Desabilitado"){
+           if (
+               (elemento.nombre
+                   .toString()
+                   .toLowerCase()
+                 &&(elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado"))||(elemento.correo.toString()
+                   .toLowerCase()
+                 &&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")
+                   ||(elemento.numeroDocumento
+                   .toString()
+                   .toLowerCase()
+                  &&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")||(elemento.id
+                   .toString()
+                   .toLowerCase()
+                  &&elemento.estadoEstudiante_id.conceptoEstado==="Desabilitado")){
+                   return elemento
+                 }
+               }
+           
+  
+    
+        })
+
+    console.log(busqueda==='')
+        setRenderizadorEstudiantes(resultadoBusqueda)
+},[tipoEstadoValidacion,busqueda===''])
+
 const nextStep = (e)=>{
     e.preventDefault();
+    if(estado.step ==1 ){
 setTamañoDialog('80%')
+    }
+if(estado.step==2){
+    setTamañoDialog('50%')
+}
+
+
 setSubmitted(true)
 const { step } = estado
 setEstado({ step: step + 1 })
@@ -290,9 +492,22 @@ setSubmitted(false)
 
 const prevStep = () => {
     const { step } = estado
-    setTamañoDialog('40%')
     setEstado({ step: step - 1 })
+    if(estado.step ==1 ){
+        
+            }
+        if(estado.step==2){
+            setTamañoDialog('40%')
+        }
+
+        if(estado.step==3){
+            setTamañoDialog('80%')
+        }
+  
+      
+
   }
+  {console.log(loginEstudiante)}
   const GuardarEstudiante= async (e)=>{
 e.preventDefault()
 let error=false;
@@ -302,7 +517,7 @@ let mensaje2='';
 let valor={};
 console.log(estudiante)
 if(estudiante.id){
-
+console.log("paso por el id existen")
 
 await Service.ModificarEstudiante(estudiante).then(res=>{
     mensaje=res
@@ -312,7 +527,7 @@ await Service.ModificarEstudiante(estudiante).then(res=>{
     toast.current.show({ severity: 'error', summary: 'Ocurrio un problema', detail: `${res.response.data.message}`, life: 3000 });
 })
 
-Service.AgregarFormaDecontactoEstudiante(formaContactos,estudiante.id).then(res=>{
+await Service.AgregarFormaDecontactoEstudiante(formaContactos,estudiante.id).then(res=>{
   return res
 }).catch((res)=>{
     fallosonido()
@@ -321,11 +536,22 @@ Service.AgregarFormaDecontactoEstudiante(formaContactos,estudiante.id).then(res=
     toast.current.show({ severity: 'error', summary: 'Ocurri un problema', detail: `${res.response.data.message}`, life: 3000 });
 
 });
+console.log(loginEstudiante)
+await Service.AgregarLoginEstudiante (loginEstudiante).then(res=>{
+    return res
+  }).catch((res)=>{
+      fallosonido()
+      error2=true;
+      console.log(res)
+      toast.current.show({ severity: 'error', summary: 'Ocurri un problema', detail: `${res.response.data.message}`, life: 3000 });
+  
+  });
+
 
 if(!error){
     EnviarSonido()
     ListarEstudiante()
-    ocultarDialog()  
+    ocultarDialog() 
    
             toast.current.show({ severity: 'success', summary: 'Successful', detail: `${mensaje}`, life: 3000 });
 
@@ -351,15 +577,10 @@ if(!error){
     if(!error){
         EnviarSonido()
         ListarEstudiante()
-      
-       
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: `${mensaje}`, life: 3000 });
-
-                ocultarDialog()  
-
-                console.log(valor)
-                onClickEdit(valor)
-          
+                ocultarDialog()   
+             onClickEdit(valor)
+           
 
             }
 
@@ -373,7 +594,11 @@ if(!error){
 
   }
 
+  const [formularioNotificacion , setFormularioNotificacion]=useState(true)
+const MostrarFormularioNotififcion = ()=>{
 
+    setFormularioNotificacion(!formularioNotificacion)
+}
   const AgregarFormaDecontactoEstudiante=async(e)=>{
    e.preventDefault()
    setSubmitted2(true)
@@ -407,6 +632,131 @@ setFormaContactos(valor)
     setFormaContactos(data)
   }
 
+  const BuscarLoginEstudiante = async(id)=>{
+    let data =await Service.ServiceBuscarLoginEstudiante(id)
+    console.log(data?data:emptyLoginEstudiante)
+    setLoginEstudiante(data)
+  }
+
+  const renderHeader = () => {
+    return (
+        <span className="ql-formats">
+            <button className="ql-bold" aria-label="Bold"></button>
+            <button className="ql-italic" aria-label="Italic"></button>
+            <button className="ql-underline" aria-label="Underline"></button>
+        </span>
+    );
+}
+
+const headerR = renderHeader();
+
+  const [animation, setAnimation] = useState('open')
+  const [display, setDisplay]     = useState(true)
+  const [display2, setDisplay2]     = useState(false)
+  const [animation2, setAnimation2] = useState('close')
+  const hide = async (ms) => {
+    setFormularioNotificacion(!formularioNotificacion)
+    setDisplay2(false)
+if(animation==='open'){
+      setAnimation('close')
+      setAnimation2('open')
+}else{
+    setAnimation('open')
+    setAnimation2('close')
+}
+      await new Promise(r => setTimeout(r, ms))
+
+      setDisplay(!display)
+
+  }
+
+const CambiarEstado = (e) =>{
+let _Estudiante = {...estudiante}
+
+    _Estudiante['estadoEstudiante_id']= e.target.value
+
+  
+    
+    setEstudiante(_Estudiante);
+
+console.log(e.target.value)
+
+
+}
+const{id_files}=estudiante
+const onchangeImage= (dat)=>{
+
+
+    
+
+    
+    var reader =new FileReader();
+  
+    if(dat !==null){
+      console.log("PASO EL NULL")
+   
+    const byteCharacters = atob(dat);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+   
+    const blob = new Blob([byteArray], {type: 'image/jpeg'});
+    
+    reader.addEventListener("load", function () {
+        
+        return reader.result
+    })
+  
+    reader.readAsDataURL(blob)
+    
+    return URL.createObjectURL(blob)
+  
+  }else{
+    
+    
+    return ""}
+  
+
+    }
+   
+    const imageHandler = async ( e )=> {
+        
+        
+        let base64String =''
+  
+ 
+
+      var reader = new FileReader();
+      console.log("next");
+        
+      reader.onload = function () {
+          base64String = reader.result.replace("data:", "")
+              .replace(/^.+,/, "");
+    
+         
+    
+          // alert(imageBase64Stringsep);
+       
+    
+          id_files.data=(base64String);
+          setLoadingFoto(false)
+      }
+   
+      id_files.name=e.target.files[0].name
+      id_files.type=e.target.files[0].type
+      setEstudiante({...estudiante,id_files : id_files})
+
+      
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+const [loadingFoto,setLoadingFoto]=useState(false);
+    useEffect(()=>{
+        setLoadingFoto(true)
+
+    },[loadingFoto])
 const estudianteFormulario=()=>{
 
 
@@ -416,32 +766,82 @@ switch (step) {
         return (
 <div className="MoverDerechaDialog">
 
+
+
+{loadingFoto ? (<>
+{
+  
+  estudiante.id_files.data ?(
+      
+      <div style={{display:"flex",justifyContent:"center" }}>
+
+<div  style={{color:"black",position:"relative" ,width:"30%",zIndex:"5"}} >
+ 
+  <img  style={{width:"100%",height:"100%"}}
+   src={onchangeImage(estudiante.id_files.data)} />
+ </div>
+
+  </div>
+
+  ) :(
+      <FontAwesomeIcon style={{width:"20%",height:"10%"}} icon={faUser}/> )} 
+
+</> ):(<></>)}
+
+
+<input style={{marginTop:"15px"}}
+                    type='file'
+                    accept='image/*'
+                    name='files'
+                    id='files'
+                    onChange={e => imageHandler(e)}
+                    className='form-control'
+                    disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true}  />
+
+
+
             <div className="field">
                          <label htmlFor="nombre">Nombre</label>
-                         <InputText id="nombre" value={estudiante.nombre} onChange={(e) => onInputChange(e, 'nombre')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.nombre })} />
+                         <InputText id="nombre" value={estudiante.nombre} onChange={(e) => onInputChange(e, 'nombre')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.nombre })} 
+
+disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                         />
                          {submitted && !estudiante.nombre && <small className="p-error">El nombre es requerido.</small>}
 <br/>
 <label htmlFor="apellidoPaterno">Apellido Paterno</label>
-                         <InputText id="apellidoPaterno" value={estudiante?.apellidoPaterno} onChange={(e) => onInputChange(e, 'apellidoPaterno')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante?.apellidoPaterno })} />
+                         <InputText id="apellidoPaterno" value={estudiante?.apellidoPaterno} onChange={(e) => onInputChange(e, 'apellidoPaterno')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante?.apellidoPaterno })} 
+
+disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                         />
                          {submitted && !estudiante?.apellidoPaterno && <small className="p-error">La apellidoPaterno es requerida .</small>}
 
                          <label htmlFor="apellidoMaterno">Apellido Materno</label>
-                         <InputText id="apellidoMaterno" value={estudiante?.apellidoMaterno} onChange={(e) => onInputChange(e, 'apellidoMaterno')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.apellidoMaterno })} />
+                         <InputText id="apellidoMaterno" value={estudiante?.apellidoMaterno} onChange={(e) => onInputChange(e, 'apellidoMaterno')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.apellidoMaterno })}
+                         disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                          />
                          {submitted && !estudiante?.apellidoMaterno && <small className="p-error">La apellidoMaterno es requerida .</small>}
 
 
                          <label htmlFor="correo">Correo</label>
-                         <InputText id="correo" value={estudiante.correo} onChange={(e) => onInputChange(e, 'correo')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.correo })} />
+                         <InputText id="correo" value={estudiante.correo} onChange={(e) => onInputChange(e, 'correo')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.correo })} 
+disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+
+                         />
                          {submitted && !estudiante.correo && <small className="p-error">El correo es requerida .</small>}
 
                          <label htmlFor="direccion">Direccion</label>
-                         <InputText id="direccion" value={estudiante.direccion} onChange={(e) => onInputChange(e, 'direccion')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.direccion })} />
+                         <InputText id="direccion" value={estudiante.direccion} onChange={(e) => onInputChange(e, 'direccion')} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.direccion })}
+                         disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                          />
                          {submitted && !estudiante.direccion && <small className="p-error">La direccion es requerida .</small>}
  
 
                          <label htmlFor="numeroDocumento">Numero Documento</label>
                          <InputNumber id="numeroDocumento" value={estudiante?.numeroDocumento || ""} mode="decimal" name="numeroDocumento" 
-                         onChange={(e)=>onInputChange2(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.numeroDocumento })} />
+                         onChange={(e)=>onInputChange2(e)} required autoFocus className={classNames({ 'p-invalid': submitted && !estudiante.numeroDocumento })} 
+
+                         disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                         />
                          {submitted && !estudiante.numeroDocumento && <small className="p-error">La numeroDocumento es requerida .</small>}
                          {estudiante.numeroDocumento}
 
@@ -454,11 +854,17 @@ switch (step) {
                          <div className="formgrid grid ">
                              <div className="field-radiobutton col-6">
                                  <RadioButton inputId="category1" name="idTipoDocumentoIdentidad"
-                                  value={{id:'1' ,nombreDocumento:'DNI' }} onChange={(e)=>onCategoryChange(e,"idTipoDocumentoIdentidad")} checked={estudiante.idTipoDocumentoIdentidad.nombreDocumento === 'DNI'} />
+                                  value={{id:'1' ,nombreDocumento:'DNI' }} onChange={(e)=>onCategoryChange(e,"idTipoDocumentoIdentidad")} checked={estudiante.idTipoDocumentoIdentidad.nombreDocumento === 'DNI'} 
+                                  disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+
+                                  />
                                  <label htmlFor="category1">Dni</label>
                              </div>
                              <div className="field-radiobutton col-6">
-                                 <RadioButton inputId="category2" name="idTipoDocumentoIdentidad"  value={{'id':'2' ,nombreDocumento:'extrangero' }}  onChange={(e)=>onCategoryChange(e,"idTipoDocumentoIdentidad")} checked={estudiante.idTipoDocumentoIdentidad.nombreDocumento === 'extrangero'} />
+                                 <RadioButton inputId="category2" name="idTipoDocumentoIdentidad"  value={{'id':'2' ,nombreDocumento:'extrangero' }}  onChange={(e)=>onCategoryChange(e,"idTipoDocumentoIdentidad")} checked={estudiante.idTipoDocumentoIdentidad.nombreDocumento === 'extrangero'} 
+disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+
+                                 />
                                  <label htmlFor="category2">Extrangero</label>
                              </div>
                              
@@ -471,6 +877,8 @@ switch (step) {
                     
                      <Dropdown value={estudiante.idSede} options={sedes} 
                      onChange={(e)=>onEstudianteChange(e, 'idSede')}   optionLabel="nombre"
+                        
+                     disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
                          />
                        
      </div></div>
@@ -482,6 +890,8 @@ switch (step) {
                     
                      <Dropdown value={estudiante.gradoEstudiante_id} options={opcionesGrado} 
                      onChange={(e)=>onEstudianteChange(e, 'gradoEstudiante_id')}   optionLabel="nombreGrado"
+                        
+                     disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
                          />
                        
      </div></div>
@@ -491,16 +901,29 @@ switch (step) {
                          <label className="mb-3">Sexo</label>
                          <div className="formgrid grid ">
                              <div className="field-radiobutton col-6">
-                                 <RadioButton inputId="category1" name="idTipoSexo" value="Mujer" onChange={(e)=>onCategoryChange(e,"idTipoSexo")} checked={estudiante.idTipoSexo === 'Mujer'} />
+                                 <RadioButton inputId="category1" name="idTipoSexo" value="Mujer" onChange={(e)=>onCategoryChange(e,"idTipoSexo")} checked={estudiante.idTipoSexo === 'Mujer'} 
+disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+
+                                 />
                                  <label htmlFor="category1">Mujer</label>
                              </div>
                              <div className="field-radiobutton col-6">
-                                 <RadioButton inputId="category2" name="idTipoSexo" value="Hombre" onChange={(e)=>onCategoryChange(e,"idTipoSexo")} checked={estudiante.idTipoSexo === 'Hombre'} />
+                                 <RadioButton inputId="category2" name="idTipoSexo" value="Hombre" onChange={(e)=>onCategoryChange(e,"idTipoSexo")} checked={estudiante.idTipoSexo === 'Hombre'}
+                                 
+                                 disabled ={estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? false : true} 
+                                  />
                                  <label htmlFor="category2">Hombre</label>
                              </div>
                              
                          </div>
                      </div>
+                     
+                <h5>Estado Estudiante</h5>
+                <SelectButton value={estudiante.estadoEstudiante_id} options={[{id:1 ,conceptoEstado:  'Habilitado'}, {id:2 ,conceptoEstado:  'Desabilitado'}]} optionLabel="conceptoEstado" onChange={(e) => CambiarEstado(e)} 
+
+
+                />
+               
 
 
 </div>
@@ -514,7 +937,7 @@ case 2:
             <label htmlFor='telefono'>Lista de contactos</label>
 
             <div style={{ overflow: 'auto', height: '655px' }}>
-{console.log(formaContactos.length)}
+
                   {!formaContactos.length==0? formaContactos?.map((data,i) => {
 
                     return (
@@ -574,28 +997,28 @@ case 2:
           <div className="field">
 
 
-          <label htmlFor="nombre">Nombre</label>
-                         <InputText id="nombre" value={formaContacto.nombre} onChange={(e) => onChangeFormaContacto1(e, 'nombre')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.nombre })} />
+          <label htmlFor="nombre2">Nombre</label>
+                         <InputText id="nombre2" value={formaContacto.nombre} onChange={(e) => onChangeFormaContacto1(e, 'nombre')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.nombre })} />
                          {submitted2 && !formaContacto.nombre && <small className="p-error">El nombre es requerido.</small>}
 
 
 
-          <label htmlFor="apellidoPaterno">Apellido Paterno</label>
-                         <InputText id="apellidoPaterno" value={formaContacto.apellidoPaterno} onChange={(e) => onChangeFormaContacto1(e, 'apellidoPaterno')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.apellidoPaterno })} />
+          <label htmlFor="apellidoPaterno2">Apellido Paterno</label>
+                         <InputText id="apellidoPaterno2" value={formaContacto.apellidoPaterno} onChange={(e) => onChangeFormaContacto1(e, 'apellidoPaterno')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.apellidoPaterno })} />
                          {submitted2 && !formaContacto.apellidoPaterno && <small className="p-error">La apellidoPaterno es requerida .</small>}
 
 
-                         <label htmlFor="apellidoMaterno">Apellido Materno</label>
-                         <InputText id="apellidoMaterno" value={formaContacto.apellidoMaterno} onChange={(e) => onChangeFormaContacto1(e, 'apellidoMaterno')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.apellidoMaterno })} />
+                         <label htmlFor="apellidoMaterno2">Apellido Materno</label>
+                         <InputText id="apellidoMaterno2" value={formaContacto.apellidoMaterno} onChange={(e) => onChangeFormaContacto1(e, 'apellidoMaterno')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.apellidoMaterno })} />
                          {submitted2 && !formaContacto.apellidoMaterno && <small className="p-error">La apellidoMaterno es requerida .</small>}
 
-                         <label htmlFor="numeroDocumento">Numero Documento</label>
-                         <InputNumber id="numeroDocumento" value={formaContacto.numeroDocumento} useGrouping={false} mode="decimal"  onChange={(e) => onChangeFormaContacto2(e, 'numeroDocumento')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.numeroDocumento })} />
+                         <label htmlFor="numeroDocumento2">Numero Documento</label>
+                         <InputNumber id="numeroDocumento2" value={formaContacto.numeroDocumento} useGrouping={false} mode="decimal"  onChange={(e) => onChangeFormaContacto2(e, 'numeroDocumento')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !formaContacto.numeroDocumento })} />
                          {submitted2 && !formaContacto.numeroDocumento && <small className="p-error">La numeroDocumento es requerida .</small>}
 
-                  <label htmlFor='numeroTelefono'> Telefono </label>
+                  <label htmlFor='numeroTelefono2'> Telefono </label>
                   <InputNumber
-                    id='numeroTelefono'
+                    id='numeroTelefono2'
                     value={formaContacto.numeroTelefono}
                     onChange={e => onChangeFormaContacto2(e, 'numeroTelefono')}
                     required
@@ -620,22 +1043,22 @@ case 2:
                          <label className="mb-3">Tipo Documento </label>
                          <div className="formgrid grid ">
                              <div className="field-radiobutton col-6">
-                                 <RadioButton inputId="category1" name="idTipoDocumentoIdentidad"
+                                 <RadioButton inputId="category1" name="idTipoDocumentoIdentidad2"
                                   value={{id:'1' ,nombreDocumento:'DNI' }}  onChange={(e)=>onChangeFormaContacto1(e,"idTipoDocumentoIdentidad")} checked={formaContacto?.idTipoDocumentoIdentidad.nombreDocumento === 'DNI'} 
                                   className={classNames({
                       'p-invalid': submitted2 && !formaContacto.idTipoDocumentoIdentidad
                     })}
                                    />
-                                 <label htmlFor="category1">Dni</label>
+                                 <label htmlFor="category12">Dni</label>
                              </div>
                              <div className="field-radiobutton col-6">
-                                 <RadioButton inputId="category2" name="idTipoDocumentoIdentidad"  value={{id:'2' ,nombreDocumento:'extrangero' }}  onChange={(e)=>onChangeFormaContacto1(e,"idTipoDocumentoIdentidad")} checked={formaContacto.idTipoDocumentoIdentidad.nombreDocumento === 'extrangero'} 
+                                 <RadioButton inputId="category22" name="idTipoDocumentoIdentidad"  value={{id:'2' ,nombreDocumento:'extrangero' }}  onChange={(e)=>onChangeFormaContacto1(e,"idTipoDocumentoIdentidad")} checked={formaContacto.idTipoDocumentoIdentidad.nombreDocumento === 'extrangero'} 
  className={classNames({
                       'p-invalid': submitted2 && !formaContacto.idTipoDocumentoIdentidad
                     })}
 
                                  />
-                                 <label htmlFor="category2">Extrangero</label>
+                                 <label htmlFor="category32">Extrangero</label>
                              </div>
                              
                          </div>
@@ -648,6 +1071,31 @@ case 2:
             </div>
             </div>
     )
+    case 3:
+    
+    return (
+    
+    <>
+<div className='container-rm'>
+        <div className='row'>
+
+        <div className="field">
+        <label htmlFor="Correo3">Correo</label>
+                         <InputText id="correo3"  value={loginEstudiante.correo} onChange={(e) => onChangeLoginEstudiante1(e, 'correo')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !loginEstudiante.apellidoMaterno })} />
+                         {submitted2 && !loginEstudiante.apellidoMaterno && <small className="p-error">El correo es requerido .</small>}
+
+                         <label htmlFor="contraseña3">Contraseña</label>
+                         <InputText id="contraseña3"  value={loginEstudiante.contraseña} onChange={(e) => onChangeLoginEstudiante1(e, 'contraseña')} required autoFocus className={classNames({ 'p-invalid': submitted2 && !loginEstudiante.contraseña })} />
+                         {submitted2 && !loginEstudiante.contraseña && <small className="p-error">La contraseña es requerida .</small>}
+
+        </div>
+
+
+        </div>
+
+</div>
+    </>
+        )
 
 }
 }
@@ -657,21 +1105,18 @@ const estudianteDialogFooter = ()=>{
     return (<React.Fragment>
 
 
+{estudiante.estadoEstudiante_id.conceptoEstado === "Desabilitado"?
+
+<Button  label="Guardar" icon="pi pi-check" className="p-button-text" onClick={(e)=>GuardarEstudiante(e)} />:""
+}
 
 {estado.step==1 && !estudiante.id?
+
+
            <Button  label="Guardar" icon="pi pi-check" className="p-button-text" onClick={(e)=>GuardarEstudiante(e)} />
            :""
        }
-
-            {estado.step==1 && estudiante.id?
-          
-           
-                <Button onClick={(e)=>nextStep(e)} label="Siguiente"  > </Button>
-             
-              
-         :""   }
-
-         {estado.step==2?
+       {estado.step==2||estado.step==3?
            <>
                 {' '}
                 <Button label="Retroceder" onClick={(e)=>prevStep(e)} > </Button>
@@ -679,14 +1124,40 @@ const estudianteDialogFooter = ()=>{
 :""
             }
 
+            {estado.step==1 && estudiante.id || estado.step==2 && estudiante.id?
+          <>
+              {estudiante.estadoEstudiante_id.conceptoEstado === "Habilitado"? (
 
-       {estado.step==2?
+                <Button onClick={(e)=>nextStep(e)} label="Siguiente"  > </Button>):("")}
+          
+                </>
+         :""   }
+
+     
+
+
+       {estado.step==3?
            <Button  label="Guardar" icon="pi pi-check" className="p-button-text" onClick={(e)=>GuardarEstudiante(e)} />
            :""
        }
        </React.Fragment>)
    }
 
+
+const onChangeLoginEstudiante1 = (e,name)=>{
+    const val = (e.target && e.target.value) || '';
+let loginEstudianteChange_={...loginEstudiante}
+loginEstudianteChange_[`${name}`]= val
+setLoginEstudiante(loginEstudianteChange_)
+console.log(loginEstudiante)
+}
+const subirImagen= async(e,editor)=>{
+let file= e.target.files[0];
+const formData = new FormData()
+formData.append('file', file)
+let valor= await Service.subirImagenServer(formData);
+console.log(valor)
+}
 
 const onInputChange = (e, name)=>{
     const val = (e.target && e.target.value) || '';
@@ -695,6 +1166,26 @@ const onInputChange = (e, name)=>{
     _product[`${name}`] = val;
 
     setEstudiante(_product);
+}
+
+const onChangeConfigurationEstudiante= (e, name)=>{
+    const val = (e.target && e.target.value) || '';
+    let _product = {...configurarionFormularioEstudiante};
+
+    _product[`${name}`] = val;
+
+    setConfiracionFormularioEstudiante(_product);
+
+}
+
+const onChangeConfigurationEstudianteText= (e)=>{
+
+    const val=e
+    let _product = {...configurarionFormularioEstudiante};
+
+    _product[`data`] = val;
+    setConfiracionFormularioEstudiante(_product);
+
 }
 
 const onChangeFormaContacto1= (e, name)=>{
@@ -838,7 +1329,7 @@ return(
                     <RadioButton value="Desabilitado" name="estado" onChange={onEstadoChange} checked={tipoEstadoValidacion === 'Desabilitado'}  />
                     <label className="mb-3">Desabilitado</label>
                 </div>
-                <div className="field-radiobutton col-6">
+                <div className="field-radiobutton col-6" >
                     <RadioButton value="Todos" name="estado" onChange={onEstadoChange} checked={tipoEstadoValidacion === 'Todos'} />
                     Todos
                 </div>
@@ -851,18 +1342,19 @@ return(
                     </div>
                 </Sidebar>
                 <div style={{width:"100%" ,display:"flex", justifyContent:"center"}}>
-<DataTable  onColReorder={onColReorder}  reorderableColumns   style={{zIndex:"5" ,width:"95%" }} ref={dt} value={renderizadorEstudiantes} selection={selectedEstudiantes} onSelectionChange={(e) => setSelectedEstudiantes(e.value)}
-                    dataKey="id" paginator rows={1} rowsPerPageOptions={[1,5, 10, 25,50,100,150,200]}
+<DataTable  onColReorder={onColReorder}  reorderableColumns   style={{zIndex:"5" ,width:"100%" }} ref={dt} value={renderizadorEstudiantes} selection={selectedEstudiantes} onSelectionChange={(e) => setSelectedEstudiantes(e.value)}
+                    dataKey="id" paginator rows={5} rowsPerPageOptions={[5, 10, 25,50,100,150,200]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Desde {first} a {last} del total de {totalRecords} estudiantes "
                      header={header} responsiveLayout="scroll">
 
 <Column rowReorder selectionMode="multiple" headerStyle={{ width: '1rem',background:"#1E2E86"}} exportable={false}></Column>
 <Column field="id" header="Id" sortable style={{ width: '1rem', background:"#1E2E86",color:"#FEFEFE"   }}></Column>
-<Column field="correo" header="Correo" sortable style={{ width: '1rem' , background:"#1E2E86" ,color:"#FEFEFE"  }}></Column>
+<Column field="correo"  header="Correo"  sortable style={{  background:"#1E2E86" ,color:"#FEFEFE"  }}></Column>
+
 <Column field="nombre" header="Nombre" sortable style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"  }}></Column>
 <Column field="numeroDocumento" header="Numero Documento" sortable style={{ width: '1rem' ,background:"#1E2E86",color:"#FEFEFE" }}></Column>
-<Column field="action" style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}} header="Acciones" body={MostrarOpciones}></Column>
+<Column field="action" style={{ width: '1rem' ,background:"#1E2E86" ,color:"#FEFEFE"}}  header="Acciones" body={MostrarOpciones}></Column>
 </DataTable>
 
 </div>
@@ -874,11 +1366,135 @@ return(
             </Dialog>
 
 
-            <Dialog visible={estudianteDialog} style={{ width: `${tamañoDialog}` }} header="Detalles de estudiante" modal className="p-fluid" onHide={()=>ocultarDialog()} footer={estudianteDialogFooter()}  >
+            <Dialog visible={estudianteDialog} style={{ width: `${tamañoDialog}` }} header="Edicion de datos estudiante" modal className="p-fluid" onHide={()=>ocultarDialog()} footer={estudianteDialogFooter()}  >
 {estudianteFormulario()}
 
                
 
+            </Dialog>
+
+            <Dialog visible={detalleDialog} header="Detalle de estudiante" modal className="p-fluid" style={{ width:"90%",height:"90%"}} onHide={()=>ocultarDialogDetalle()}  >
+<div className="contenedorDetalleEstudiantes" >
+            {loadingFoto ? (<>
+                <div className="DatosPersonalesEstudiante">
+                <div style={{ width:"100%"}} className="cabeceraDetaller">
+                <div style={{display:"flex",justifyContent:"flex-start",alignItems:"flex-start",maxWidth:"100%",maxHeight:"100%"  }}>
+{
+  
+  estudiante.id_files.data ?(
+      
+    
+
+<div  style={{color:"black",position:"relative" ,Width:"100%",Height:"100%" ,zIndex:"5"}} >
+ 
+  <img  style={{width:"100%",height:"100%"}}
+   src={onchangeImage(estudiante.id_files.data)} />
+ </div>
+
+  
+
+  ) :(
+      <FontAwesomeIcon style={{width:"30%",height:"10%"}} icon={faUser}/> )} 
+</div></div>
+
+<div className="detalleDatos"></div>
+</div>
+</> ):(<></>)}
+
+
+
+               </div>
+
+            </Dialog>
+
+            
+            <Dialog visible={configurationDialog}  header="Configuracion Servicios Estudiante" modal className="p-fluid" onHide={()=>ocultarDialogConfiguration()} style={{ width:"60%",height:"80%" }} >
+<>
+{crearNotificacionCorreo ? <></>:<>
+               <Button label={formularioNotificacion? "Crear Notificacion Personalizada ":"Regresar a las opciones anteriores"} onClick={()=>  hide(1000)}/>
+               </>}
+               { display
+        ? <div className = {`Modal ${animation}`}>
+    
+     <div className="field">
+     {configurarionFormularioEstudiantes?
+        <table className="table">
+         <thead>
+             <tr>
+             <th></th>
+                 <th>Tipo de Notificacion</th>
+                 <th>Estado</th>
+                 <th>Fecha de creacion</th>
+                 <th>Tiempo de notificacion</th>
+                 <th>Plataforma</th>
+             </tr>
+         </thead>
+         <tbody>
+{configurarionFormularioEstudiantes.map((res)=>{
+            <tr className="tableNotificacionesTR" onClick={()=>tableNotificacionDetalle(res.idEstudiante)}>
+            <td>
+                  1
+                </td>
+                <td>
+                    Pension
+                </td>
+                <td>
+                   {buscarEstadoNotificacion(res.idEstudiante)}
+                </td>
+                <td>
+                    Pension
+                </td>
+                <td>
+                    Pension
+                </td>
+                <td>
+                    Pension
+                </td>
+            </tr>})
+            
+           
+            }
+     
+         </tbody>
+        </table>
+     :<>no hay configuraciones para este estudiante</>}
+     </div>
+
+          </div>
+        :(<>
+        {display2? 
+        
+      <>DISPLAY 2 </> :<>
+           
+      {crearNotificacionCorreo ? (<>
+        <Button label="Regresar a las opciones Anteriores " onClick={()=> SetCrearNotificacionCorreo(false) } />
+
+        <Tiptap  onChangeConfigurationEstudianteText={onChangeConfigurationEstudianteText} subirImagen={subirImagen} />
+
+      </>) :( <>
+           
+      <div className = {`Modal ${animation2}`}>
+        <div className="field">
+        <Button label="Crear Notificacion Correo" onClick={()=> SetCrearNotificacionCorreo(true) } />
+        
+
+          
+            <div>
+ 
+            </div>
+
+<div>
+
+</div>
+        </div>
+           </div></>)}
+    </>    }
+           </>
+        )
+        }
+
+
+</>
             </Dialog>
          
 

@@ -25,3 +25,19 @@ display: block;
 
     display: block;
 }
+
+.zoom{
+    transition: transform .2s;
+}
+.zoom:hover{
+    transform: scale(1.5);
+    cursor: zoom-in;
+    z-index: 5;
+    
+}
+
+.zoom:active{
+
+    transform: scale(2.5);
+    cursor: zoom-in;
+}

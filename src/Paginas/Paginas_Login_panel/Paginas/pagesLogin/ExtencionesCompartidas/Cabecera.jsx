@@ -1,8 +1,9 @@
 import { Link, Navigate, useNavigate } from "react-router-dom"
-import { Toast } from 'primereact/toast';
+
 import { useEffect, useRef, useState } from "react";
 import { Accordion, AccordionTab } from 'primereact/accordion';
 
+import swal from '@sweetalert/with-react'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAlignJustify, faDoorClosed, faDoorOpen, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -13,8 +14,12 @@ import { Buffer } from "buffer";
 import {useSelector,useDispatch} from 'react-redux'
 import styled from 'styled-components';
 import { Service } from "../Service";
-import { checkToken, logout } from "../../../../ControladorPage/authContext";
-
+import { checkToken, checkToken2, logout, reloadToken } from "../../../../ControladorPage/authContext";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import setAuchToken from "../../../ConfigurationAuthenticacion/setAuchToken";
+import { setCurrentUser } from "../../FormularioLogin";
+import { Toast } from 'primereact/toast';
 
  const Style_link = styled(Link)`
 
@@ -38,34 +43,61 @@ color: #6c757d;
 export const Cabecera = (props)=>{
 
 
-  const dispach = useDispatch();
   const [visible,setVisibleRight]=useState(false)
-const [validaUrl,setValidaUrl]=useState(false);
 
+const toastBC = useRef(null);
 const [perfil,setPerfil]=useState({});
-
-const dispatch=useDispatch()
-
-const [name, setName] = useState('');
-const [navigate, setNavigate] = useState(false);
-
 var URLactual = window.location.pathname;
 const {pruebaConsole , pruebaConsole2,MostrarToolbar , pruebaConsole4} = props;
+const [contador , setContador]=useState(0)
+const [contadorCambio, setContadorCambio]=useState(10)
+
+const redirect = useNavigate()
+const dispatch=useDispatch();
+
+
+const [validaUrl,setValidaUrl]=useState(true);
+useEffect(()=>{
+  const intervalo = setInterval(() => {
+
+
+  checkToken()
+
+  if (!localStorage.jwtToken){
+    redirect("/salir")
+    }
+
+  },1000)
+ 
+return () =>{
+  clearInterval(intervalo)
+}
+  
+},[validaUrl===false])
+
+
+useEffect(()=>{
+  if(validaUrl){
+    console.log("se revalido el token ")
+    reloadToken()
+    setValidaUrl(false)
+  }
+},[validaUrl])
 
 
 
-
-
-
-
-useState(async ()=>{
-
-
+const  retornarPerfl =  async()=> {
   await Service.retornarPerfl().then(response =>{
     setPerfil(response)
     
   })
+}
 
+useEffect ( ()=>{
+
+
+ 
+  retornarPerfl()
 
 },[])
 
@@ -106,7 +138,6 @@ const validarUrl=(va)=>{
 }
 
 
-
 const onchangeImage= (dat)=>{
 
 
@@ -116,7 +147,7 @@ const onchangeImage= (dat)=>{
   var reader =new FileReader();
 
   if(dat !=null){
- 
+
   const byteCharacters = atob(dat);
   const byteNumbers = new Array(byteCharacters.length);
   for (let i = 0; i < byteCharacters.length; i++) {
@@ -142,32 +173,21 @@ const onchangeImage= (dat)=>{
   }
 
 
-    const toast = useRef(null);
-   
-   
-    function getAbsolutePath() {
-        var loc = window.location;
-        var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-        return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
-    }
 
-
-    
-    const loggedin=useSelector(state =>state.auth.loggedIn);
-
-
-    const showInfo = () => {
-        toast.current.show({severity:'info', summary: 'Mensaje informativo ', detail:`Ya se encuentra en la pagina    ${getAbsolutePath()} `, life: 3000});
-    }
+const valida=()=>{
+  setValidaUrl(true)
+  dispatch(reloadToken())
+}
 return(
 
 <div className="cabeceraFija" >
+
+<Toast ref={toastBC} position="bottom-center" />
   <div id="cabecera" className='cabecera'>
-  
   <Sidebar visible={visible} onHide={() => setVisibleRight(false)}>
   <div className="Usuario">
-  {perfil?.photo ? (
-    <img style={{width:"60%",height:"40%"}} src={onchangeImage(perfil.photo)} />
+  {perfil?.photo?.data? (
+    <img style={{maxWidth:"50%"}} src={onchangeImage(perfil.photo.data)} />
   
   ):(
   <FontAwesomeIcon style={{width:"60%",height:"40%"}} icon={faUser}/>
@@ -225,6 +245,7 @@ return(
           }
           </div>
           </div>
+       
 </div>
 )
 }

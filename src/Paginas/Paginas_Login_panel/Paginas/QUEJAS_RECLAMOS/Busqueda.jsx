@@ -94,7 +94,7 @@ Busqueda de solicitudes
 
 <h5>Lista de solicitudes</h5>
                 <Accordion multiple activeIndex={[0]}>
-                    <AccordionTab header="f">
+                    <AccordionTab header="Pon el codigo aqui">
                  
                     {  post.map(valor =>(
                        

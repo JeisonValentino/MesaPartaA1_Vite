@@ -4,22 +4,25 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { classNames } from 'primereact/utils'
 import React, { Fragment, useEffect, useState } from 'react'
-import { Cabecera } from '../../ExtencionesCompartidas/Cabecera'
+import { Cabecera } from '../../../ExtencionesCompartidas/Cabecera'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Toast } from 'primereact/toast'
 import { useRef } from 'react'
 import { Dialog } from 'primereact/dialog'
-import descarga from './../../../../../../Imagenes/descarga.jpg'
+import descarga from './../../../../../../../Imagenes/descarga.jpg'
 import { InputNumber } from 'primereact/inputnumber'
 import axios from 'axios'
-import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faFile, faFilePdf, faFileWord, faFileZipper, faMagnifyingGlass, faPlus, faUnlink } from '@fortawesome/free-solid-svg-icons'
 import { RadioButton } from 'primereact/radiobutton'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { FileUpload } from 'primereact/fileupload'
 import { Tag } from 'primereact/tag'
-import Loading from '../../../../../ControladorPage/Loading'
+import Loading from './../../../../../../ControladorPage/Loading'
 import { debounce } from "debounce";
-import { Service } from '../../Service'
+import { Service } from './../../../Service'
+import { Document, Page, PDFViewer } from '@react-pdf/renderer'
+import { Buffer } from 'buffer';
+import ArchivosCliente from './ArchivosCliente'
 export const MesaPartes_Post = () => {
   const toast = useRef(null)
   const [displayBasic2, setDisplayBasic2] = useState(false)
@@ -27,35 +30,42 @@ export const MesaPartes_Post = () => {
   const [solicitud, setSolicitudes] = useState()
 const [dataUser ,setDataUser]=useState([]);
 const dt = useRef(null);
-
+const [loadingFile,setLoadingFile]=useState(false)
 const def=useRef(null);
 const [loading, setLoading]=useState(false);
 const[post ,setPost]=useState([])
 const [selectedData, setSelectedData] = useState(null);
-  let file = ([])
+let fildeDto=[]
   const [solicitar, setSolicitar] = useState({
     id: '',
     titulo: '',
     concepto: '',
     mensaje: '',
-    idSolicitud: '',photo:[]
+    idSolicitud: '',file:fildeDto
   })
   const [files2, setFiles] = useState([])
   const [submitted, setSubmitted] = useState()
-const {photo}=solicitar;
+
   const [validacion, setValidacion] = useState("todos")
   const [value1, setValue1] = useState(10)
 
   const [DisplayBasic4,setDisplayBasic4]=useState(false)
+  const [DisplayBasic5,setDisplayBasic5]=useState(false)
+const [contador,setContador]=useState([])
+const {file}=solicitar;
   const onHide = () => {
     setDisplayBasic2(false)
+
+    
     setSolicitar({
-        id: '',
+        id: '', 
         titulo: '',
         mensaje: '',
         concepto: '',
         idSolicitud: ''
+        ,file:[]
       })
+      setContador([])
   }
   const onCategoryChange = e => {
     setValidacion(e.value)
@@ -79,10 +89,17 @@ const {photo}=solicitar;
       titulo: '',
       mensaje: '',
       concepto: ''
+      ,file:[]
     })
   }
 
+const onHide5=()=>{
+  setDisplayBasic5(false)
+}
 
+useEffect(()=>{
+  setLoadingFile(false)
+},[loadingFile])
 
   const onHide3 = () => {
   
@@ -109,25 +126,16 @@ const {photo}=solicitar;
     ) {
       setSubmitted(false)
 
-      const formData = new FormData()
+  
 
-      var fileTosave2 = new Blob([JSON.stringify(solicitar)], {
-        type: 'application/json'
-      })
-      formData.append('obj', fileTosave2)
-if(!files2?.files===null||!files2?.files===undefined){
-      for (var i = 0; i < files2?.files.length; i++) {
-        console.log(files2.files[i])
-        formData.append('files', files2.files[i])
-      }
-    }
+   
+
       
 
       axios({
         method: 'POST',
         url: 'http://localhost:8080/respuesta/CrearPost',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
+        data: solicitar
       })
       
     
@@ -153,75 +161,75 @@ if(!files2?.files===null||!files2?.files===undefined){
       })
     }
   }, [expandedRows])
-  const onRowExpand = event => {
-    toast.current.show({
-      severity: 'info',
-      summary: 'Product Expanded',
-      detail: event.data.name,
-      life: 3000
+
+
+
+
+  const invoiceUploadHandler =  (e) => {
+console.log("subiendo")
+ 
+    let archivo={ 
+      name:"" , type:"",data:""
+    }
+    let base64String =''
+    var reader = new FileReader();
+    console.log(e.target.files[0])
+    reader.readAsDataURL(e.target.files[0])
+          reader.onload = function () {
+  
+              base64String = reader.result.replace("data:", "")
+                  .replace(/^.+,/, "");
+                  archivo.data=(base64String);
+        
+           
+          }
+   
+          for (var i = 0; i < file.length; i++) {
+         
+           
+          if(e.target.files[0].name===file[i].name){
+
+    
+         let valor=contador.map((res,id)=>{
+          console.log(res.name)
+          console.log(e.target.files[0].name)
+          console.log(res.name===e.target.files[0].name)
+      if(res.name===e.target.files[0].name){
+        archivo.name= res.cuenta+e.target.files[0].name
+        res.cuenta=res.cuenta+1
+   return res
+      }else{
+        return res
+      }
     })
+    console.log(valor)
+        setContador(valor)
+            break;
+          }else{
+      
+            archivo.name=e.target.files[0].name
+       setContador(  [...contador , {name:e.target.files[0].name,cuenta:1}])
+          }
+          }
+       
+  
+  if(file.length===0){
+    archivo.name=e.target.files[0].name
+   contador.push({name:e.target.files[0].name,cuenta:1})
   }
 
-  const onRowCollapse = event => {
-    toast.current.show({
-      severity: 'success',
-      summary: 'Product Collapsed',
-      detail: event.data.name,
-      life: 3000
-    })
-  }
-  const collapseAll = () => {
-    setExpandedRows(null)
-  }
-
-  const statusOrderBodyTemplate = rowData => {
-    return (
-      <span className={`order-badge order-${rowData.status.toLowerCase()}`}>
-        {rowData.status}
-      </span>
-    )
-  }
-  const GuardarImagenes = (file, props) => {
-    return (
-      <div className='flex align-items-center flex-wrap'>
-        <div className='flex align-items-center' style={{ width: '40%' }}>
-          <img
-            alt={file.name}
-            role='presentation'
-            src={file.objectURL}
-            width={100}
-          />
-          <span className='flex flex-column text-left ml-3'>
-            {file.name}
-            <small>{new Date().toLocaleDateString()}</small>
-          </span>
-        </div>
-        <Tag
-          value={props.formatSize}
-          severity='warning'
-          className='px-3 py-2'
-        />
-        <Button
-          type='button'
-          icon='pi pi-times'
-          className='p-button-outlined p-button-rounded p-button-danger ml-auto'
-          onClick={() => onTemplateRemove(file, props.onRemove)}
-        />
-      </div>
-    )
-  }
-  const invoiceUploadHandler = ({ files }) => {
-    setFiles({ ...files2, files })
-
-    const fileReader = new FileReader()
-
-    fileReader.onload = e => {}
-  }
+  
+          archivo.type=e.target.files[0].type
+          setLoadingFile(true)
+          file.push(archivo)
+          console.log("subido")
+       
+  };
 
   const globalFilterOnchange = e => {
    debounceFn(e.target.value)
   }
-
+  console.log(contador)
   function filter (e) {
   console.log(e)
     var resultadoBusqueda = !e ? dataUser:  dataUser.filter(elemento => {
@@ -317,7 +325,6 @@ setSolicitudes(resultadoBusqueda)
     )
   }
   const setDisplayBasicClick = (valor, data) => {
-    console.log(data.id)
     setDisplayBasic3(valor)
     let Product = { ...solicitar }
     Product['idSolicitud'] = data.id
@@ -354,7 +361,11 @@ const MostrarData=(rowData)=>{
 
                 
                 <React.Fragment>
-                <Button icon={<><FontAwesomeIcon icon={faMagnifyingGlass}/></>} className="p-button-rounded " onClick={() => MostrarPosts(rowData)} />
+                <Button icon={<>
+               <FontAwesomeIcon icon={faFile}/></>} className="p-button-rounded " onClick={() => MostrarPosts(rowData)} />
+
+                <Button icon={<>
+                  <FontAwesomeIcon icon={faMagnifyingGlass}/></>} className="p-button-rounded " onClick={() => MonstrarPDF(rowData)} />
             </React.Fragment>
             
 
@@ -362,38 +373,75 @@ const MostrarData=(rowData)=>{
       </div>
     )
   }
-const onchangeImage= (dat)=>{
 
-var reader =new FileReader();
-
-const byteCharacters = atob(dat);
-const byteNumbers = new Array(byteCharacters.length);
-for (let i = 0; i < byteCharacters.length; i++) {
-  byteNumbers[i] = byteCharacters.charCodeAt(i);
-}
-const byteArray = new Uint8Array(byteNumbers);
-
-const blob = new Blob([byteArray], {type: 'image/jpeg'});
-
-reader.addEventListener("load", function () {
+  const onchangeImage= (dat,type,name)=>{
+    console.log(name)
+        var reader =new FileReader();
+        
+        const byteCharacters =Buffer.from(dat ,'base64').toString('binary');
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        
+        const blob = new Blob([byteArray], {type: type });
+        var fileactual = new File([blob], name, { lastModified: new Date().getTime(), type: type})
     
-    return reader.result
-})
-if(blob){
+        reader.addEventListener("load", function () {
+            
+            return reader.result
+        })
+        if(fileactual){
+        
+        
+        reader.readAsDataURL(fileactual)
+        return URL.createObjectURL(fileactual)
+        }else{
+            return ""
+        }
+        
+        
+        
+        }
 
 
-reader.readAsDataURL(blob)
-return URL.createObjectURL(blob)
+const onchangeImagepdf= (dat)=>{
+
+
+        
+        
+     
+  var reader =new FileReader();
+
+  if(dat !==null){
+ 
+  const byteCharacters = atob(dat);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  
+  const blob = new Blob([byteArray], {type: 'application/pdf'});
+  
+  reader.addEventListener("load", function () {
+      
+      return reader.result
+  })
+
+  reader.readAsDataURL(blob)
+
+  console.log( URL.createObjectURL(blob))
+  return URL.createObjectURL(blob)
+
 }else{
-    return ""
-}
+  
+  
+  return ""}
 
 
-
-}
-
-
-
+  }
 
 
 
@@ -403,7 +451,7 @@ const showData = async ()=>{
 
   
   const response =await Service.ListaMesaPartes().then(response =>{
-    console.log(response)
+
     return response
     })
     setDataUser( response);
@@ -437,9 +485,13 @@ setSolicitudes(newState)
 renderizaValor();
   },[dataUser])
 
+const [pdfData,setPdfDate]=useState([])
 
+const MonstrarPDF=(daw)=>{
+  setDisplayBasic5(true)
 
-
+  setPdfDate(daw.filerest)
+}
 
  const  MostrarPosts =(daw)=>{
   setDisplayBasic4(true)
@@ -449,7 +501,24 @@ renderizaValor();
 
   }
 
+  function validarArchivo (){
 
+    if(Array.from(file).length>=5){
+      return "custom-file-upload failed"
+    }else{
+      return "custom-file-upload"
+    }
+  
+  }
+
+
+  const EliminarFile = (dat)=>{
+    console.log(dat)
+    var file3= Array.from(file).filter( item => item.name !== dat.name )
+  let _product={...solicitar}
+  _product['file']=file3
+    setSolicitar(_product)
+  }  
   const showDataPost = async (value)=>{
 
   
@@ -468,6 +537,24 @@ renderizaValor();
   return (
     <Fragment>
       <Toast ref={toast} />
+
+      <Dialog
+     visible={DisplayBasic5}
+        onHide={() => onHide5()}
+
+        style={{width:"90%",height:"90%",overflow:"hidden"}}
+        
+     
+     >
+<div style={{width:"95%",height:"90%",overflow:"hidden",display:"flex",justifyContent:"center"}}>
+{pdfData?<ArchivosCliente pdfData={pdfData} />:<>no hay nada que mostrar,contactar con el administrador del sistema</>}
+
+</div>
+
+
+     </Dialog>
+
+
 
      <Dialog
      visible={DisplayBasic4}
@@ -510,10 +597,23 @@ renderizaValor();
 
 <div className='DataMuestra' > <h5>Mensaje : {solicitar.mensaje}</h5> </div>
 
-
-{  photo?.map((data,i)=> (
+{  file?.map((data,i)=> (
 <div className="DataMuestra" key={i} >
-<img src={onchangeImage(data)} />
+
+{data.type==='image/png'||data.type==='image/jpeg'?<img style={{width:"100%",height:"100%"}} src={onchangeImage(data.data,data.type,data.name)} />:
+<>
+{data.type==='application/pdf'?
+<iframe
+       style={{width:"100%" ,height:"100%",overflow:"hidden"}} 
+        title="PdfFrame"
+        src={onchangeImage((data?.data),(data?.type),(data?.name))}
+        frameborder="0"
+        type="application/pdf"
+      ></iframe>:<> no se puede mostrar el contenido de este archivo</>}
+
+
+</>}
+
   </div>)) 
 }
 </div>
@@ -583,19 +683,77 @@ renderizaValor();
             <small className='p-error'>El mensaje es requerido .</small>
           )}
         </div>
+
+
+
         <div style={{ padding: '2%', marginTop: '10px' }}>
-          <h5>Lista de documento Requeridos </h5>
-          <FileUpload
-            name='demo[]'
-            uploadHandler={invoiceUploadHandler}
-            multiple
-            accept='*/*'
-            itemTemplate={GuardarImagenes}
-            maxFileSize={1000000}
-            customUpload={true}
-            auto={true}
-          />
+          <div className="card" style={{padding:"2%",maxHeight:"800px" }}>
+                <h5>Lista de documento Requeridos </h5>
+                {Array.from(file)?.length>=5 ?  (
+                          <label className={classNames({ 'p-error': Array.from(file)?.length>=5 })}>
+                            Solo se puede subir 5 archivos.
+                          </label>
+                        ):""}
+
+                <label for="file-upload" className={ validarArchivo()}>
+    <i className="fa fa-cloud-upload"></i> Subir Archivos
+</label>
+
+<input id="file-upload" type="file" disabled={(Array.from(file)?.length>=5)} onChange={(e)=>invoiceUploadHandler(e)}/>
+<div className="fotosDiv" style={{display:"flex",justifyContent:"center",alignContent:"center"}}>
+<table style={{textAlign:"center", cellspacing:"2" }}>
+<thead>
+<tr>
+<th style={{width:"80px"}}>Id</th>
+<th  style={{width:"50%"}}>Nombre</th>
+<th  style={{width:"50%"}}>Tipo</th>
+<th  style={{width:"80px"}}>Imagen</th>
+
+
+</tr>
+</thead>
+<tbody>{Array.from(file)?.map((e,i)=>{
+  return(  
+
+    <tr key={i}>
+    <td  > {i+1}</td>
+    <td>{e.name}</td>
+    <td>{e.type}</td>
+    <td > {((e.type)==='image/png')||(e.type)==='image/jpeg' ?  ( 
+ <img  style={{width:"100px",height:"40px"}} src={onchangeImage(e.data,e.type,e.name)}  />
+ ) : <> 
+ 
+ {(e.type)==='application/pdf' ? <FontAwesomeIcon style={{height:"80px"}} icon={faFilePdf}/> :<>
+
+ {(e.type)==='application/x-zip-compressed' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFileZipper}/> :<>
+ 
+ {(e.type)==='application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? <FontAwesomeIcon style={{height:"80px"}} icon={faFileWord}/> :<>
+  
+ <FontAwesomeIcon style={{height:"80px"}} icon={faUnlink}/>
+      
+ </>} 
+
+    
+ </>} 
+
+
+ </>} 
+ 
+ </>  
+  
+ }</td>
+    <td  style={{width:"50%",paddingLeft:"50PX"}}><div style={{display:"flex",justifyContent:"center",alignContent:"center"}}>
+    
+    <Button onClick={()=>EliminarFile(e)} /></div></td>
+    </tr>
+  )
+})}</tbody>
+</table> </div> 
+                    </div>
         </div>
+
+    
+
 
         <hr />
       </Dialog>
@@ -688,10 +846,10 @@ renderizaValor();
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} dataUser"
                       responsiveLayout="scroll">
                     
-                    <Column field="id" header="Codigo de solicitud" sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column field="nombreCompleto" header="Nombre Reclamante" sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column field="tipoReclamo" header="tipo de Reclamo" sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column body={rowExpansionTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
+                    <Column field="id" header="Codigo de solicitud" sortable style={{ minWidth: '12rem',color:"white" }}></Column>
+                    <Column field="nombreCompleto" header="Nombre Reclamante" sortable style={{ minWidth: '12rem' ,color:"white" }}></Column>
+                    <Column field="tipoReclamo" header="tipo de Reclamo" sortable style={{ minWidth: '12rem',color:"white" }}></Column>
+                    <Column body={rowExpansionTemplate} exportable={false} style={{ minWidth: '8rem' ,color:"white"}}></Column>
                 </DataTable></Fragment>
 :<Loading/>}
 </div>

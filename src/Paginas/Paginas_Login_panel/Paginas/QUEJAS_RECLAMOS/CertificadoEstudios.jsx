@@ -3,11 +3,15 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import { classNames } from "primereact/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFileAlt, faFilePdf, faFileWord, faFileZipper, faMagnifyingGlass, faUnlink } from "@fortawesome/free-solid-svg-icons"
+import { Button } from "primereact/button"
 import React,{ Fragment } from "react";
 
 export const CertificadoEstudios = (props)=>{
 
-const {onchangeRadioButon,quejaFormulario,enviarFormulario,invoiceUploadHandler,GuardarImagenes}=props;
+const {onchangeRadioButon,quejaFormulario,enviarFormulario,invoiceUploadHandler ,file,onchangeImage ,EliminarFile,validarArchivo,consultarApi2}=props;
+
 
 return (
 
@@ -19,7 +23,7 @@ return (
 <div className="row">
 <div className="col-4">
 <label>Nombre : </label>
-<InputText value={quejaFormulario.nombreEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'nombreEstudiante')} required
+<InputText  disabled={true} value={quejaFormulario.nombreEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'nombreEstudiante')} required
                           autoFocus className={classNames({ 'p-invalid': !quejaFormulario.nombreEstudiante && enviarFormulario })} />
  
 
@@ -31,7 +35,7 @@ return (
                         )}   </div>
 <div className="col-4">
 <label>Apellido Materno :</label>
-<InputText value={quejaFormulario.apellidoMaternoEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'apellidoMaternoEstudiante')} required
+<InputText disabled={true} value={quejaFormulario.apellidoMaternoEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'apellidoMaternoEstudiante')} required
                           autoFocus className={classNames({ 'p-invalid': !quejaFormulario.apellidoMaternoEstudiante && enviarFormulario  })} />
  
 
@@ -43,7 +47,7 @@ return (
                         )}  </div>
 <div className="col">
 <label>Apellido paterno :</label>
-<InputText value={quejaFormulario.apellidoPaternoEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'apellidoPaternoEstudiante')} required
+<InputText disabled={true} value={quejaFormulario.apellidoPaternoEstudiante} onChange={(e)=>onchangeRadioButon(e.target.value,'apellidoPaternoEstudiante')} required
                           autoFocus className={classNames({ 'p-invalid': !quejaFormulario.apellidoPaternoEstudiante && enviarFormulario  })} />
  
 
@@ -81,12 +85,16 @@ return (
                     </div>
                 
   </div>
-<div className="col-4">
+<div className="col-6">
 <label className="form-label">Nº documento : </label>
-    <InputNumber mode="decimal" useGrouping={false} style={{marginLeft:"1%",width:"70%"}} value={quejaFormulario.numeroDocumentoEstudiante} onChange={(e) => onchangeRadioButon(e.value,'numeroDocumentoEstudiante')} required
+    <InputText  maxLength={8} useGrouping={false} style={{marginLeft:"1%",width:"50%"}} value={quejaFormulario.numeroDocumentoEstudiante} onChange={(e) => onchangeRadioButon(e.target.value,'numeroDocumentoEstudiante')} onKeyPress={(event) => {
+        if (!/[0-9]/.test(event.key)) {
+          event.preventDefault();
+        }
+      }} required
                           autoFocus className={classNames({ 'p-invalid': !quejaFormulario.numeroDocumentoEstudiante && enviarFormulario })} />
  
-
+ <Button onClick={()=>consultarApi2()}  style={{marginLeft:"5%"}} label={<FontAwesomeIcon icon={faMagnifyingGlass}/>}/>
 
  {!quejaFormulario.numeroDocumentoEstudiante && enviarFormulario &&  (
                           <label className={classNames({ 'p-error': !quejaFormulario.numeroDocumentoEstudiante && enviarFormulario })}>
@@ -97,11 +105,56 @@ return (
 
 <div className="row" style={{padding:"2%"}} >
 
-<div className="card" style={{padding:"2%"}}>
+<div className="card" style={{padding:"2%",maxHeight:"500px" }}>
                 <h5>Lista de documento Requeridos </h5>
-                <FileUpload name="demo[]" uploadHandler={invoiceUploadHandler } multiple accept="image/*" itemTemplate={GuardarImagenes} maxFileSize={1000000} customUpload={true} auto={true}
-                />
+                {Array.from(file).length>=5 ?  (
+                          <label className={classNames({ 'p-error': Array.from(file).length>=5 })}>
+                            Solo se puede subir 5 archivos.
+                          </label>
+                        ):""}
+                <label for="file-upload" className={ validarArchivo()}>
+    <i className="fa fa-cloud-upload"></i> Subir Archivos
+</label>
+<input id="file-upload" type="file" disabled={(Array.from(file).length>=5)} onChange={(e)=>invoiceUploadHandler(e)}/>
+<div className="fotosDiv" >
+{Array.from(file).map((e,i)=>{
+  return( 
+<div className="hijosFotos">  
+<div className="hijosFotosNumeracion" key={i}>{i+1}</div> 
+<div  ><p className="hijosFotosName">{e.name}</p></div>
+<div className="hijosFotosType"><p>{e.type}</p></div>
+<div className="hijosFotosData"> 
+{((e.type)==='image/png')||(e.type)==='image/jpeg' ?  ( 
+ <img  style={{width:"100%"}} src={onchangeImage(e.data)}  />
+ ) : <> 
+ 
+ {(e.type)==='application/pdf' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFilePdf}/> :<>
 
+ {(e.type)==='application/x-zip-compressed' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFileZipper}/> :<>
+ 
+ {(e.type)==='application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFileWord}/> :<>
+  
+ <FontAwesomeIcon style={{height:"100%"}} icon={faUnlink}/>
+      
+ </>} 
+
+    
+ </>} 
+
+
+ </>} 
+ 
+ </>  
+ 
+ }
+
+</div>
+
+<div><Button onClick={()=>EliminarFile(e)} /></div>
+
+</div>
+  )
+})}</div>
                     </div>
 
 </div>

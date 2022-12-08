@@ -4,10 +4,19 @@ import { RadioButton } from "primereact/radiobutton"
 import { classNames } from "primereact/utils"
 import { Fragment } from "react"
 import { FileUpload } from 'primereact/fileupload';
-
+import "./../QuejaFormulario.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFileAlt, faFilePdf, faFileWord, faFileZipper, faUnlink } from "@fortawesome/free-solid-svg-icons"
+import { Button } from "primereact/button"
+import { useEffect } from "react"
+import { useState } from "react"
 export const Matricula = (props)=>{
 
-    const {GuardarImagenes,quejaFormulario,onchangeRadioButon,enviarFormulario,invoiceUploadHandler }=props;
+    const {quejaFormulario,onchangeRadioButon,enviarFormulario,invoiceUploadHandler ,file,onchangeImage ,EliminarFile,validarArchivo}=props;
+    const [arrayFotos,setArrayFotos]=useState([])
+
+  console.log(file)
+
 
 return(
 
@@ -94,14 +103,59 @@ return(
                           </label>
                         )}
 </div>
-
+ 
 <div className="row" style={{padding:"2%"}} >
 
-<div className="card" style={{padding:"2%"}}>
+<div className="card" style={{padding:"2%",maxHeight:"500px" }}>
                 <h5>Lista de documento Requeridos </h5>
-                <FileUpload name="demo[]" uploadHandler={invoiceUploadHandler } multiple accept="image/*" itemTemplate={GuardarImagenes} maxFileSize={1000000} customUpload={true} auto={true}
-                />
+                {Array.from(file).length>=5 ?  (
+                          <label className={classNames({ 'p-error': Array.from(file).length>=5 })}>
+                            Solo se puede subir 5 archivos.
+                          </label>
+                        ):""}
+                <label for="file-upload" className={ validarArchivo()}>
+    <i className="fa fa-cloud-upload"></i> Subir Archivos
+</label>
+<input id="file-upload"  type="file" disabled={(Array.from(file).length>=5)} onChange={(e)=>invoiceUploadHandler(e)}  />
+<div className="fotosDiv" >
+{Array.from(file).map((e,i)=>{
+  return( 
+<div className="hijosFotos">  
+<div className="hijosFotosNumeracion" key={i}>{i+1}</div> 
+<div  ><p className="hijosFotosName">{e.name}</p></div>
+<div className="hijosFotosType"><p>{e.type}</p></div>
+<div className="hijosFotosData"> 
+{((e.type)==='image/png')||(e.type)==='image/jpeg' ?  ( 
+ <img  style={{width:"100%"}} src={onchangeImage(e.data)}  />
+ ) : <> 
+ 
+ {(e.type)==='application/pdf' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFilePdf}/> :<>
 
+ {(e.type)==='application/x-zip-compressed' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFileZipper}/> :<>
+ 
+ {(e.type)==='application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? <FontAwesomeIcon style={{height:"100%"}} icon={faFileWord}/> :<>
+  
+ <FontAwesomeIcon style={{height:"100%"}} icon={faUnlink}/>
+      
+ </>} 
+
+    
+ </>} 
+
+
+ </>} 
+ 
+ </>  
+ 
+ }
+
+</div>
+
+<div><Button onClick={()=>EliminarFile(e)} /></div>
+
+</div>
+  )
+})}</div>
                     </div>
 
 </div>

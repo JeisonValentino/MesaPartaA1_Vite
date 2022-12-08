@@ -4,6 +4,7 @@ import {
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import './MesaPartes.css'
 export const MesaPartes = () => {
 
 
@@ -17,14 +18,28 @@ export const MesaPartes = () => {
   return (
     <div className='todo'>
       <div className='MesaPartes cuerpo'>
-        <div className='cabecera'></div>
+        <div className='cabecera'>   
+        
+        
+        
+          <div >  
+          
+             <p style={{ color:"black" ,zIndex:"10"}}>INICIA TU SOLICITUD AQUI. </p>
+          
+          
+          
+          </div>
+        
+
+         </div>
         <div className='contenido'>
-        <div className=' cabecera2'> <p>INICIA TU SOLICITUD AQUI. </p> 
-        <p style={{fontSize:"20px" ,fontWeight:"100"}}>Selecciona una opción:
-
-
-</p>
-        </div>
+        <div style={{width:"100%"}} >     
+   
+   <p style={{fontSize:"20px" ,fontWeight:"100"}}>Selecciona una opción:</p>
+   
+   </div>
+   
+        
           <div
             className='carta subCarta'
             style={{ marginRight: '20%', marginLeft: '10%' }}

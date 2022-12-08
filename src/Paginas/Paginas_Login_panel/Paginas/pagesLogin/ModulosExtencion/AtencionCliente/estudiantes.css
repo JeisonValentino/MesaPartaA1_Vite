@@ -1,4 +1,4 @@
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;700;900&display=swap");
 
 .MoverDerechaDialog{
 
@@ -18,3 +18,182 @@
    padding: 1rem 1rem;
    font-weight: 700;
 }
+
+.p-selectable-row{
+   text-overflow: ellipsis;
+}
+
+table {
+   table-layout:fixed;
+ }
+ table td {
+   word-wrap: break-word;
+   max-width: 400px;
+ }
+ #grid td {
+   white-space:inherit;
+ }
+ .form-control:disabled{
+   background-color: rgb(65, 65, 65,0.3);
+    color: rgb(81, 79, 78);
+    opacity: 1;
+
+ }
+ .p-component .p-paginator-bottom{
+background: #1646cb !important;
+ }
+
+ .contenedorDetalleEstudiantes{
+   display: grid;
+   grid-template-columns: 0.6fr 1fr;
+ }
+ .DatosPersonalesEstudiante{
+   display: flex;
+
+ }
+
+ .cabeceraDetaller{
+   border: 10px;
+border-color: black;
+padding: 2px;
+z-index: 4;
+   flex: 3;
+ }
+ .detalleDatos{
+   flex: 8;
+ }
+ .visualizadorNotificaciones{
+
+
+ }
+ .creadorNotificaciones{
+
+ }
+ .Modal{
+   position: relative;
+   transition: transform .1s ease-out ,opacity .1s ease-out;
+ }
+ .Modal.open{
+   transform: translateX(0);
+ 
+}
+.Modal.close{
+  
+transform: translateX(100%);
+opacity: 0;
+}
+.table{
+   font-size: 12px;
+   text-align: center;
+   background: black;
+   color: white;
+}
+
+.tableNotificacionesTR{
+
+}
+.tableNotificacionesTR:hover{
+background-color:  rgb(255, 255, 255) !important;
+color: black;
+cursor: pointer;
+}
+.ProseMirror {
+  padding: 10px;
+  border-top: 1px solid grey;
+  background: white;
+  border-radius: 0 0 5px 5px;
+  min-height: 100px;
+}
+.ProseMirror:focus {
+  border: none;
+  outline: 1px solid rgb(0, 0, 0);
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding: 0 2rem;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  line-height: 1.1;
+}
+
+.ProseMirror code {
+  background-color: rgba(#616161, 0.1);
+  color: #616161;
+}
+
+.ProseMirror pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: "JetBrainsMono", monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+.ProseMirror code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+}
+
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 3px solid #999999;
+}
+
+.ProseMirror hr {
+  border: none;
+  border-top: 3px solid #999999;
+  margin: 2rem 0;
+}
+
+/* ............................ */
+.textEditor {
+  border-radius: 5px;
+  border: 1px solid grey;
+}
+.menuBar {
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.menuBar button {
+  font-size: 18px;
+  margin: 7px;
+  margin-right: 15px;
+  outline: none;
+  border: none;
+  background: none;
+  color: rgb(70, 70, 70);
+  cursor: pointer;
+}
+.menuBar button:last-child {
+  margin-right: 7px;
+}
+
+.heading3 {
+  font-size: 15px;
+}
+
+button.is_active {
+  background: rgb(197, 197, 197);
+  padding: 2px 3px;
+  border-radius: 2px;
+}
+

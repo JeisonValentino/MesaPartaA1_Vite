@@ -14,6 +14,10 @@ import notificacionAprob from './Modulos/notificacionAprob.mp3'
 import fallo from './Modulos/fallo.mp3'
 export default function Perfil(){
     const toast = useRef(null);
+
+    let imagen={
+      id:'',name:'',type:'',data:''
+    }
 let Datos_Empletado={
 
 apellidoMaterno: "",
@@ -24,7 +28,7 @@ correo: "",
 direccion: "",
 estadoCivil: "",
 fechaRegistro: "" ,
-file: "",
+photo: imagen,
 gradoInstruccion: "",
 id: "",
 idEmpleado: "",
@@ -81,21 +85,14 @@ const dataTipoDocumento=[{name:'DNI',code:'1'},{name:'Extrangero',code:'2'}]
       e.preventDefault();
         const formData = new FormData()
     console.log(empleado)
-        var fileTosave2 = new Blob([JSON.stringify(empleado)], {
-          type: 'application/json'
-        })
-    
-        formData.append('obj', fileTosave2)
-    
-        formData.append('files',files.files)
-    
-
-     await Service.ActualizarPerfil(formData).catch(res =>{
-      console.log(res.response.data.message)
+   
+    await Service.ActualizarPerfil(empleado).catch(res =>{
+      console.log(res)
 error=true
-      toast.current.show({ severity: 'error', summary: 'Algo salio mal', detail: `${res.response.data.message}`, life: 4000 });
+      toast.current.show({ severity: 'error', summary: 'Algo salio mal', detail: `${res.message}`, life: 4000 });
       fallosonund()
      })
+  
      if(!error){
       obtenerSession()
       
@@ -143,13 +140,14 @@ const onchangeImage= (dat)=>{
     
       if(dat !==null){
         console.log("PASO EL NULL")
+     
       const byteCharacters = atob(dat);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      
+     
       const blob = new Blob([byteArray], {type: 'image/jpeg'});
       
       reader.addEventListener("load", function () {
@@ -158,6 +156,7 @@ const onchangeImage= (dat)=>{
       })
     
       reader.readAsDataURL(blob)
+      
       return URL.createObjectURL(blob)
     
     }else{
@@ -167,10 +166,12 @@ const onchangeImage= (dat)=>{
     
 
       }
-
+const{photo}=empleado
 
       const imageHandler = e => { let base64String =''
       let _product={...empleado3}
+      let _photoPerfil={...empleado}
+
         var reader = new FileReader();
         console.log("next");
           
@@ -183,9 +184,14 @@ const onchangeImage= (dat)=>{
             // alert(imageBase64Stringsep);
             _product['fotoCliente']=(base64String);
             setEmpleado3(_product)
+      
+            photo.data=(base64String);
+         
         }
         console.log(e.target.files[0])
-       setFiles({files:e.target.files[0]})
+        photo.name=e.target.files[0].name
+        photo.type=e.target.files[0].type
+        setEmpleado({...empleado,photo : photo})
         reader.readAsDataURL(e.target.files[0]);
       }
 
@@ -214,16 +220,18 @@ return(
             {loading ? (<div style={{marginTop:"20%"}}><Loading /></div>):(
             <form className=" row g-3 was-validated" onSubmit={onsubmitForm}>
             <h5 style={{marginTop:"15%",marginLeft:"45%",letterSpacing:"5px"}}>PERFIL</h5>
-
+      
             <div className="CabeceraPerfil">
-{  empleado3?.fotoCliente ?  (
-    <img style={{width:"20%",height:"10%"}} src={onchangeImage(empleado3.fotoCliente)} />
-
+{  empleado3?.fotoCliente ?  (<>
+    <img className="zoom" style={{maxWidth:"20%",maxHeight:"100%"}} src={onchangeImage(empleado3.fotoCliente)} />
+    <a  target="_blank" href={`${onchangeImage(empleado3.fotoCliente)}`}>enviar</a>
+</>
 ):( 
-<>{empleado.photo ?(
-    
-    <img style={{width:"20%",height:"10%"}} src={onchangeImage(empleado.photo)} />
-    
+<>{empleado.photo.data ?(<div style={{display:"flex",justifyContent:"center" }}>
+  <a  style={{color:"black",position:"relative" ,maxWidth:"30%",maxHeight:"40%"}} target="_blank" download href={`${onchangeImage(empleado.photo.data)}`}>
+    <img className="zoom" style={{width:"100%",height:"100%"}} src={onchangeImage(empleado.photo.data)} />
+   </a>
+    </div>
     ) :(<FontAwesomeIcon style={{width:"20%",height:"10%"}} icon={faUser}/>)}</>
 )}
 <input style={{marginTop:"15px"}}

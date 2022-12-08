@@ -3,10 +3,45 @@ import React,{ Component } from "react";
 
 
 
+
 const IP ='http://localhost:8080/';
 export    const   Service = {
 
 
+
+     ping  (timeout = 6000 ) {
+        return new Promise((resolve, reject) => {
+
+            try {
+        fetch(IP).then(() => {
+           
+            resolve(true)})
+        .catch(() => resolve(false));
+        setTimeout(() => {
+            resolve(false);
+          }, timeout);
+
+        } catch (e) {
+          
+          }
+        })
+    
+     }
+        ,
+
+    refresToken(){
+        return axios({
+            method : 'post',
+        url:    IP+"users/token/refresh"
+    ,headers:{
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }
+    
+    
+    })
+    },
 
    retornarPerfl  () {
     const response=axios.get(IP+"users/Perfil").then(response=>response.data)
@@ -17,7 +52,7 @@ export    const   Service = {
         method: 'put',
         url: IP+'users/GuardarPorPerfil',
         data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
+        
       })
 }
 ,
@@ -121,6 +156,26 @@ BuscarListaformaContactoPorEstudiante(id){
 listaRelaconFamiliar(){
 
     return axios.get(IP+`users/listaRelaconFamiliar`).then(response=>response.data)
+},
+AgregarLoginEstudiante(valor ){
+    return axios.post(IP+`estudiante/GuardarLoginEstudiantes`, valor).then(response=>response.data)
+},ServiceBuscarLoginEstudiante( id ){
+    return axios.get(IP+`estudiante/BuscarLoginEstudiantes/${id}`).then(response=>response.data)
+}
+,obtenerListaConfiguracion(id){
+    return axios.get(IP+`estudiante/BuscarListaConfiguracionEstudiantes/${id}`).then(response=>response.data)
+}
+,buscarEstadoNotificacion(id){
+    return axios.get(IP+`estudiante/BuscarEstadoConfiguracionEstudiantes/${id}`).then(response=>response.data)
+},subirImagenServer(formData){
+    return axios({
+        method: 'PUT',
+        url: IP+'estudiante/subirImagen',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(response=>response.data)
+},GuardarSolicitud(dat){
+   return axios.post('http://localhost:8080/solicitud/GuardarSolicitud', dat).then(response=>response.data)
 }
 
 }
