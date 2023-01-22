@@ -175,7 +175,30 @@ AgregarLoginEstudiante(valor ){
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(response=>response.data)
 },GuardarSolicitud(dat){
-   return axios.post('http://localhost:8080/solicitud/GuardarSolicitud', dat).then(response=>response.data)
+   return axios.post(IP+'solicitud/GuardarSolicitud', dat).then(response=>response.data)
+},ObtenerListaArticulo(){
+    const response=axios.get(IP+'almacenamiento/listarArticulos').then(response=>response.data)
+    return response;
+},ObtenerListaMarcas(){
+    const response=axios.get(IP+'almacenamiento/listarMarcas').then(response=>response.data)
+    return response;
+},CrearListaMarca(dat){
+    return axios.post(IP+'almacenamiento/CrearMarcar', dat).then(response=>response.data)
+},EliminarColumnaMarca(id){
+    return axios.delete(IP+`almacenamiento/EliminarMarca/${id}`).then(response=>response.data)
+},CrearArticulo(dat){
+    return axios.post(IP+'almacenamiento/CrearArticulo', dat).then(response=>response.data)
+},ModificarArticulo(dat){
+    return axios.put(IP+'almacenamiento/ModificarArticulo', dat).then(response=>response.data)
+},EliminarArticulo(id){
+    return axios.delete(IP+`almacenamiento/EliminarArticulo/${id}`).then(response=>response.data)
+},ObtenerListaArticuloPorId(id){
+    const response=axios.get(IP+`almacenamiento/listarItemArticulo/${id}`).then(response=>response.data)
+    return response;
+},CrearItemArticulo(dat){
+    return axios.post(IP+'almacenamiento/CrearItemArticulo', dat).then(response=>response.data)
+},ModificarItemArticulo(dat){
+    return axios.put(IP+'almacenamiento/ModificarItemArticulo', dat).then(response=>response.data)
 }
 
 }

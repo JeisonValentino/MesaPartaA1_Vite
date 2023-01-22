@@ -1,25 +1,17 @@
 import { Link, Navigate, useNavigate } from "react-router-dom"
-
 import { useEffect, useRef, useState } from "react";
 import { Accordion, AccordionTab } from 'primereact/accordion';
-
-import swal from '@sweetalert/with-react'
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAlignJustify, faDoorClosed, faDoorOpen, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAlignJustify, faDoorClosed, faDoorOpen, faFileExcel, faUser } from "@fortawesome/free-solid-svg-icons";
 import './Cabecera.css'
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from "primereact/button";
-import { Buffer } from "buffer";
 import {useSelector,useDispatch} from 'react-redux'
 import styled from 'styled-components';
 import { Service } from "../Service";
-import { checkToken, checkToken2, logout, reloadToken } from "../../../../ControladorPage/authContext";
-import jwt_decode from "jwt-decode";
-import axios from "axios";
-import setAuchToken from "../../../ConfigurationAuthenticacion/setAuchToken";
-import { setCurrentUser } from "../../FormularioLogin";
+import { checkToken, logout, reloadToken } from "../../../../ControladorPage/authContext";
 import { Toast } from 'primereact/toast';
+import { Fragment } from "react";
 
  const Style_link = styled(Link)`
 
@@ -48,7 +40,7 @@ export const Cabecera = (props)=>{
 const toastBC = useRef(null);
 const [perfil,setPerfil]=useState({});
 var URLactual = window.location.pathname;
-const {pruebaConsole , pruebaConsole2,MostrarToolbar , pruebaConsole4} = props;
+const {pruebaConsole , pruebaConsole2,MostrarToolbar , setAbrirToolBar,abrirToolBar, contenidoToolBar} = props;
 const [contador , setContador]=useState(0)
 const [contadorCambio, setContadorCambio]=useState(10)
 
@@ -136,7 +128,21 @@ const validarUrl=(va)=>{
 
  
 }
-
+const leftToolbarTemplate = () => {
+  return (
+      <Fragment >
+      
+        <div >
+        <button style={{width:"100%"}} className="p-sidebar-icon p-link mr-1">
+        <span className="pi pi-print" /><div style={{marginLeft:"4px"}}>PDF</div> 
+          </button>
+          <button style={{width:"100%"}} className="p-sidebar-icon p-link mr-1">
+          <FontAwesomeIcon icon={faFileExcel}/> <div style={{marginLeft:"4px"}}>Excel</div>
+          </button>
+        </div>
+      </Fragment>
+  )
+}
 
 const onchangeImage= (dat)=>{
 
@@ -224,6 +230,10 @@ return(
        
       </AccordionTab>
     
+
+      <AccordionTab header="Mantenimiento">
+      <Style_link to="/Sistema-Administrador/Mantenimiento/Almacenamiento"><div className={validarUrl("/Sistema-Administrador/Mantenimiento/Almacenamiento")}>Almacenamiento</div> </Style_link>
+      </AccordionTab>
   
   </Accordion>
   
@@ -231,6 +241,20 @@ return(
   dispatch(logout())} >Salir <FontAwesomeIcon icon={faDoorOpen}/> </div>
    
   </Sidebar>
+
+  <Sidebar position="right" visible={abrirToolBar} onHide={() => setAbrirToolBar(false)} icons={leftToolbarTemplate}>
+                 <div style={{display:"flex" ,justifyContent:"center",alignContent:"center"}}>
+                 
+                 <h3>Opciones Interactivas </h3></div>
+                 <div >
+     
+                         <div style={{display:"flex" ,justifyContent:"center",alignContent:"center"}}>
+
+{contenidoToolBar?contenidoToolBar():""}
+
+                         </div>
+                         </div>
+                         </Sidebar>
           <div id="cabecera2"   className="cabecera2">
       
           <Button id='botonActivadorLateral' onClick={() => setVisibleRight(true) } >
@@ -242,6 +266,9 @@ return(
           {URLactual==='/Sistema-Administrador/Administrador/Usuarios' ? <div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => pruebaConsole(true)} >Mostrar Filtro</Button></div> :<></>}
           {
             URLactual==='/Sistema-Administrador/Atencion-Cliente/Estudiantes' ?<div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => MostrarToolbar(true)} >Mostrar Filtro</Button></div>:<></>
+          }
+          {
+            URLactual==='/Sistema-Administrador/Mantenimiento/Almacenamiento' ?<div><Button className='botonFiltrador'  style={{zIndex:"8",fontSize:"80%" }} onClick={() => setAbrirToolBar(true)} >Mostrar Filtro</Button></div>:<></>
           }
           </div>
           </div>

@@ -49,16 +49,7 @@ margin-left: 10px; font-size: 15px; color: blue;
 padding: 0 1rem 1rem 1rem;
 margin:  0 5px 5px 5px;
 }
-.cabecera{
 
-    height: 4.5rem;
-    background: rgb(36, 63, 218);
-    display: flex;
-
-  justify-content: space-around;
-  
-
-}
 .cabecera .items{
 display: inline-block;
    

@@ -21,7 +21,7 @@ text-align: center;
 .contenedor_Proceso_Matricula{
     margin-top: 30px;
  display: grid;
- grid-template-columns: 60%  200px  ;
+ grid-template-columns: 60%  400px  ;
  gap: 20px;
   grid-template-rows: 320px     ;
   grid-template-areas: 
@@ -37,11 +37,17 @@ text-align: center;
 }
 
 
-#parrafo2_Proceso_Matricula{ font-size: 20px;
-
+#parrafo2_Proceso_Matricula{
+    font-size: 20px;
     grid-area: parrafo2_Proceso_Matricula;
-
+    width: 100%;
 }
+
+
+
+
+
+
 
 #parrafo3_Proceso_Matricula{
     font-size: 20px;
@@ -75,4 +81,39 @@ line-height: 1.5;
 
     list-style-image:url(./Imagenes/Cuadrado.png) !important;
  
+}
+
+
+@media only screen and (max-width: 767px){
+    .contenedor_Proceso_Matricula{
+        margin: 30px;
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+   
+    }
+
+
+    #parrafo2_Proceso_Matricula{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
+
+    
+#parrafo3_Proceso_Matricula{
+    font-size: 20px;
+margin-top: 100px;
+    text-align: justify;
+   display: flex;
+   flex-direction: column;
+   margin: 30px;
+   
+}
+
+.main_Proceso_Matricula{
+width: 100%;
+}
 }

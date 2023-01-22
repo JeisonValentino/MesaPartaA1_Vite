@@ -42,19 +42,35 @@ export default function  Cabecera (props) {
        
        }, []);
 
+useEffect(()=>{
+
+if(bajarEvento){
+  document.body.classList.add('scrollOverflow');
+}else{
+  document.body.classList.remove('scrollOverflow'); 
+}
+
+},[bajarEvento])
+
+useEffect(()=>{
+
+  if(!menuIcon){
+    document.body.classList.add('scrollOverflow');
+  }else{
+    document.body.classList.remove('scrollOverflow'); 
+  }
+  
+  },[menuIcon])
 
 const cambiarCampo=()=>{
  
-const {bajarEventoEvaluacion}=props;
-bajarEventoEvaluacion(bajarEvento)
  return bajarEvento ?" bajar":""
 }
 
 
 const CambiarEstadoCabecera = ()=>{
 
-  const {MostrarEvento}=props;
-  MostrarEvento(menuIcon)
+
   return menuIcon ? "":"show";
 }
 
@@ -151,6 +167,11 @@ return (
 
 
 </div>
+
+
+
+
+
 <div className="menu-Icon-Header">
 <span className='menu-Icon' onClick={()=> SetMenuIcon(!menuIcon) }><FontAwesomeIcon icon={faList} /></span>
 </div>

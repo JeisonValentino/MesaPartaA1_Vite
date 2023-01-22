@@ -1,0 +1,15 @@
+.imagen_Cabecera{
+    display:  flex;
+    justify-content:center ;
+    align-content: center;
+    max-height: 10rem;
+}
+.contenedores_Imagen{
+    display: block;
+    max-width: 20rem;
+    min-width: 10rem;
+}
+.caracteristicas_Imagen{
+    width: 100%;
+    height: 100%;
+}

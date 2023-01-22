@@ -30,6 +30,7 @@ import Usuarios from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion
 import  Empleado  from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Administrador/Empleado';
 import LoginControlador from './LoginControlador';
 import { PDF_Render } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/PDF/PDF_Render';
+import Almacenamiento from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Mantenimiento/Almacenamiento';
 
 function Controller_Page() {
 
@@ -69,18 +70,33 @@ function Controller_Page() {
 
 <Route index element={ <Entrada/> } />
 <Route path='/Sistema-Administrador/salir' element={<Salir/>}/>
+{ /* 
+       Modulos de Mantenimiento
+    */}
 
+    <Route path='/Sistema-Administrador/Mantenimiento/Almacenamiento' element={(<Almacenamiento/>)} />
+
+{ /* 
+       Modulos de Atencion al Cliente
+    */}
     <Route path='/Sistema-Administrador/Atencion-Cliente/MesaPartes' element={(<MesaPartes_Post/>)} />
 
     <Route path='/Sistema-Administrador/Atencion-Cliente/CRM' element={(<CRM/>)} />
 
     <Route path='/Sistema-Administrador/Atencion-Cliente/Estudiantes' element={(<Estudiantes/>)} />
 
-
+    { /* 
+       Modulos del Administrador
+    */}
     <Route path='/Sistema-Administrador/Administrador/Usuarios' element={(<Usuarios/>)} />
     <Route path='/Sistema-Administrador/Administrador/Empleado' element={(<Empleado/>)} />
+
+   { /* 
+        Modulo Perfil
+    */}
+    
     <Route path='/Sistema-Administrador/Perfil' element={(<Perfil/>)} />
-   
+
     </Route>
 
     

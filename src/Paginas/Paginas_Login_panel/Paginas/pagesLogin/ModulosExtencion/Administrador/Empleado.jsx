@@ -15,7 +15,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { SelectButton } from 'primereact/selectbutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import { Sidebar } from 'primereact/sidebar';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { Service } from '../../Service';
@@ -34,7 +33,7 @@ export default function Empleado  (){
      };
   
      const [products, setProducts] = useState([]);
-     const [tablaUsuario,setTablaUsuario]=useState([]);
+     let tablaUsuario=[];
      
      const [sedes , setSedes]=useState();
      const [productDialog, setProductDialog] = useState(false);
@@ -54,17 +53,8 @@ export default function Empleado  (){
      const [empleadophoto,setEmpleadoPhoto]=useState()
      const dt = useRef(null);
      const [count, setCount] = useState(0);
-     const isMounted = useRef(false);
      const [visibleCustomToolbar, setVisibleCustomToolbar] = useState(false);
-     const [valorFiltro, setValorFiltro] = useState([]);
      const[loading,setLoading]=useState(false)
-     
-     const[direccion,setDireccion]=useState('');
-     const [coordenadas,setCoodenadas]=useState(
-         {
-             lat:null,lng:null
-         }
-     )
 
  let  OpcionesIntruccion=[{name:'Sin-estudios',code:1},{name:'Primarios',code:2},{name:'Secundarios',code:3},{name:'Medio-Superiores',code:4},{name:'Profesionales',code:5},{name:'Superiores',code:6}
 
@@ -200,10 +190,7 @@ console.log(files.files)
          }
      }
      
-     const EnviarUsuarioCreado =  (product)=>{
-         return  Service.CrearEmpleado(product);
-     }
-     
+
      
      
      
@@ -338,7 +325,7 @@ if(product2.gradoInstruccion ==='Sin-estudios'){
      const onInputChange = (e, name) => {
          const val = (e.target && e.target.value) || '';
          let _product = {...product};
-         console.log(val)
+
          _product[`${name}`] = val;
  
          setProduct(_product);
@@ -350,7 +337,7 @@ if(product2.gradoInstruccion ==='Sin-estudios'){
      const onInputChange2 = (e, name) => {
         const val = e.value
         let _product = {...product};
-        console.log(val)
+
         _product[`${name}`] = val;
     
         setProduct(_product);
@@ -378,18 +365,6 @@ setConocimientoInformatico(val2)
     setProduct(_product);
 }
 
-     const onEmpleadoChange = (e, name)=>{
-      
-       const val = (e.target && e.target.value) || '';
-       const val2=(e.value);
-       
-   console.log(val.name)
-       let _product = {...product};
-       _product[`${name}`] = val2
-     
-       setProduct(_product);
-       console.log(val2)
-     }
 
      const onIntruccionChange = (e, name) =>{
         const val = (e.target && e.target.value) || '';
@@ -409,7 +384,7 @@ setConocimientoInformatico(val2)
              <React.Fragment >
              
                <div >
-               <button style={{width:"100%"}} onClick={exportPdf} className="p-sidebar-icon p-link mr-1">
+               <button style={{width:"100%"}} className="p-sidebar-icon p-link mr-1">
                <span className="pi pi-print" /><div style={{marginLeft:"4px"}}>PDF</div> 
                  </button>
                  <button style={{width:"100%"}} className="p-sidebar-icon p-link mr-1">
@@ -453,7 +428,7 @@ setConocimientoInformatico(val2)
      
      const aww = (e) =>{
          
-         filtrar(e.target.value)
+        setBusquedaGlobal(e.target.value)
         
      }
      
@@ -489,16 +464,15 @@ const obtenerListaEmpleado= async ()=>{
 const data = await Service.ObtenerListaEmpleado().then(res=>{
     return res;
 })
-console.log(data)
-    setProducts(data)
-    setLoading(true)
+
+setProducts(data)
+setLoading(true)
 }
 
      const listarSede= async()=>{
         let data =await Service.ListarSedesCode().then(res =>{
             return res
         })
-console.log(data)
 setSedes(data)
      }
 
@@ -511,51 +485,26 @@ setSedes(data)
 
 
      useEffect(()=>{
-        obtenerListaEmpleado();
-       
-     },[])
+    obtenerListaEmpleado();
+    },[])
+const [busquedaGlobal,setBusquedaGlobal]=useState("");
 
-     const renderizaData=()=>{
-        let data = products.map((e)=>e);
-        console.log(data)
-        setTablaUsuario(data)
-     }
-     useEffect(()=>{
-   let data = products.map((e)=>e);
-    setTablaUsuario(data)
-     },[products])
-  
-     
-       const cols=[{field:'id',header:'ID'},{field:'NombreTotal',header:'Nombre Total'},{field:'idEstado',header:'ESTADO'},{field:'numeroDocumento',header:'numero Documento'},{field:'telefono',header:'telefono'},{field:'idSede',header:'Sede'},{field:'direccion',header:'direccion'},{field:'estadoCivil',header:'estado Civil'}]
-     
-       const exportColumns=cols.map(col=>({tittle:col.header,dataKey:col.field}))
-       
-     const filtrar=(terminoBuscado)=>{
-     
-        
+if(!busquedaGlobal.length >= 1){
+    tablaUsuario= products;
+}else{
+    tablaUsuario =products.filter((elemento) => {
+            if((elemento.nombreTotal.toString().toLowerCase().includes(busquedaGlobal.toLowerCase())) || (elemento.numeroDocumento.toString().toLowerCase().includes(busquedaGlobal.toLowerCase()))){
+                return elemento
+}
+})
+}
+
+
+
+
+
    
-   
-     var resultadoBusqueda=products.filter((elemento) => {
-     
-  
-         if((elemento.nombreTotal.toString().toLowerCase().includes(terminoBuscado.toLowerCase())) || (elemento.numeroDocumento.toString().toLowerCase().includes(terminoBuscado.toLowerCase()))){
-             return elemento
-         }
-  
-     
-     
-     })
-     console.log(resultadoBusqueda)
-     setTablaUsuario(resultadoBusqueda)
-     
-     
-     }
-     
-       const exportPdf = () => {
-         
-     
-         
-     }
+
      function pruebaConsole2(valor){
          setVisibleCustomToolbar(valor)
      }
@@ -628,15 +577,15 @@ setSedes(data)
                          globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     
                       <Column rowReorder selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
-                         <Column field="id" header="Id" sortable style={{ minWidth: '2rem' }}></Column>
-                         <Column field="nombreTotal" header="Nombre Total" sortable style={{ minWidth: '10rem' }}></Column>
+                         <Column className='TablaTr' field="id" header="Id" sortable style={{ minWidth: '2rem' }}></Column>
+                         <Column  className='TablaTr' field="nombreTotal" header="Nombre Total" sortable style={{ minWidth: '10rem' }}></Column>
                        
-                         <Column field="numeroDocumento" header="numero  Documento" sortable style={{ minWidth: '6rem' }}></Column>
-                         <Column field="telefono" header="Telefono" sortable style={{ minWidth: '6rem' }}></Column>
+                         <Column  className='TablaTr' field="numeroDocumento" header="numero  Documento" sortable style={{ minWidth: '6rem' }}></Column>
+                         <Column  className='TablaTr' field="telefono" header="Telefono" sortable style={{ minWidth: '6rem' }}></Column>
                    
-                         <Column field="estadoCivil" header="Estado Civil" sortable style={{ minWidth: '6rem' }}></Column>
-                         <Column field="gradoInstruccion" header="Grado de Instruccion" sortable style={{ minWidth: '6rem' }}></Column>
-                         <Column field="direccion" header="Direccion" sortable style={{ minWidth: '6rem' }}></Column>
+                         <Column  className='TablaTr' field="estadoCivil" header="Estado Civil" sortable style={{ minWidth: '6rem' }}></Column>
+                         <Column   className='TablaTr' field="gradoInstruccion" header="Grado de Instruccion" sortable style={{ minWidth: '6rem' }}></Column>
+                         <Column  className='TablaTr' field="direccion" header="Direccion" sortable style={{ minWidth: '6rem' }}></Column>
                          <Column field="action" body={actionBodyTemplate} sortable exportable={false} style={{ minWidth: '10rem' }} header="Acciones"></Column>
                          
                      </DataTable>
@@ -713,7 +662,6 @@ setSedes(data)
                      <Dropdown value={product.idSede} options={sedes} 
                      onChange={(e)=>onInputChange(e, 'idSede')}   optionLabel="nombre"
                          />
-                       {console.log(product.idSede)}
      </div></div>
      
     

@@ -32,6 +32,7 @@ import { Autocomplete } from "@mui/material";
 import { useRef } from "react";
 import { Toast } from "primereact/toast";
 import { Buffer } from 'buffer';
+import { MesaPartes_Post } from "./pagesLogin/ModulosExtencion/AtencionCliente/ComponentMesaPartesPost/MesaPartes_Post";
 
 
 
@@ -199,6 +200,8 @@ if(!estado){
   let quejaFormulario_1={...quejaFormulario}
   quejaFormulario_1['id']=dataCODE.message
   setQuejaFormulario(quejaFormulario_1)
+
+
 }
 
 

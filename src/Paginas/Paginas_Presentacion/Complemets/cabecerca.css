@@ -4,13 +4,18 @@ background-color: white;
 display: flex;
 justify-content: space-between;
 align-items: center;
-
+z-index: 2;
 position: fixed;
 left: 0;
 top: 0;
 right: 0;
 transition: all 0.5s;
 }
+
+.scrollOverflow{
+  overflow: hidden;
+}
+
 .logo2{
   
     padding:0;
@@ -90,7 +95,7 @@ display: inline-block;
 .CampoRedes_Sociales{
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     z-index: 5;
     background-color: black;
    transition: all 400ms ease;
@@ -189,7 +194,7 @@ height: 100%;
       width: 100%;
       height: 100%;
       background-color: rgb(72, 112, 158);
-      position: absolute;
+      position: fixed;
       right:100%;
       transition: all 600ms ease;
       z-index: 4;
@@ -197,20 +202,26 @@ height: 100%;
 
         .navCabeceraMovil{
           display: flex;
+          flex-direction: column;
           justify-content: center;
+          align-items: center;
         }
 .logo3{
-width: 50%;
+width: 90%;
 height: 50%;
-margin-top:30px;
 }
         .navCabeceraMovil ul{
 
-          display: inline-block;
+          display: block;
           margin-top: 20px;
+          font-size: 50px;
+          font-family: 'Courier New', Courier, monospace;
+        
         }
-        .navCabeceraMovil ul li {
 
+
+        .navCabeceraMovil ul li {
+      
 display: block;
         }
       
@@ -237,6 +248,7 @@ display: block;
         justify-content: center;
        top: 50px;
         position: relative;
+        z-index: 2;
       }
       .header_Presentacion_scroll{
           height: 3rem;

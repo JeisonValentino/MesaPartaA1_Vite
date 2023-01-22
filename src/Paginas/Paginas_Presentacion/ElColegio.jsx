@@ -21,18 +21,7 @@ import imagenCole from './Imagenes/imagenCole.png'
     
     
     
-    const [bajarEvento,setBajarEvento]=useState(false);
-    
-    const  bajarEventoEvaluacion=(v1)=>{
 
-
-        setBajarEvento(v1);
-      }
-    
-      const [ElevarEvento,setElevarEvento]=useState(true);
-    const MostrarEvento=(v1)=>{
-        setElevarEvento(v1)
-    }
     
     
     
@@ -40,20 +29,17 @@ import imagenCole from './Imagenes/imagenCole.png'
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
+<Cabecera  />
 
 {loading ? <Loading/>:<div>
 
-{bajarEvento ? (<></>):(<>
-
-{ElevarEvento ? (<>
 <div className="main_Elcolegio">
 <div className="parrafo1_Elcolegio">
 EL COLEGIO
 </div>
 <hr className="small"></hr>
 <div className="contenedor_Elcolegio">
-<div id="parrafo2_Elcolegio"><img src={imagenCole}/></div>
+<div id="parrafo2_Elcolegio"><img   src={imagenCole}/></div>
     <div id="parrafo1_Elcolegio">
     <p style={{textAlign: 'justify'}}>Somos una institución educativa con 10 años de experiencia en educación y 5 sedes en Lima, los cuales nos respaldan como una institución sobresaliente, innovadora y descubridora de potencial. Además, contamos con equipos multimedia con el fin de adaptarnos a las nuevas tendencias y a la evolución de la educación entendiendo que la forma tradicional quedó atrás. Asimismo, contamos con docentes altamente calificados quienes son evaluados constantemente para brindar un servicio de educación óptimo, ya que nuestra meta es superar el estándar de calidad de la educación que se tiene en nuestro país y convertirnos en iconos de la educación.</p>
 
@@ -64,8 +50,7 @@ EL COLEGIO
 </div>
 </div>
 
-</>):(<></>)}
-</>)}
+
     <Suelo/>
 </div>
 

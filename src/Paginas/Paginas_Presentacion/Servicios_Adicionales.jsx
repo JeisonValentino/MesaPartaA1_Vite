@@ -27,30 +27,19 @@ const Servicios_Adicionales = ()=>{
     
     
     
-    const [bajarEvento,setBajarEvento]=useState(false)
+ 
     
-    const  bajarEventoEvaluacion=(v1)=>{
-
-
-        setBajarEvento(v1);
-      }
-    
-      const [ElevarEvento,setElevarEvento]=useState(true);
-      const MostrarEvento=(v1)=>{
-          setElevarEvento(v1)
-      }
+   
     
     return(
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
+<Cabecera  />
 
     {loading ? <Loading/>:<div> 
 
-    {bajarEvento ? (<></>):(<>  
-    
-    {ElevarEvento ? (<>
+
     <div className='main_Servicios_Adicionales'>
             
             <div className='parrafo1_Servicios_Adicionales'>
@@ -90,10 +79,8 @@ const Servicios_Adicionales = ()=>{
             </div>
             </div>
 
-            <Suelo/>
-            
-            </>) : (<></>)}
-             </>)}
+        
+    
             
             
             </div>

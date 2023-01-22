@@ -17,34 +17,19 @@ const Testimonios = ()=>{
     useEffect(()=>{
         return cambiarEstado()
     }, [])
-    
-    
-    
-    
-    const [bajarEvento,setBajarEvento]=useState(false)
-    
-    const  bajarEventoEvaluacion=(v1)=>{
 
-
-        setBajarEvento(v1);
-      }
-    
-    
-    
-    
-    
     return(
     
         <Fragment>
 
-<Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} />
+<Cabecera  />
 
     {loading ? <Loading/>:<div>
 
 
-    {bajarEvento ? (<></>):(<>  
+ 
 
-    <Suelo/> </>)}  </div>
+    <Suelo/>   </div>
 
 }
 

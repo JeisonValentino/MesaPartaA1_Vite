@@ -1,8 +1,7 @@
 
 import '../Tablas.css'
-import $ from 'jquery';
 import React, { useEffect, useState } from 'react';
-import { TableEditor } from 'react-table-editor'
+
 
   
 

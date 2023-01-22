@@ -109,14 +109,6 @@ useEffect(()=>{
 
   const [totalSize, setTotalSize] = useState(0)
 
-  const onTemplateRemove = (file, callback) => {
-    setTotalSize(totalSize - file.size)
-
-    var file3 = Array.from(files2?.files).filter(item => item.name !== file.name)
-    setFiles({ ...files2, file3 })
-    console.log(file3)
-    callback()
-  }
  
   const onSaveResponse = () => {
     if (
@@ -149,18 +141,8 @@ useEffect(()=>{
   }
   const [expandedRows, setExpandedRows] = useState(null)
   const isMounted = useRef(false)
-  const [globalFilterArray, setGlobalFilterArray] = useState([])
-  useEffect(() => {
-    if (isMounted.current) {
-      const summary =
-        expandedRows !== null ? 'All Rows Expanded' : 'All Rows Collapsed'
-      toast.current.show({
-        severity: 'success',
-        summary: `${summary}`,
-        life: 3000
-      })
-    }
-  }, [expandedRows])
+
+
 
 
 
@@ -292,21 +274,7 @@ setSolicitudes(resultadoBusqueda)
 
   }
 
-  const renderFooter = name => {
-    return (
-      <div>
-      
-        <Button
-          label='Cerrar'
-        
-          onClick={() => onHide(name)}
-          autoFocus
-        />
-      </div>
-    )
-  }
-
-  const renderFooter2 = name => {
+const renderFooter2 = name => {
     return (
       <div>
         <Button
@@ -352,7 +320,7 @@ const MostrarData=(rowData)=>{
     )
 }
 
-  const rowExpansionTemplate = rowData => {
+const rowExpansionTemplate = rowData => {
 
   
 
@@ -375,96 +343,35 @@ const MostrarData=(rowData)=>{
   }
 
   const onchangeImage= (dat,type,name)=>{
-    console.log(name)
         var reader =new FileReader();
-        
         const byteCharacters =Buffer.from(dat ,'base64').toString('binary');
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
-        
         const blob = new Blob([byteArray], {type: type });
         var fileactual = new File([blob], name, { lastModified: new Date().getTime(), type: type})
-    
         reader.addEventListener("load", function () {
-            
             return reader.result
         })
         if(fileactual){
-        
-        
         reader.readAsDataURL(fileactual)
         return URL.createObjectURL(fileactual)
         }else{
             return ""
         }
-        
-        
-        
         }
 
-
-const onchangeImagepdf= (dat)=>{
-
-
-        
-        
-     
-  var reader =new FileReader();
-
-  if(dat !==null){
- 
-  const byteCharacters = atob(dat);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  
-  const blob = new Blob([byteArray], {type: 'application/pdf'});
-  
-  reader.addEventListener("load", function () {
-      
-      return reader.result
-  })
-
-  reader.readAsDataURL(blob)
-
-  console.log( URL.createObjectURL(blob))
-  return URL.createObjectURL(blob)
-
-}else{
-  
-  
-  return ""}
-
-
-  }
-
-
-
-const showData = async ()=>{
-
-  
-
-  
-  const response =await Service.ListaMesaPartes().then(response =>{
-
-    return response
-    })
-    setDataUser( response);
-    setLoading(true);
-   
- 
-
+async function showData(){
+let response = await Service.ListaMesaPartes().then(response =>{
+return response
+})
+setDataUser( response);
+setLoading(true);
 }
 
 let debounceFn = debounce(filter, 500);
-
-
-
 
   useEffect(() => {
 

@@ -47,9 +47,13 @@ transition: all 0.5s;
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
     font-weight: 700;
     margin: 10px  0  10px  0;
+    cursor: pointer;
 }
 
-
+.contenido.CerrarSession:hover{
+    color: #fbfbfb;
+    background-color: #696666; 
+}
 
 .contenidoSub{
     cursor: pointer;
@@ -111,6 +115,6 @@ text-align: center;
   text-align: center;
 }
 
-.form-control{
-    
+.TablaTr{
+    color:#dee2e6;
 }

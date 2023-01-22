@@ -9,11 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {  faCirclePlay } from "@fortawesome/free-regular-svg-icons"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import $ from 'jquery'
+import { Hidden } from "@mui/material"
 const PaginaEntrada = ()=>{
 const [loading ,setLoading]=useState(false);
 const [play, setPlay]=useState(false);
 const vidRef = useRef(null);
-const [bajarEvento,setBajarEvento]=useState(false)
+
 const cambiarEstado=()=>{
     setLoading(true);
     setTimeout(()=>{
@@ -36,26 +37,30 @@ useEffect(()=>{
 
 const BajarVideo = ()=>{
   
-  
+    
     return play?'bajar':''
 
 }
 
-const  bajarEventoEvaluacion=(v1)=>{
+useEffect(()=>{
+if(play){
+    document.body.classList.add('scrollOverflow');
+}else{
+    document.body.classList.remove('scrollOverflow'); 
+}
+},[play])
 
 
-    setBajarEvento(v1);
-  }
 
-  const [ElevarEvento,setElevarEvento]=useState(true);
-  const MostrarEvento=(v1)=>{
-      setElevarEvento(v1)
-  }
+
+ 
 
 
 return(
 
     <Fragment>
+
+
 <div className={'videoFormato '+BajarVideo()} onClick={()=>setPlay(!play)}>
 <div className="Cerrar" onClick={()=>setPlay(!play)} >
 <div>
@@ -65,13 +70,13 @@ return(
     <source  style={{with:"100%" , height:"100%" }}  src={videoColegioVentas} type="video/mp4" ></source>
                     </video>
 </div>
- <Cabecera bajarEventoEvaluacion={bajarEventoEvaluacion} MostrarEvento={MostrarEvento} />
+
+
+
+ <Cabecera   />
 
 {loading ? <Loading/>: 
 <>
-{bajarEvento ? (<></>):(<>
-
-{ElevarEvento ? (<>
 <div className="main">
 
   <div className="container_Presentacion" >
@@ -84,10 +89,10 @@ return(
   <FontAwesomeIcon icon={faCirclePlay}/>
   </div> 
 </div> 
-{play?<></>:<Suelo/>}
+<Suelo/>
 
-</>) : (<></>)}
-</> )}
+
+
 </>
 }
 
