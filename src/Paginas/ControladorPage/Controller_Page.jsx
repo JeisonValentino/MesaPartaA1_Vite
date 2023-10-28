@@ -46,12 +46,12 @@ function Controller_Page() {
 
    <Route path='/' element={<PublicRoute/>}>
       <Route index element={<PaginaEntrada/>} />
-      <Route path='El-Colegio' element={<ElColegio/>} />
-      <Route path='Nuestras-Sedes' element={<Nuestras_Sedes/>} />
-      <Route path='Proceso-Matricula' element={<Proceso_Matricula/>} />
-      <Route path='Servicios-Adicionales' element={<Servicios_Adicionales/>} />
-      <Route path='Testimonios' element={<Testimonios/>} />
-      <Route path='Noticias' element={<Noticias/>} />
+      <Route path='Nosotros' element={<ElColegio/>} />
+      <Route path='Servicios' element={<Nuestras_Sedes/>} />
+      <Route path='Matricula' element={<Proceso_Matricula/>} />
+      <Route path='Blog' element={<Servicios_Adicionales/>} />
+      <Route path='Contacto' element={<Testimonios/>} />
+    
     
       <Route path='pdf' element={<PDF_Render/>} />
     <Route path='MesaPartes/Formulario' element={<QuejaFormulario/>} />

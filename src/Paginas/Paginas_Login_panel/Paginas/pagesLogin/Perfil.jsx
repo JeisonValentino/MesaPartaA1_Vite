@@ -42,7 +42,7 @@ userId: ""
 }
 
     const[empleado,setEmpleado]=useState(Datos_Empletado)
-    const[empleado3,setEmpleado3]=useState()
+    const[empleado3,setEmpleado3]=useState({"fotocliente":null})
     const [_empleado2 ,setEmpleado2]=useState()
     const [loading,setLoading]=useState(true);
     const [playSound] = useSound(notificacionAprob)
@@ -183,6 +183,7 @@ const{photo}=empleado
       
             // alert(imageBase64Stringsep);
             _product['fotoCliente']=(base64String);
+            console.log(base64String) 
             setEmpleado3(_product)
       
             photo.data=(base64String);
@@ -222,12 +223,13 @@ return(
             <h5 style={{marginTop:"15%",marginLeft:"45%",letterSpacing:"5px"}}>PERFIL</h5>
       
             <div className="CabeceraPerfil">
+            {console.log(empleado3?.fotoCliente )}
 {  empleado3?.fotoCliente ?  (<>
     <img className="zoom" style={{maxWidth:"20%",maxHeight:"100%"}} src={onchangeImage(empleado3.fotoCliente)} />
     <a  target="_blank" href={`${onchangeImage(empleado3.fotoCliente)}`}>enviar</a>
 </>
 ):( 
-<>{empleado.photo.data ?(<div style={{display:"flex",justifyContent:"center" }}>
+<>{empleado.photo ?(<div style={{display:"flex",justifyContent:"center" }}>
   <a  style={{color:"black",position:"relative" ,maxWidth:"30%",maxHeight:"40%"}} target="_blank" download href={`${onchangeImage(empleado.photo.data)}`}>
     <img className="zoom" style={{width:"100%",height:"100%"}} src={onchangeImage(empleado.photo.data)} />
    </a>

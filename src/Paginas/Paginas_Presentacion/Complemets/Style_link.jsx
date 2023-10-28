@@ -6,12 +6,14 @@ import styled from 'styled-components';
 export const Style_link = styled(Link)`
 
     color: black;
-    font-weight:bold;
-    font-size: 80%;
+    font-weight: bolder;
+    font-size: 16px;
     transition:all 0.4s linear ;
+    
     text-transform: uppercase;
-    font-family: 'Open Sans,Arial,sans-serif';
+    font-family: 'Roboto', sans-serif;
  text-decoration: none;
+ 
     &:hover{
     color: blue;
 }
