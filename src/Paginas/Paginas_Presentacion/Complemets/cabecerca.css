@@ -248,15 +248,19 @@ display: block;
         .CerrarNav svg path:hover{
   fill: blue;
         }
+        .menu-Icon-Header{
+          width: 0;
+        }
     @media only screen and (max-width: 767px){
 
 
       .menu-Icon-Header{
         display: flex;
         justify-content: center;
-       top: 50px;
-        position: relative;
-        z-index: 2;
+       top: 20px;
+        position: fixed;
+        z-index: 3;
+        width: 100%;
       }
       .header_Presentacion_scroll{
           height: 3rem;
@@ -276,7 +280,11 @@ display: block;
       .header_Presentacion{
         display: none;
           }
-  
+          
+          .header_Presentacion_recubridor{
+            height: 0;
+      display: none;
+          }
       .logo2{
 
          display: none;
@@ -286,7 +294,9 @@ display: block;
       .menu-Icon{
         display: block;
         cursor: pointer;
-      
+        color: aliceblue;
+        border: 2px  ;
+        border-color: red;
       }
   
       .menu-Icon:active{

@@ -7,7 +7,7 @@ import { Busqueda } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/Busqued
 import { Entrada } from '../Paginas_Login_panel/Paginas/pagesLogin/Entrada';
 import { MesaPartes_Post } from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/ComponentMesaPartesPost/MesaPartes_Post';
 import React ,{ useRef } from 'react';
-import PaginaEntrada from '../Paginas_Presentacion/PaginaEntrada';
+import PaginaEntrada from '../Paginas_Presentacion/Inicio/PaginaEntrada';
 import  ElColegio  from '../Paginas_Presentacion/ElColegio';
 import Nuestras_Sedes from '../Paginas_Presentacion/Nuestras_Sedes';
 import Proceso_Matricula from '../Paginas_Presentacion/Proceso_Matricula';

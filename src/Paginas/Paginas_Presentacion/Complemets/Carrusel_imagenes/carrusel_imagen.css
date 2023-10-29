@@ -1,0 +1,47 @@
+.carrusel-container {
+  overflow: hidden; /* Oculta el desbordamiento de las diapositivas */
+  width: 100%; /* Ancho del carrusel */
+ display: block;
+ height: 10rem;
+}
+
+.carrusel {
+  transition: transform 0.3s ease-in-out; /* Transición suave para 'transform' */
+  will-change: transform; /* Optimización del rendimiento */
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+
+.slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%); /* Inicialmente, las diapositivas se desplazan fuera del área visible */
+  transition: transform 0.3s ease-in-out; /* Transición suave para 'transform' */
+}
+
+
+.boton-anterior,
+.boton-siguiente {
+  position: absolute;
+  top: 30%;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.boton-anterior {
+  left: 0;
+}
+
+.boton-siguiente {
+  right: 0;
+}
