@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Fragment } from "react";
 import './carrusel_imagen.css'
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 export default function Carrusel_imagen({ componentes }) {
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -129,8 +131,11 @@ useEffect(()=>{
     <div className="carrusel-container">
 
 <div className="btn_carrusel">
-        <button className="boton-anterior" onClick={goToPreviousSlide}>Anterior</button>
-        <button className="boton-siguiente" onClick={goToNextSlide}>Siguiente</button>
+        <button className="boton-anterior" onClick={goToPreviousSlide}>
+        <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
+        
+        </button>
+        <button className="boton-siguiente" onClick={goToNextSlide}> <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon></button>
       </div>
         <div className={`carrusel `} style={animacion()}>
         {componentes.map((Componente, index) => (

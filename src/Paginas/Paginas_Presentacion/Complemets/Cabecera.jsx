@@ -249,6 +249,8 @@ export default function Cabecera(props) {
           <FontAwesomeIcon icon={faList} />
         </span>
       </div>
+
+      <div className="menu-Icon-Header_cubridor"></div>
     </>
   );
 }

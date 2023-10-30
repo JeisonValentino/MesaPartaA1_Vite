@@ -3,7 +3,7 @@
 
 
 .header_Presentacion{
-height: 8rem;
+height: 7rem;
 background-color: white;
 display: flex;
 justify-content: space-around;
@@ -206,6 +206,8 @@ height: 100%;
       right:100%;
       transition: all 600ms ease;
       z-index: 4;
+      overflow-x: hidden;
+      overflow-y: scroll;
         }
 
         .navCabeceraMovil{
@@ -251,6 +253,13 @@ display: block;
         .menu-Icon-Header{
           width: 0;
         }
+
+        .menu-Icon-Header_cubridor{
+          width: 0;
+          height: 0;
+          padding: 0;
+          margin: 0;
+        }
     @media only screen and (max-width: 767px){
 
 
@@ -261,6 +270,12 @@ display: block;
         position: fixed;
         z-index: 3;
         width: 100%;
+      }
+
+      .menu-Icon-Header_cubridor{
+        height: 4rem;
+        width: 100%;
+        background-color: #1B203A;
       }
       .header_Presentacion_scroll{
           height: 3rem;
@@ -284,6 +299,7 @@ display: block;
           .header_Presentacion_recubridor{
             height: 0;
       display: none;
+   
           }
       .logo2{
 
@@ -295,8 +311,9 @@ display: block;
         display: block;
         cursor: pointer;
         color: aliceblue;
-        border: 2px  ;
-        border-color: red;
+        border: 5px  ;
+        padding: 0.5rem;
+        background-color: #1B203A;
       }
   
       .menu-Icon:active{
