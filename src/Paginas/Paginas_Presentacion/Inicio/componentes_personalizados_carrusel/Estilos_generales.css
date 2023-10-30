@@ -37,3 +37,33 @@
     position:absolute;
     width: 100%;   
   }
+
+  @media only screen and (max-width: 767px){
+
+    .borde-mitad {
+        width: 100%; /* Ancho del cuadrado */
+        height: 100%; 
+        /* Altura del cuadrado */
+        border: 10px solid transparent; 
+        border-radius: 20px;/* Ancho y estilo del borde, transparente */
+        border-image: linear-gradient(to bottom,#fff 62%, #324088 40% ); /* Degradado en el borde */
+        border-image-slice: 1; /* Tamaño del degradado */
+        border-image-width: 10px; /* Ancho del degradado */
+      }
+
+      .borde-mitad2{
+        display: block;
+        width: 100%; /* Ancho del cuadrado */
+        height: 60%; 
+      
+        background-color: #324088;
+      }
+    
+      .borde-mitad1{
+        display: block;
+        width: 100%; /* Ancho del cuadrado */
+        height: 40%; 
+    
+        background-color: rgb(255,255,255);
+      }
+  }

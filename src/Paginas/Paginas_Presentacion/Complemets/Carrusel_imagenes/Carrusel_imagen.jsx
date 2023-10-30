@@ -130,13 +130,7 @@ useEffect(()=>{
   return (
     <div className="carrusel-container">
 
-<div className="btn_carrusel">
-        <button className="boton-anterior" onClick={goToPreviousSlide}>
-        <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
-        
-        </button>
-        <button className="boton-siguiente" onClick={goToNextSlide}> <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon></button>
-      </div>
+
         <div className={`carrusel `} style={animacion()}>
         {componentes.map((Componente, index) => (
           <div key={index} className={`slide` } >
@@ -144,7 +138,13 @@ useEffect(()=>{
           </div>
         ))}
       </div>
-      
+      <div className="btn_carrusel">
+        <button className="boton-anterior" onClick={goToPreviousSlide}>
+        <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
+        
+        </button>
+        <button className="boton-siguiente" onClick={goToNextSlide}> <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon></button>
+      </div>
      
     </div>
   );
