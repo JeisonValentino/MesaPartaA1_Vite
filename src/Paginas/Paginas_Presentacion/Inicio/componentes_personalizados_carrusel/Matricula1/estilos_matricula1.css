@@ -4,7 +4,20 @@ position: relative;
 height:100%;
 width:100%;
 }
-.imagen_border1{
+
+
+
+.matricula1 .borde-mitad_matricula {
+    width: 100%; /* Ancho del cuadrado */
+    height: 100%; 
+    /* Altura del cuadrado */
+    border: 10px solid transparent; 
+    border-radius: 20px;/* Ancho y estilo del borde, transparente */
+    border-image: linear-gradient(to right,#fff 62%, #324088 40% ); /* Degradado en el borde */
+    border-image-slice: 1; /* Tamaño del degradado */
+    border-image-width: 10px; /* Ancho del degradado */
+  }
+  .matricula1 .imagen_border1{
     position: absolute;
     height:100%;
     width: 100%;
@@ -12,12 +25,12 @@ width:100%;
     top: 15%;
 }
 
-.imagen_border1 img {
+.matricula1 .imagen_border1 img {
     height:100%;
     width:65%;
 }
 
-.imagen_border2{
+.contenedor_border_matricula1 .imagen_border2{
     position: absolute;
     height:100%;
     width:100%;
@@ -28,28 +41,28 @@ width:100%;
 text-align: center;
 color: #ffffff;
 }
-.imagen_border2 h2:nth-child(2){
+.contenedor_border_matricula1 .imagen_border2 h2:nth-child(2){
     
     font-size: 9rem;
     padding: 0;
     margin: 0;
     font-weight: 800;
 }
-.imagen_border2 h2{
+.contenedor_border_matricula1 .imagen_border2 h2{
     font-size: 3.8rem;
     padding: 0;
     margin: 0;
     line-height: 0.9 !important;
 }
 
-.imagen_border2 h3{
+.contenedor_border_matricula1 .imagen_border2 h3{
     font-size: 2.7rem;
     padding: 0;
     margin: 0;
     line-height: 1.7 !important;
 }
 
-.imagen_border2 button{
+.contenedor_border_matricula1 .imagen_border2 button{
     width: 46%;
     color:#324088 ;
     font-weight: 800;
@@ -57,36 +70,111 @@ color: #ffffff;
     border-radius: 10rem ;z-index: 10;
     cursor: pointer;
 }
-@media only screen and (max-width: 767px){
 
 
-    .imagen_border2 h2:nth-child(2){
+.contenedor_border_matricula1 .borde-mitad2{
+    display: inline-block;
+    width: 60%; /* Ancho del cuadrado */
+    height: 100%; 
+  
+    background-color: #324088;
+  }
+
+ .contenedor_border_matricula1 .borde-mitad1{
+    display: inline-block;
+    width: 40%; /* Ancho del cuadrado */
+    height: 100%; 
+
+    background-color: rgb(255,255,255);
+  }
+  .contenedor_border_matricula1  {
+    height: 100%; 
+    position:absolute;
+    width: 100%;   
+  }
+
+  @media only screen and (max-width: 767px){
+
+
+
+    .contenedor_border_matricula1  .borde-mitad2{
+        display: block;
+        width: 100%; /* Ancho del cuadrado */
+        height: 60%; 
+      
+        background-color: #324088;
+      }
+    
+        .contenedor_border_matricula1 .borde-mitad1{
+        display: block;
+        width: 100%; /* Ancho del cuadrado */
+        height: 40%; 
+    
+        background-color: rgb(255,255,255);
+      }
+      .matricula1 .borde-mitad_matricula {
+            width: 100%; /* Ancho del cuadrado */
+            height: 100%; 
+            /* Altura del cuadrado */
+            border: 10px solid transparent; 
+            border-radius: 20px;/* Ancho y estilo del borde, transparente */
+            border-image: linear-gradient(to bottom,#fff 62%, #324088 40% ); /* Degradado en el borde */
+            border-image-slice: 1; /* Tamaño del degradado */
+            border-image-width: 10px; /* Ancho del degradado */
+          }
+
+          .contenedor_border_matricula1  .imagen_border2 h2:nth-child(2){
     
         font-size: 7em;
         padding: 0;
         margin: 0;
         font-weight: 800;
     }
-    .imagen_border2 h2{
+    .contenedor_border_matricula1 .imagen_border2 h2{
         font-size: 3em;
         padding: 0;
         margin: 0;
         line-height: 0.9 !important;
     }
     
-    .imagen_border2 h3{
+    .contenedor_border_matricula1 .imagen_border2 h3{
         font-size: 2.2em;
         padding: 0;
         margin: 0;
         line-height: 1.7 !important;
     }
     
-    .imagen_border2 button{
+    .contenedor_border_matricula1 .imagen_border2 button{
         width: 75%;
         color:#324088 ;
         font-weight: 800;
         font-size: 1em;
-        border-radius: 10rem ;z-index: 10;
+        border-radius: 10rem ;
         cursor: pointer;
     }
+}
+
+@media only screen and (max-width: 280px){
+
+    .contenedor_border_matricula1 .imagen_border2 h2:nth-child(2){
+    
+        font-size: 5.5em;
+        padding: 0;
+        margin: 0;
+        font-weight: 800;
+    }
+    .contenedor_border_matricula1 .imagen_border2 h2{
+        font-size: 2.3em;
+        padding: 0;
+        margin: 0;
+        line-height: 0.9 !important;
+    }
+    
+    .contenedor_border_matricula1  .imagen_border2 h3{
+        font-size: 1.6em;
+        padding: 0;
+        margin: 0;
+        line-height: 1.7 !important;
+    }
+
 }

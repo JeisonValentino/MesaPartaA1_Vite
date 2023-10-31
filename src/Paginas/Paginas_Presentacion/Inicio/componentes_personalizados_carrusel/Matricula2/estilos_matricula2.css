@@ -1,0 +1,174 @@
+.contenido_boder1 , .contenido_boder2{
+
+    position: relative;
+    height:100%;
+    width:100%;
+    }
+    
+    
+    
+    .matricula2  .borde-mitad_matricula {
+
+        width: 100%; /* Ancho del cuadrado */
+        height: 100%; 
+        /* Altura del cuadrado */
+        border: 10px solid transparent; 
+        border-radius: 20px;/* Ancho y estilo del borde, transparente */
+        border-image: linear-gradient(to right,#324088 62%, #fff 40% ); /* Degradado en el borde */
+        border-image-slice: 1; /* Tamaño del degradado */
+        border-image-width: 10px; /* Ancho del degradado */
+      }
+      .contenedor_border_matricula2 .imagen_border1{
+        position: absolute;
+        height:100%;
+        width: 100%;
+
+    }
+    
+    .contenedor_border_matricula2 .imagen_border1 img {
+        height:100%;
+        width:100%;
+    }
+    
+    .contenedor_border_matricula2 .imagen_border2{
+        position: absolute;
+        height:100%;
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    text-align: start;
+    color: black;
+    }
+    .contenedor_border_matricula2  .imagen_border2 p:nth-child(2){
+       width: 11em;
+        font-size: 2rem;
+        padding: 0;
+        margin: 0;
+        font-weight: 800;
+    }
+    .contenedor_border_matricula2  .imagen_border2 p{
+        width:8.8em;
+        font-size: 2.5rem;
+        padding: 0;
+        margin: 0;
+        line-height: 0.9 !important;
+    }
+    
+    
+    .contenedor_border_matricula2 .imagen_border2 button{
+        margin-top:10px;
+        width: 60%;
+        color:#fff ;
+        background-color: #324088;
+        font-weight: 800;
+        font-size: 1.8rem;
+        border-radius: 10rem ;
+        cursor: pointer;
+        z-index: 10;
+    }
+    
+    
+    .contenedor_border_matricula2 .borde-mitad2{
+        display: inline-block;
+        width: 60%; /* Ancho del cuadrado */
+        height: 100%; 
+      
+        background-color: #fff;
+      }
+    
+     .contenedor_border_matricula2 .borde-mitad1{
+        display: inline-block;
+        width: 40%; /* Ancho del cuadrado */
+        height: 100%; 
+    
+        background-color: rgb(255,255,255);
+      }
+      .contenedor_border_matricula2 {
+        height: 100%; 
+        position:absolute;
+        width: 100%;   
+      }
+    
+      @media only screen and (max-width: 767px){
+    
+    
+    
+          .contenedor_border_matricula2 .borde-mitad2{
+            display: block;
+            width: 100%; /* Ancho del cuadrado */
+            height: 60%; 
+          
+            background-color: #ffffff;
+          }
+        
+          .contenedor_border_matricula2 .borde-mitad1{
+            display: block;
+            width: 100%; /* Ancho del cuadrado */
+            height: 40%; 
+        
+            background-color: rgb(255,255,255);
+          }
+          .matricula2   .borde-mitad_matricula {
+                width: 100%; /* Ancho del cuadrado */
+                height: 100%; 
+                /* Altura del cuadrado */
+                border: 10px solid transparent; 
+                border-radius: 20px;/* Ancho y estilo del borde, transparente */
+                border-image: linear-gradient(to top,#fff 40%, #324088 40% ); /* Degradado en el borde */
+                border-image-slice: 1; /* Tamaño del degradado */
+                border-image-width: 10px; /* Ancho del degradado */
+              }
+    
+              .contenedor_border_matricula2  .imagen_border2 p:nth-child(2){
+
+                 font-size: 100%;
+                 padding: 0;
+                 margin: 0;
+                 font-weight: 800;
+             }
+             .contenedor_border_matricula2  .imagen_border2 p{
+                 width:5em;
+                 font-size: 2.3rem;
+                 padding: 0;
+                 margin: 0;
+                 line-height: 0.9 !important;
+             }
+        
+        .contenedor_border_matricula2    .imagen_border2 button{
+            width: 55%;
+            color:#fff ;
+            background-color: #324088;
+            font-weight: 800;
+            font-size: 1em;
+            border-radius: 10rem ;z-index: 10;
+            cursor: pointer;
+            z-index: 10;
+        }
+    }
+    
+    @media only screen and (max-width: 280px){
+    
+        .contenedor_border_matricula2    .imagen_border2 h2:nth-child(2){
+        
+            font-size: 5.5em;
+            padding: 0;
+            margin: 0;
+            font-weight: 800;
+        }
+        .contenedor_border_matricula2     .imagen_border2 h2{
+            font-size: 2.3em;
+            padding: 0;
+            margin: 0;
+            line-height: 0.9 !important;
+        }
+        
+        .contenedor_border_matricula2       .imagen_border2 h3{
+            font-size: 1.6em;
+            padding: 0;
+            margin: 0;
+            line-height: 1.7 !important;
+        }
+    
+    }

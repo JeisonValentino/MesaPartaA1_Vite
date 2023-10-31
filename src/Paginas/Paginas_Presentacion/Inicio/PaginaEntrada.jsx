@@ -10,6 +10,7 @@ import comp_matricula2 from "./componentes_personalizados_carrusel/Matricula2/co
 import comp_matricula3 from "./componentes_personalizados_carrusel/Matricula3/comp_matricula3"
 import Carrusel_imagen from "../Complemets/Carrusel_imagenes/Carrusel_imagen"
 import { Button } from "react-bootstrap"
+import niña_agenda from "./Imagenes/niña-agenda 1.png"
 const componentes = [comp_matricula1,comp_matricula2,comp_matricula3];
 
 const PaginaEntrada = ()=>{
@@ -51,6 +52,20 @@ return(
 </div>
 </div>
  
+<div className="propuestaEducativa">
+    <div className="contenedor_propuesta1">
+<div className="contenedor_imagen_propuesta">
+<img src={niña_agenda}></img>
+</div>
+
+    </div>
+    <div className="contenedor_propuesta2">
+        <h3>La mejor propuesta educativa</h3>
+        <p>Somos una de las organizaciones educativas mas grandes del pais con 25 años de experiencias brindadndo una educacion de calidad</p>
+    </div>
+</div>
+
+
 </div> 
 
 

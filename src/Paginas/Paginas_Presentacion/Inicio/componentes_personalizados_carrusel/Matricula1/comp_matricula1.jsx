@@ -8,7 +8,7 @@ export default function comp_matricula1 (){
         <Fragment>
 
 
-          <div className="contenedor_border">
+          <div className="contenedor_border contenedor_border_matricula1">
           <div class="borde-mitad2">
           <div className="contenido_boder2">
           <div className="imagen_border2">
@@ -33,8 +33,8 @@ export default function comp_matricula1 (){
               
             
           </div>
-<div class="cuadrado">
-  <div class="borde-mitad">
+<div class=" matricula1 cuadrado">
+  <div class="borde-mitad_matricula">
 
   </div>
 </div>

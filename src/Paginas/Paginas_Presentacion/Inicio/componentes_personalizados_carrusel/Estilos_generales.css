@@ -1,13 +1,4 @@
-.borde-mitad {
-    width: 100%; /* Ancho del cuadrado */
-    height: 100%; 
-    /* Altura del cuadrado */
-    border: 10px solid transparent; 
-    border-radius: 20px;/* Ancho y estilo del borde, transparente */
-    border-image: linear-gradient(to right,#fff 62%, #324088 40% ); /* Degradado en el borde */
-    border-image-slice: 1; /* Tamaño del degradado */
-    border-image-width: 10px; /* Ancho del degradado */
-  }
+
 
   .cuadrado {
     width: 100%; /* Ancho del cuadrado */
@@ -17,21 +8,7 @@
     position: relative;
     padding: 20px /* Permite posicionar elementos hijos */
   }
-  .borde-mitad2{
-    display: inline-block;
-    width: 60%; /* Ancho del cuadrado */
-    height: 100%; 
-  
-    background-color: #324088;
-  }
 
-  .borde-mitad1{
-    display: inline-block;
-    width: 40%; /* Ancho del cuadrado */
-    height: 100%; 
-
-    background-color: rgb(255,255,255);
-  }
   .contenedor_border{
     height: 100%; 
     position:absolute;
@@ -40,30 +17,6 @@
 
   @media only screen and (max-width: 767px){
 
-    .borde-mitad {
-        width: 100%; /* Ancho del cuadrado */
-        height: 100%; 
-        /* Altura del cuadrado */
-        border: 10px solid transparent; 
-        border-radius: 20px;/* Ancho y estilo del borde, transparente */
-        border-image: linear-gradient(to bottom,#fff 62%, #324088 40% ); /* Degradado en el borde */
-        border-image-slice: 1; /* Tamaño del degradado */
-        border-image-width: 10px; /* Ancho del degradado */
-      }
 
-      .borde-mitad2{
-        display: block;
-        width: 100%; /* Ancho del cuadrado */
-        height: 60%; 
-      
-        background-color: #324088;
-      }
-    
-      .borde-mitad1{
-        display: block;
-        width: 100%; /* Ancho del cuadrado */
-        height: 40%; 
-    
-        background-color: rgb(255,255,255);
-      }
+
   }
