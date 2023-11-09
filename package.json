@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
+    ,"start": "FAST_REFRESH=false npm-run-all -p client server"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.2.0",

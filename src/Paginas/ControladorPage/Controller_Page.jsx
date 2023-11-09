@@ -8,9 +8,9 @@ import { Entrada } from '../Paginas_Login_panel/Paginas/pagesLogin/Entrada';
 import { MesaPartes_Post } from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/ComponentMesaPartesPost/MesaPartes_Post';
 import React ,{ useRef } from 'react';
 import PaginaEntrada from '../Paginas_Presentacion/Inicio/PaginaEntrada';
-import  ElColegio  from '../Paginas_Presentacion/ElColegio';
-import Nuestras_Sedes from '../Paginas_Presentacion/Nuestras_Sedes';
-import Proceso_Matricula from '../Paginas_Presentacion/Proceso_Matricula';
+import  ElColegio  from '../Paginas_Presentacion/Nosotros/ElColegio';
+import Nuestras_Sedes from '../Paginas_Presentacion/Servicios/Nuestras_Sedes';
+import Proceso_Matricula from '../Paginas_Presentacion/Matricula/Proceso_Matricula';
 import Servicios_Adicionales from '../Paginas_Presentacion/Servicios_Adicionales';
 import Testimonios from '../Paginas_Presentacion/Testimonios'
 import Noticias from '../Paginas_Presentacion/Noticias'
@@ -31,6 +31,7 @@ import  Empleado  from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtenci
 import LoginControlador from './LoginControlador';
 import { PDF_Render } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/PDF/PDF_Render';
 import Almacenamiento from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Mantenimiento/Almacenamiento';
+import Admision_page from '../Paginas_Presentacion/Admision/admision_page';
 
 function Controller_Page() {
 
@@ -48,6 +49,7 @@ function Controller_Page() {
       <Route index element={<PaginaEntrada/>} />
       <Route path='Nosotros' element={<ElColegio/>} />
       <Route path='Servicios' element={<Nuestras_Sedes/>} />
+      <Route path='Admision' element={<Admision_page/>} />
       <Route path='Matricula' element={<Proceso_Matricula/>} />
       <Route path='Blog' element={<Servicios_Adicionales/>} />
       <Route path='Contacto' element={<Testimonios/>} />

@@ -49,13 +49,14 @@ padding:0;
     background-color: #1B203A;
     max-width: 15em;
     width:50%;
-    min-width: 10rem;
+    min-width: 5rem;
   
 
 }
 .footer .imagen_footer{
     display: inline-block;
 }
+
 .footer .Copyritght{
     text-align: center;
 }

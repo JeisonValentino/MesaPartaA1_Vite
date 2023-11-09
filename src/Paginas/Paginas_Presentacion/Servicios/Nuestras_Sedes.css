@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Roboto&display=swap');
+.Container_Nuestras_Sedes{
+    width: 80%;
+    height: 30rem;
+    margin-top: 7rem;
+    margin-left: 10%;
+    display: flex;
+    justify-content: center;
+}
+.container_cartas_servicios1{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+    grid-gap: 20px;
+    width: 100%;
+    padding: 2rem 0 2rem 0;
+}
+.container_cartas_servicios2{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    overflow-x: auto; 
+    scroll-snap-type: x;
+    /* Permite desplazamiento horizontal */
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    width: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+.container_cartas_servicios2::-webkit-scrollbar { /* for chrome */
+    display: none;
+  }
+  
+
+
+  .container_cartas_servicios1 .cartas_servicios{
+   width: 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    border-radius: 2rem;
+    box-shadow: 0px 10px 10px -16px black;
+    text-overflow: ellipsis;
+    user-select: none;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    background-color: #EBEBED;
+    align-items: center;
+}
+
+
+
+  .container_cartas_servicios2 .cartas_servicios{
+    flex: 1 0;
+    background-color: #EBEBED;
+    min-width: 380px;
+    height: 450px;
+    border-radius: 2rem;
+    box-shadow: 0px 10px 10px -16px black;
+    overflow: hidden; /* Limita el desbordamiento del texto */
+    text-overflow: ellipsis;
+    user-select: none;
+    scroll-snap-align: start;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+ 
+    align-items: center;
+   
+}
+
+.cartas_servicios .descripcion{
+    padding: 0 4px 0 4px;
+    height: 20rem;
+}
+.cartas_servicios .descripcion h3{
+    font-size: 1.3rem;
+    font-weight: 800!important;
+    color: #333F87;
+    text-align: center;
+}
+
+.cartas_servicios .descripcion p{
+    text-align: justify;
+}
+.container_cartas_servicios2 .cartas_servicios img{
+    height: 13.5rem;
+    width: 100%;
+}
+.container_cartas_servicios2 .cartas_servicios:nth-child(1){
+    margin-left: 2rem;
+}
+
+
+
+ .cartas_servicios button {
+    background-color: #333F87;
+    font-size: 1.3rem;
+    font-weight: 700;
+    width: 80%;
+    height: 2rem;
+    text-align: center;
+    align-items: center;
+    padding: 0.1rem 1rem 0.7rem 1rem;
+  
+}
+
+
+.container_cartas_servicios1 .cartas_servicios img{
+    height: 13.5rem;
+    width: 90%;
+    padding:  2rem  3rem  1rem 3rem;
+}
+
+
+
+
+.cloned {
+    transition: transform 2s ease; /* Ajusta la duración y el efecto de transición */
+  }
+
+  @media only screen and (max-width: 767px){
+
+    .container_cartas_servicios1{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        grid-gap: 20px;
+        padding: 2rem 0 2rem 0 ;
+    }
+
+
+ .cartas_servicios{
+        flex: 1 0;
+        background-color: #EBEBED;
+        min-width: 320px;
+        height: 410px;
+        border-radius: 2rem;
+        box-shadow: 0px 10px 10px -16px black;
+        overflow: hidden; /* Limita el desbordamiento del texto */
+        text-overflow: ellipsis;
+        user-select: none;
+        scroll-snap-align: start;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        flex-direction: column;
+     
+        align-items: center;
+       
+    }
+
+    .container_cartas_servicios1 .cartas_servicios{
+        width: 50%; 
+    }
+    
+    .cartas_servicios .descripcion p{
+        text-align: justify;
+        font-size: 10px;
+        
+        margin: 0;
+        
+    }
+    .cartas_servicios .descripcion {
+        padding: 0.4rem 1rem 0rem 1rem;
+        height: 7rem;
+    }
+
+     .cartas_servicios .descripcion h3{
+        font-size: 1rem;
+        font-weight: 800!important;
+        color: #333F87;
+        text-align: center;
+    }
+
+    .cartas_servicios img{
+height: 10rem;
+padding:0;
+    }
+   
+    
+    
+    
+     .cartas_servicios button {
+        background-color: #333F87;
+        font-size: 1.3rem;
+        font-weight: 700;
+        width: 80%;
+        height: 2rem;
+        text-align: center;
+        align-items: center;
+        padding: 0.1rem 1rem 0.7rem 1rem;
+      
+    }
+
+  }
+
+
+  @media only screen and (max-width: 367px){
+
+     .cartas_servicios{
+        flex: 1 0 !important;
+        background-color: #EBEBED !important;
+        min-width: 240px !important;
+        height: 320px !important;
+        border-radius: 2rem;
+        box-shadow: 0px 10px 10px -16px black !important;
+        overflow: hidden !important; /* Limita el desbordamiento del texto */
+        text-overflow: ellipsis !important;
+        user-select: none !important;
+        scroll-snap-align: start !important;
+        aspect-ratio: 1 / 1 !important;
+        display: flex !important;
+        flex-direction: column !important ;
+     
+        align-items: center !important;
+       
+    }
+
+    .container_cartas_servicios1 .cartas_servicios{
+        width: 80%;
+
+        flex: 1 0;
+        background-color: #EBEBED;
+        height: 320px;
+        border-radius: 2rem;
+        box-shadow: 0px 10px 10px -16px black;
+        overflow: hidden; /* Limita el desbordamiento del texto */
+        text-overflow: ellipsis;
+        user-select: none;
+        scroll-snap-align: start;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        flex-direction: column;
+     
+        align-items: center;
+    }
+
+     .cartas_servicios .descripcion p{
+        text-align: justify;
+        font-size: 10px;
+        margin: 0;
+        
+    }
+    .cartas_servicios .descripcion {
+        padding: 0rem 1rem 0rem 1rem;
+        height: 9rem;
+    }
+
+     .cartas_servicios .descripcion h3{
+        font-size: 1rem;
+        font-weight: 800!important;
+        color: #333F87;
+        text-align: center;
+    }
+
+    .cartas_servicios img{
+height: 10rem;
+padding:0;
+    }
+
+  }

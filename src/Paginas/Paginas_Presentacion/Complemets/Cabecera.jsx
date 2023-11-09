@@ -20,10 +20,11 @@ import { Style_link } from "./Style_link.jsx";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export default function Cabecera(props) {
+export default function Cabecera() {
   const [menuIcon, SetMenuIcon] = useState(true);
 
   const [bajarEvento, setBajarEvento] = useState(false);
+
 
   useEffect(() => {
     window.addEventListener("scroll", function () {
@@ -108,7 +109,7 @@ export default function Cabecera(props) {
                 focusable="false"
                 data-prefix="fab"
                 data-icon="tiktok"
-                class="svg-inline--fa fa-tiktok sc-iqcoie eKzIjO tiktok"
+                className="svg-inline--fa fa-tiktok sc-iqcoie eKzIjO tiktok"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -121,7 +122,7 @@ export default function Cabecera(props) {
                     y2="49.75%"
                     id="bgGradient"
                   >
-                    <stop offset="33%" stop-color="white" />
+                    <stop offset="33%" />
                   </linearGradient>
                 </defs>
 
@@ -146,18 +147,18 @@ export default function Cabecera(props) {
               </Style_link>
             </li>
             <li>
-              <Style_link to="/El-Colegio" className="linkCabecera" s>
+              <Style_link to="/Nosotros" className="linkCabecera" >
                 NOSOTROS
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Proceso-Matricula" className="linkCabecera">
+              <Style_link to="/Servicios" className="linkCabecera">
                 SERVICIOS
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Nuestras-Sedes" className="linkCabecera">
-                MATRICULA
+              <Style_link to="/Admision" className="linkCabecera">
+              Admision
               </Style_link>
             </li>
 
@@ -209,24 +210,24 @@ export default function Cabecera(props) {
               </Style_link>
             </li>
             <li>
-              <Style_link to="/El-Colegio" className="linkCabecera" s>
-                El colegio{" "}
+              <Style_link to="/Nosotros" className="linkCabecera" >
+                Nosotros{" "}
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Proceso-Matricula" className="linkCabecera">
+              <Style_link to="/Servicios" className="linkCabecera">
                 Proceso de matricula{" "}
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Nuestras-Sedes" className="linkCabecera">
-                Nuestras sedes{" "}
+              <Style_link to="/Admision" className="linkCabecera">
+              Admision{" "}
               </Style_link>
             </li>
 
             <li>
-              <Style_link to="/Servicios-Adicionales" className="linkCabecera">
-                Servicios adicionales{" "}
+              <Style_link to="/Blog" className="linkCabecera">
+                Blog{" "}
               </Style_link>
             </li>
 
