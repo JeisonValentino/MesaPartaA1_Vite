@@ -2,6 +2,64 @@
     font-family: 'Roboto', sans-serif;
 
 }
+
+/* estilo de descripcion de contenido mitad imagen */
+.contenedor_global_informativo{
+    margin-top: 2rem;
+}
+.contenedor_global_informativo h3{
+text-align: center;
+font-size: 1.5rem;
+font-weight: 800!important;
+color: #333F87;
+margin: 0;
+}
+.contenedor_global_informativo .contenedor_informativo{
+
+    padding:5rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:7rem;
+}
+
+.contenedor_global_informativo .contenedor_informativo.reverso{
+    flex-direction: row-reverse !important;
+}
+
+.contenedor_global_informativo .contenedor_informativo .contenedor {
+width: 50%;
+font-size: 1.2rem;
+height: 32rem;
+}
+
+.contenedor_global_informativo .contenedor_informativo .contenedor img{
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (max-width: 767px){
+    .contenedor_global_informativo .contenedor_informativo{
+        flex-direction: column-reverse;
+        gap:2rem;
+        padding:1rem;
+    }
+    .contenedor_global_informativo .contenedor_informativo.reverso{
+        flex-direction: column !important;
+    }
+
+    .contenedor_global_informativo .contenedor_informativo .contenedor {
+        width: 100%;
+        height: 50%;
+        }
+}
+
+
+
+/* aqui termina  */
+
+
+
 .fotoFondo{
     width: 100%;
     height:150%;

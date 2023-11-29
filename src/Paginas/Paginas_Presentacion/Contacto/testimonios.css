@@ -1,0 +1,40 @@
+.contenedor_contacto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+    gap: 2rem;
+}
+.formulario_contacto{
+background-color:#EBEBED ;
+width: 40%;
+padding:  3rem  2rem  2rem  2rem;
+border-radius: 1rem;
+}
+.informacion_contacto{
+    width: 40%;
+    padding: 2rem;
+}
+
+@media only screen and (max-width: 767px){
+
+    .contenedor_contacto{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4rem;
+        gap: 2rem;
+        margin: 2rem;
+    }
+    .formulario_contacto{
+    background-color:#EBEBED ;
+    width: 100%;
+    padding:  3rem  2rem  2rem  2rem;
+    border-radius: 1rem;
+    }
+    .informacion_contacto{
+        width: 100%;
+        padding: 2rem;
+    }
+}

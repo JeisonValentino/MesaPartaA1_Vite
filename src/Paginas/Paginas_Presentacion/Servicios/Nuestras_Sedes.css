@@ -123,6 +123,24 @@
     transition: transform 2s ease; /* Ajusta la duración y el efecto de transición */
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   @media only screen and (max-width: 767px){
 
     .container_cartas_servicios1{
@@ -138,7 +156,7 @@
  .cartas_servicios{
         flex: 1 0;
         background-color: #EBEBED;
-        min-width: 320px;
+        width: 100% !important;
         height: 410px;
         border-radius: 2rem;
         box-shadow: 0px 10px 10px -16px black;
@@ -154,9 +172,7 @@
        
     }
 
-    .container_cartas_servicios1 .cartas_servicios{
-        width: 50%; 
-    }
+  
     
     .cartas_servicios .descripcion p{
         text-align: justify;

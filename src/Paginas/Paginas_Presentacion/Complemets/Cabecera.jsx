@@ -163,13 +163,13 @@ export default function Cabecera() {
             </li>
 
             <li>
-              <Style_link to="/Servicios-Adicionales" className="linkCabecera">
+              <Style_link to="/Blog" className="linkCabecera">
                 BLOG
               </Style_link>
             </li>
 
             <li>
-              <Style_link to="/Servicios-Adicionales" className="linkCabecera">
+              <Style_link to="/Contacto" className="linkCabecera">
              CONTACTO
               </Style_link>
             </li>
@@ -228,6 +228,12 @@ export default function Cabecera() {
             <li>
               <Style_link to="/Blog" className="linkCabecera">
                 Blog{" "}
+              </Style_link>
+            </li>
+
+            <li>
+              <Style_link to="/Contacto" className="linkCabecera">
+                Contacto{" "}
               </Style_link>
             </li>
 

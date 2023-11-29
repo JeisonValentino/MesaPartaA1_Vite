@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
-    ,"start": "FAST_REFRESH=false npm-run-all -p client server"
+    "preview": "vite preview",
+    "start": "FAST_REFRESH=false npm-run-all -p client server"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.2.0",
@@ -66,6 +66,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
+    "create-vite": "^4.4.1",
     "sass": "^1.54.6",
     "vite": "^3.0.9"
   }

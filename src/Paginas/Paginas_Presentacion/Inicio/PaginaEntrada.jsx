@@ -11,6 +11,11 @@ import comp_matricula3 from "./componentes_personalizados_carrusel/Matricula3/co
 import Carrusel_imagen from "../Complemets/Carrusel_imagenes/Carrusel_imagen"
 import { Button } from "react-bootstrap"
 import niña_agenda from "./Imagenes/niña-agenda 1.png"
+import escolaridad_1 from "./Imagenes/2.png"
+
+import academia from "./Imagenes/4.png"
+import extracurriculares from "./Imagenes/6.png"
+
 const componentes = [comp_matricula1,comp_matricula2,comp_matricula3];
 
 const PaginaEntrada = ()=>{
@@ -51,18 +56,18 @@ APRENDO Y EMPRENDO PARA UNA VIDA DE EXITOS
 
 <div className="container_cartas_servicios1">
     <div className="cartas_servicios">
-    <img src={""} />
+    <img src={escolaridad_1} />
     <div className="descripcion">
    
       <h3>Escolaridad</h3><p>Educacion  inicial, primaria  y secundaria </p>
     </div><button type="button" class="btn btn-primary btn-lg">Saber Mas</button></div>
     <div className="cartas_servicios">
-    <img src={""} />
+    <img src={academia} />
     <div className="descripcion">
       <h3>Academia </h3><p>Lograremos que nuestros estudiantes alcance con exito su etapa escolar y preuniversitaria , garantizando el ingreso seguro a las mas importantes universidades</p>
     </div><button type="button" class="btn btn-primary btn-lg">Saber Mas</button></div>
     <div className="cartas_servicios">
-    <img src={""} />
+    <img src={extracurriculares} />
     <div className="descripcion">
       <h3>Cursos extracurriculares y Talleres </h3><p>Son programas adicionales de aprendizaje y desarrollo que permiten a los estudiantes explorar intereses específicos, adquirir habilidades nuevas y participar en actividades enriquecedoras fuera del plan de estudios principal</p>
     </div><button type="button" class="btn btn-primary btn-lg">Saber Mas</button></div>

@@ -1,0 +1,63 @@
+
+
+thead[rowspan]{
+    vertical-align: middle; 
+    min-height: 50px;
+}
+
+th[rowspan] div {
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 50px; /* Ajuste del line-height para adaptarse al contenido */
+    /* Ajuste del line-height para adaptarse al contenido */
+    box-sizing: border-box; /* Ajuste para incluir padding y border en el tamaño total */
+  }
+  .requisitos_admision{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+    flex-direction: column;
+  }
+  .requisitos_admision .cabecera{
+    position:static ;
+    height: auto;
+    text-align: center  ;
+    color: #324088;
+    z-index: auto;
+
+  }
+  .requisitos_admision .cabecera h4{
+    font-weight: 800 !important;
+  }
+  .requisitos_admision .cuerpo{
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    text-align: center;
+  }
+  .requisitos_admision .cuerpo .componentes ul li{
+    cursor:default;
+  }
+  .requisitos_admision .cuerpo .componentes:nth-child(1) ul li{
+
+    list-style: disc !important;
+  }
+  
+  .requisitos_admision .cuerpo .componentes:nth-child(2) ul li{
+
+    list-style: disc !important;
+  }
+  .requisitos_admision .cuerpo .componentes:nth-child(3) ul li p{
+display: inline;
+  }
+  .requisitos_admision .cuerpo .componentes:nth-child(3) ul li p:nth-child(1){
+    font-weight: 800 !important;
+  }
+
+  .requisitos_admision .cuerpo .componentes h5{
+    font-weight: 800 !important;
+  }
+  

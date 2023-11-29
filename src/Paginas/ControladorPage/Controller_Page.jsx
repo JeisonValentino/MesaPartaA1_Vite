@@ -12,7 +12,7 @@ import  ElColegio  from '../Paginas_Presentacion/Nosotros/ElColegio';
 import Nuestras_Sedes from '../Paginas_Presentacion/Servicios/Nuestras_Sedes';
 import Proceso_Matricula from '../Paginas_Presentacion/Matricula/Proceso_Matricula';
 import Servicios_Adicionales from '../Paginas_Presentacion/Servicios_Adicionales';
-import Testimonios from '../Paginas_Presentacion/Testimonios'
+import Testimonios from '../Paginas_Presentacion/Contacto/Testimonios'
 import Noticias from '../Paginas_Presentacion/Noticias'
 import CRM from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/CRM';
 import Estudiantes from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/Estudiantes';
@@ -31,7 +31,7 @@ import  Empleado  from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtenci
 import LoginControlador from './LoginControlador';
 import { PDF_Render } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/PDF/PDF_Render';
 import Almacenamiento from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Mantenimiento/Almacenamiento';
-import Admision_page from '../Paginas_Presentacion/Admision/admision_page';
+import Page_admision from '../Paginas_Presentacion/Admision/Page_admision';
 
 function Controller_Page() {
 
@@ -49,7 +49,7 @@ function Controller_Page() {
       <Route index element={<PaginaEntrada/>} />
       <Route path='Nosotros' element={<ElColegio/>} />
       <Route path='Servicios' element={<Nuestras_Sedes/>} />
-      <Route path='Admision' element={<Admision_page/>} />
+      <Route path='Admision' element={<Page_admision/>} />
       <Route path='Matricula' element={<Proceso_Matricula/>} />
       <Route path='Blog' element={<Servicios_Adicionales/>} />
       <Route path='Contacto' element={<Testimonios/>} />
