@@ -32,6 +32,8 @@ import LoginControlador from './LoginControlador';
 import { PDF_Render } from '../Paginas_Login_panel/Paginas/QUEJAS_RECLAMOS/PDF/PDF_Render';
 import Almacenamiento from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/Mantenimiento/Almacenamiento';
 import Page_admision from '../Paginas_Presentacion/Admision/Page_admision';
+import Politicas_Privacidad from '../Paginas_Presentacion/Politicas/Politicas_Privacidad';
+import Formulario_Reclamaciones from '../Paginas_Presentacion/Reclamos/Formulario_Reclamaciones';
 
 function Controller_Page() {
 
@@ -53,8 +55,9 @@ function Controller_Page() {
       <Route path='Matricula' element={<Proceso_Matricula/>} />
       <Route path='Blog' element={<Servicios_Adicionales/>} />
       <Route path='Contacto' element={<Testimonios/>} />
-    
-    
+      <Route path='Politicas-Privacidad' element={<Politicas_Privacidad/>} />
+      <Route path='Reclamaciones' element={<Formulario_Reclamaciones/>} />
+
       <Route path='pdf' element={<PDF_Render/>} />
     <Route path='MesaPartes/Formulario' element={<QuejaFormulario/>} />
     <Route path='MesaPartes/Busqueda-Solicitud' element={<Busqueda/>} />

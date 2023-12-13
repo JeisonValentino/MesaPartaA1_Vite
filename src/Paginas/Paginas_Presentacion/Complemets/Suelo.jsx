@@ -64,7 +64,7 @@ export const Suelo = () => {
               </Style_link>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
+                <Style_link to="/Politicas-Privacidad" className="linkCabecera">
                 Politicas de privacidad
               </Style_link>
                 </li>

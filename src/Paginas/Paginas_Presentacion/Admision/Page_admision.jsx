@@ -27,8 +27,16 @@ const Page_admision = () => {
       ) : (
         <div>
         <div className="fotoNosotros">
-    <div className="fondobanner"><img src={banner}></img>  <div className="linea"></div><p>Admision</p></div>
-</div>
+            <div className="fondobanner">
+              <img src={banner}></img> 
+              <div className="fondo_container_banner">
+                  <div  className="linea"></div>
+                  <div >
+                      <p>Proceso de Matricula</p>
+                  </div>
+              </div>
+            </div>
+          </div>
 
 <div style={{textAlign:"center",marginTop:"5rem"}}> 
 <div style={{marginBottom:"4rem"}}>

@@ -5,6 +5,9 @@ import { Suelo } from "../Complemets/Suelo";
 import banner from "../Nosotros/banner-nosotros.png";
 import './testimonios.css'
 import PersonalizadoInput from "../../Paginas_Login_panel/Paginas/pagesLogin/Modulos/Inputs_maps/PersonalizadoInput";
+import { Style_link } from "../Complemets/Style_link";
+import llamada from "./llamando-contacto.png"
+import { Button } from "react-bootstrap";
 const Testimonios = ()=>{
 
  const [loading ,setLoading]=useState(false);
@@ -48,20 +51,46 @@ const [submitted, setSubmitted]=useState(false);
     {loading ? <Loading/>:<div>
     <div className="fotoNosotros">
             <div className="fondobanner">
-              <img src={banner}></img> <div className="linea"></div>
-              <p>Contacto</p>
+              <img src={banner}></img> 
+              <div className="fondo_container_banner">
+                  <div  className="linea"></div>
+                  <div >
+                      <p>Contacto</p>
+                  </div>
+              </div>
             </div>
           </div>
 
  <div className="contenedor_contacto">
 
-    <div className="informacion_contacto"></div>
+    <div className="informacion_contacto">
+    <div className="contenedores" style={{wordWrap: "break-word"}}>
+              <h3>Contacto</h3>
+              <ul>
+                <li>
+                <Style_link to="/" className="linkCabecera">
+                993 180 314
+              </Style_link>
+                </li>
+                <li>
+                <Style_link to="/" className="linkCabecera">
+                admision@circuloa1school.org
+              </Style_link>
+                </li>
+                <li>
+                <Style_link to="/" className="linkCabecera">
+                Facebook
+              </Style_link> 
+                </li>
+              </ul>
+            </div>
+<div style={{display:"flex",justifyContent:"center",height:"25rem"}}><img style={{width:"100%",height:"100%"}} src={llamada} alt="" /></div>
+    </div>
     <div className="formulario_contacto">
 <h4 style={{textAlign:"center",fontWeight:"bold",color:"#333F87"}}>Dejanos tu consulta</h4>
 <PersonalizadoInput submitted={submitted} listaFormulario={listaFormulario} Entity={formularioEntity}  onInputChange={onInputChange} />
-
-    
- </div>
+<div style={{display:"flex",justifyContent:"center",marginTop:"1rem",width:"100%"}}><Button style={{backgroundColor:"#333F87",width:"80%"}}>REGISTRATE AQUI</Button></div>{' '}
+</div>
  </div>
 
      </div>

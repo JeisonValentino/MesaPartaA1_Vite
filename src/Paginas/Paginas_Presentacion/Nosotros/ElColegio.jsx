@@ -39,8 +39,16 @@ import ojo from './ojo.png'
 <div className="main_Elcolegio">
 
 <div className="fotoNosotros">
-    <div className="fondobanner"><img src={banner}></img>  <div className="linea"></div><p>Nosotros</p></div>
-</div>
+            <div className="fondobanner">
+              <img src={banner}></img> 
+              <div className="fondo_container_banner">
+                  <div  className="linea"></div>
+                  <div >
+                      <p>Nosotros</p>
+                  </div>
+              </div>
+            </div>
+          </div>
 
 <div className="nuestra_historia">
     <div className="foto_historica">

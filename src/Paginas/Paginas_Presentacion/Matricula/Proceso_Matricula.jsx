@@ -26,8 +26,16 @@ const Proceso_Matricula = () => {
       ) : (
         <div>
         <div className="fotoNosotros">
-    <div className="fondobanner"><img src={banner}></img>  <div className="linea"></div><p>matricula</p></div>
-</div>
+            <div className="fondobanner">
+              <img src={banner}></img> 
+              <div className="fondo_container_banner">
+                  <div  className="linea"></div>
+                  <div >
+                      <p>Politicas de Privacidad</p>
+                  </div>
+              </div>
+            </div>
+          </div>
 
 
 

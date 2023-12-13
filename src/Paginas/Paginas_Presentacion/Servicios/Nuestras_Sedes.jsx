@@ -100,10 +100,15 @@ const Nuestras_Sedes = () => {
         <Loading />
       ) : (
         <div>
-          <div className="fotoNosotros">
+        <div className="fotoNosotros">
             <div className="fondobanner">
-              <img src={banner}></img> <div className="linea"></div>
-              <p>Servicios</p>
+              <img src={banner}></img> 
+              <div className="fondo_container_banner">
+                  <div  className="linea"></div>
+                  <div >
+                      <p>Servicios</p>
+                  </div>
+              </div>
             </div>
           </div>
 
