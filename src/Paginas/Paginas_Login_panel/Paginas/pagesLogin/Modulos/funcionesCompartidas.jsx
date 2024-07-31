@@ -19,3 +19,15 @@ export const onchangeImage= (entity)=>{
         return ""
     }
     }
+
+
+    export function validarCorreo(valor) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        // Validar la entrada con la expresión regular
+        if (emailRegex.test(valor)) {
+          return true;
+        } else {
+          return false;
+        }
+      }

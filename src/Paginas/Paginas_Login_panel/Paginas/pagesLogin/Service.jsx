@@ -1,6 +1,6 @@
 import axios from "axios";
 import React,{ Component } from "react";
-
+import jwt_decode from "jwt-decode";
 
 
 
@@ -29,14 +29,22 @@ export    const   Service = {
      }
         ,
 
+        enviarCorreoRecuperacionPassword(dni){
+            return axios.post(IP+`users/authentication/ActualizarContraseña-Correo/${dni}`)
+
+        },
+
+        enviarPasswordRecuperacionPassword(contraseña,codigo){
+            return axios.post(IP+`users/authentication/validateTokenPassword/${codigo}?contraseña=${contraseña}`,)
+
+        },
+
     refresToken(){
         return axios({
             method : 'post',
-        url:    IP+"users/token/refresh"
-    ,headers:{
-        headers:{
-            'Content-Type':'application/json'
-        }
+        url:    IP+"users/authentication/refrestToken"
+    ,    headers: {
+        'Authorization': localStorage.getItem('jwtToken-Refresh')
     }
     
     

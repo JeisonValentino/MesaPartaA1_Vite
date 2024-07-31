@@ -38,6 +38,21 @@ height: 32rem;
     height: 100%;
 }
 
+button.style_institucional{
+    color:white ;
+    font-weight: 500;
+    font-size: 1.8rem;
+    border-radius: 1ex;
+    cursor: pointer;
+    background-color: #324088 !important;
+}
+
+
+button.style_institucional:hover{
+    color: #324088 !important ;
+    background-color: white !important;
+}
+
 @media only screen and (max-width: 767px){
     .contenedor_global_informativo .contenedor_informativo{
         flex-direction: column-reverse;

@@ -60,4 +60,14 @@ display: inline;
   .requisitos_admision .cuerpo .componentes h5{
     font-weight: 800 !important;
   }
+
+  .page_admision button{
+ 
+    color:white ;
+    font-weight: 500;
+    font-size: 1.8rem;
+    border-radius: 1rem ;
+    cursor: pointer;
+    background-color: #324088 !important;
+  }
   

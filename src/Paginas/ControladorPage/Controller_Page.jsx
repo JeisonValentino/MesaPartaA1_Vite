@@ -1,5 +1,5 @@
 import { QuejaFormulario } from '../Paginas_Login_panel/Paginas/QuejaFormulario';
-import { Route  , BrowserRouter as Router, Routes, BrowserRouter } from 'react-router-dom';
+import { Route  , BrowserRouter as Router, Routes, BrowserRouter, Outlet, Navigate } from 'react-router-dom';
 import '../../App.css';
 
 import { MesaPartes } from '../Paginas_Login_panel/Paginas/MesaPartes';
@@ -11,14 +11,12 @@ import PaginaEntrada from '../Paginas_Presentacion/Inicio/PaginaEntrada';
 import  ElColegio  from '../Paginas_Presentacion/Nosotros/ElColegio';
 import Nuestras_Sedes from '../Paginas_Presentacion/Servicios/Nuestras_Sedes';
 import Proceso_Matricula from '../Paginas_Presentacion/Matricula/Proceso_Matricula';
-import Servicios_Adicionales from '../Paginas_Presentacion/Servicios_Adicionales';
 import Testimonios from '../Paginas_Presentacion/Contacto/Testimonios'
-import Noticias from '../Paginas_Presentacion/Noticias'
+import Noticias from '../Paginas_Presentacion/Blog/Noticias'
 import CRM from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/CRM';
 import Estudiantes from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExtencion/AtencionCliente/Estudiantes';
 import Perfil from '../Paginas_Login_panel/Paginas/pagesLogin/Perfil';
 import Error404 from './Error404';
-import FormularioLogin from '../Paginas_Login_panel/Paginas/FormularioLogin'
 import { Provider, useSelector} from 'react-redux';
 import PublicRoute from './PublicRoute';
 import PrivateRouter from './PrivateRouter';
@@ -34,13 +32,22 @@ import Almacenamiento from '../Paginas_Login_panel/Paginas/pagesLogin/ModulosExt
 import Page_admision from '../Paginas_Presentacion/Admision/Page_admision';
 import Politicas_Privacidad from '../Paginas_Presentacion/Politicas/Politicas_Privacidad';
 import Formulario_Reclamaciones from '../Paginas_Presentacion/Reclamos/Formulario_Reclamaciones';
-
+import Page_Solicitud_Admision from '../Paginas_Presentacion/Admision/Solicitud_Admision.jsx/Page_Solicitud_Admision';
+import Preguntas_frecuentes from '../Paginas_Presentacion/Preguntas_Frecuentes/Preguntas_frecuentes';
+import Pagina_Opinion from '../Paginas_Presentacion/Blog/Paginas_contenido/Pagina_Opinion';
+import Store_Provider_component from './../Paginas_Login_panel/ConfigurationAuthenticacion/context/Store_Provider_component'
+import useStoreDialog from '../Paginas_Login_panel/ConfigurationAuthenticacion/reducer/dialog_reducer';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import FormularioPassword from '../Paginas_Login_panel/Paginas/FormularioPassword';
+import GoogleAuthLogin from '../Paginas_Login_panel/Paginas/GoogleAuthLogin';
+import FormularioLogin from '../Paginas_Login_panel/Paginas/FormularioLogin';
+import FormularioRecuperacionContraseña from '../Paginas_Login_panel/Paginas/FormularioRecuperacionContraseña';
 function Controller_Page() {
-
-
+ 
   return (
     
    <BrowserRouter>
+    <Store_Provider_component />
    <Provider store={store}>
   
   
@@ -52,22 +59,29 @@ function Controller_Page() {
       <Route path='Nosotros' element={<ElColegio/>} />
       <Route path='Servicios' element={<Nuestras_Sedes/>} />
       <Route path='Admision' element={<Page_admision/>} />
+      <Route path='Admision/Solicitud' element={<Page_Solicitud_Admision/>} />
       <Route path='Matricula' element={<Proceso_Matricula/>} />
-      <Route path='Blog' element={<Servicios_Adicionales/>} />
+      <Route path='Blog' element={<Noticias/>} />
+      <Route path='Blog/:titulo' element={<Pagina_Opinion/>} />
+
       <Route path='Contacto' element={<Testimonios/>} />
       <Route path='Politicas-Privacidad' element={<Politicas_Privacidad/>} />
       <Route path='Reclamaciones' element={<Formulario_Reclamaciones/>} />
+      <Route path='Preguntas-Frecuentes' element={<Preguntas_frecuentes/>} />
 
       <Route path='pdf' element={<PDF_Render/>} />
-    <Route path='MesaPartes/Formulario' element={<QuejaFormulario/>} />
+    <Route path='Libro-Reclamaciones' element={<QuejaFormulario/>} />
     <Route path='MesaPartes/Busqueda-Solicitud' element={<Busqueda/>} />
 <Route path='MesaPartes' element={ <MesaPartes/>}  />
-
-<Route path='Login' element={<LoginControlador/>} >
-<Route index element={  <FormularioLogin/>} />
+<Route path='salir' element={<Salir/>} />
 </Route>
 
-<Route path='salir' element={<Salir/>} />
+<Route path='Login/*' element={<LoginControlador/>} >
+<Route  path="Identification"  element={<GoogleAuthLogin/>} />
+<Route path='Password' element={  <FormularioPassword/>} />
+<Route path='Password/reset-password/:token' element={  <FormularioRecuperacionContraseña/>} />
+<Route path="" element={<Navigate to="Identification" />} />
+<Route path="Password/reset-password" element={<Navigate to="/Login" />} />
 </Route>
 
 {/* RUTAS DEL SISTEMA WEB POR SESSION  */}

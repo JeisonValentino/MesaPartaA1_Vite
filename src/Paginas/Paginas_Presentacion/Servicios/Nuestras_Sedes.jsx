@@ -9,16 +9,19 @@ import escudo from "./../Imagenes/escudo.png";
 import inicial from "./imagenes_niveles/inicial.png"
 import primaria from "./imagenes_niveles/primaria 3.png"
 import secundaria from "./imagenes_niveles/secundaria 1.png"
+import marioDamaso from "./imagenes_Services1/logo_marioDamaso.jpg"
 import arte from "./imagenes_niveles/cartas imagenes/arte.jpg"
 import robotica from "./imagenes_niveles/cartas imagenes/robotica2.jpg"
 import realidad_virtual from "./imagenes_niveles/cartas imagenes/robotica3.jpg"
+import useStoreDialog from "../../Paginas_Login_panel/ConfigurationAuthenticacion/reducer/dialog_reducer";
 
 const Nuestras_Sedes = () => {
   const [loading, setLoading] = useState(false);
   const containerRef = useRef(null);
   const [estado_scroll, setEstado_scroll] = useState(false);
   const [posicion, setPosicion] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { setVisible, setHeader, setTipo_componente, setCuerpo } = useStoreDialog();
+
   let maxClonedElements = 200;
   const cambiarEstado = () => {
     setLoading(true);
@@ -95,7 +98,6 @@ const Nuestras_Sedes = () => {
 
   return (
     <Fragment>
-      <Cabecera />
       {loading ? (
         <Loading />
       ) : (
@@ -277,7 +279,7 @@ const Nuestras_Sedes = () => {
                     </p>
                   </div>
                   <div className="contenedor">
-                    <img  style={{ width: "100%", height: "100%" }} />
+                    <img src={marioDamaso} style={{ width: "100%", height: "100%" }} />
                   </div>
                 </div>
               </div>
@@ -317,24 +319,34 @@ const Nuestras_Sedes = () => {
                     a la identificacion plena con su camiseta a la que
                     representa{" "}
                   </p>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg">
+                  <button type="button" onClick={()=>{
+      setVisible(true);
+    setHeader("Futbol");
+    setTipo_componente("ComponentFutbol");
+    setCuerpo({fifi:"uwu"})
+    }} style={{height:"auto",padding:"2%"}} className="btn btn-primary btn-lg">
                   Saber Mas
                 </button>
+                </div>
               </div>
               <div className="cartas_servicios ">
                 <img src={realidad_virtual}/>
                 <div className="descripcion">
                   <h3>Realidad virtual</h3>
                   <p>
-                    Eb estis takkeres de realidad virtual los niños y niñas
+                    En estos talleres de realidad virtual los niños y niñas
                     viven en primera persona experiencias unicas en diferentes
                     escenarios virtuales
                   </p>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg">
+                  <button onClick={()=>{
+      setVisible(true);
+    setHeader("Realidad Virtual");
+    setTipo_componente("ComponentRealidadVirtual");
+    setCuerpo({fifi:"uwu"})
+    }} type="button" style={{height:"auto",padding:"2%"}}  className="btn btn-primary btn-lg">
                   Saber Mas
                 </button>
+                </div>
               </div>
               <div className="cartas_servicios">
                 <img src={arte}/>
@@ -345,10 +357,15 @@ const Nuestras_Sedes = () => {
                     etapa escolar y preuniversitaria , garantizando el ingreso
                     seguro a las mas importantes universidades
                   </p>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg">
+                  <button onClick={()=>{
+      setVisible(true);
+    setHeader("Arte");
+    setTipo_componente("ComponentArte");
+    setCuerpo({fifi:"uwu"})
+    }} type="button" style={{height:"auto",padding:"2%"}}  className="btn btn-primary btn-lg">
                   Saber Mas
                 </button>
+                </div>
               </div>
 
               <div className="cartas_servicios">
@@ -360,15 +377,20 @@ const Nuestras_Sedes = () => {
                     etapa escolar y preuniversitaria , garantizando el ingreso
                     seguro a las mas importantes universidades
                   </p>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg">
+                  <button onClick={()=>{
+      setVisible(true);
+    setHeader("Robotica y Electronica");
+    setTipo_componente("ComponentRobotica");
+    setCuerpo({fifi:"uwu"})
+    }} type="button"  style={{height:"auto",padding:"2%"}}  className="btn btn-primary btn-lg">
                   Saber Mas
                 </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <Suelo />
+        
         </div>
       )}
     </Fragment>

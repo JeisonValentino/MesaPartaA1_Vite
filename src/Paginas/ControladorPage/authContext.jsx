@@ -15,32 +15,16 @@ import jwt_decode from 'jwt-decode'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { Service } from '../Paginas_Login_panel/Paginas/pagesLogin/Service'
+import { updateTimeRemaining } from '../Paginas_Login_panel/ConfigurationAuthenticacion/types'
 
-export const checkToken2 = () => {
+
+
+export const checkToken= () => dispatch => {
   if (localStorage.jwtToken) {
     setAuchToken(localStorage.jwtToken)
     const decoded = jwt_decode(localStorage.jwtToken)
 
-    store.dispatch(
-      setCurrentUser({
-        user: decoded,
-        loggedIn: true
-      })
-    )
-
-    const currentTime = Math.floor(Date.now() / 1000)
-    if (decoded.exp < currentTime) {
-      store.dispatch(logout())
-    }
-  }
-}
-
-export const checkToken = () => {
-  if (localStorage.jwtToken) {
-    setAuchToken(localStorage.jwtToken)
-    const decoded = jwt_decode(localStorage.jwtToken)
-
-    store.dispatch(
+    dispatch(
       setCurrentUser({
         user: decoded,
         loggedIn: true
@@ -52,11 +36,16 @@ export const checkToken = () => {
     var segundoToken = dateConvert.getSeconds()
     console.log(" hora : "+ horaToken + " minuto : "+ minutoToken + "  segundo : "+ segundoToken)
     const currentTime = Math.floor(Date.now() / 1000)
+  const navigate = useNavigate()
 
     if (decoded.exp < currentTime) {
       console.log(decoded.exp)
-      store.dispatch(logout())
+      dispatch(logout())
   
+      setTimeout(() => {
+        navigate('/Login');
+      }, 2000);
+
     }
   }
 }
@@ -77,18 +66,27 @@ export const logout = () => dispatch => {
   
 }
 
-export const reloadToken =async () => {
+export const reloadToken = () => async (dispatch)=> {
+  try {
   let data = await Service.refresToken()
  let response = data.data
  console.log(response)
 if(data.status === 200){
-
-  localStorage.setItem('jwtToken','Bearer '+response["access_token"])
-  localStorage.setItem('jwtToken-Refresh', response ? 'Bearer '+response['refrest_Token'] : '')
-  setAuchToken('Bearer '+response["access_token"])
-  const decoded = jwt_decode('Bearer '+response["access_token"])
-
-  store.dispatch(setCurrentUser({ user: decoded, loggedIn: true }))
+console.log(response)
+  localStorage.setItem('jwtToken','Bearer '+response.data["token"])
+  localStorage.setItem('jwtToken-Refresh', response ? 'Bearer '+response.data['refrest_token'] : '')
+  setAuchToken('Bearer '+response.data["token"])
+  const decoded = jwt_decode('Bearer '+response.data["token"])
+  dispatch(updateTimeRemaining(0));
+  dispatch(setCurrentUser({ user: decoded, loggedIn: true }))
 }else{
 
-  store.dispatch(logout())}}
+ dispatch(logout())}
+
+
+} catch (error) {
+  console.error("Error recargando el token: ", error);
+  // Despachar la acción para cerrar sesión en caso de error
+  dispatch(logout());
+}
+}

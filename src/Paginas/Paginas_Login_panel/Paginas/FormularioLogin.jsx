@@ -1,154 +1,255 @@
-import { Fragment ,useEffect,useRef,useState} from "react"
-import PropTypes, { func } from 'prop-types';
-import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-import { Toast } from 'primereact/toast';
-import axios from "axios";
 
+import { Fragment, createContext, useEffect, useRef, useState } from "react";
+import jwt_decode from "jwt-decode";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Toast } from "primereact/toast";
+import axios from "axios";
 import setAuchToken from "../ConfigurationAuthenticacion/setAuchToken";
 import { useDispatch } from "react-redux";
 import { SET_CURRENT_USER } from "../ConfigurationAuthenticacion/types";
 import { Service } from "./pagesLogin/Service";
- const  FormularioLogin = () => {
+import logo_colegio from "./logo colegio.jpg";
+import "./formulario.css";
+import { GoogleOAuthProvider, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { changeToast } from "../ConfigurationAuthenticacion/reducer/toastReducer";
+import { InputText } from "primereact/inputtext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { classNames } from "primereact/utils";
+import { validarCorreo } from "./pagesLogin/Modulos/funcionesCompartidas";
+
+export  const AuthContext = createContext({ingresar:{correo:"",contraseña:""},setIngresar:()=>{},sumitTedLogin:false, setSumitTedLogin :()=>{},sumitLogin:()=>{},ingresarStado:()=>{} , sumitEmail:()=>{}});
 
 
-
-
-const redirect  = useNavigate();
-    const [ingresar, setIngresar]=useState({correo:'',contraseña:''});
+export  const FormularioLogin = ({children}) => {
+    const navigate = useNavigate();
+    const [ingresar, setIngresar] = useState({ correo: "", contraseña: "",dni:"",recuperacionContraseña:"" });
     const toast = useRef(null);
-    const toast2 = useRef(null);
-    const ingresarStado = e =>{
-    
-        setIngresar({...ingresar,[e.target.name]: e.target.value })
+    const dispatch = useDispatch();
+    const { correo, contraseña,dni ,recuperacionContraseña} = ingresar;
+    const [sumitTedLogin, setSumitTedLogin] = useState(false);
+    const [validaIp, setValidaIp] = useState(true);
+
+    const [activarMensaje,setActivarMensaje]=useState(false);
+    const [submitRecuperacion ,setSubmitRecuperacion]=useState(false);
+
+
+    const enviarRecuperacion = (token)=>{
+      if(!recuperacionContraseña.trim()){
+        setSubmitRecuperacion(true)
+      }else{
+        Service.enviarPasswordRecuperacionPassword(recuperacionContraseña,token).then((res)=>{
+          setSubmitRecuperacion(false);
+          showSuccessAfirmative(res.data);
+          navigate("/login")
+        }).catch((response) => {
+          showSuccess(response.response.data.message);
+        });
+      }
     }
 
-    const dispatch=useDispatch();
-
-    const {correo,contraseña}=ingresar;
-    const [ errors, actualizarError ] = useState({})
-const [validaIp , setValidaIp]=useState(false)
-
-const  valida=async () =>{
-    let data = await Service.ping() .then(res=>{return res })
-    .catch(e=>console.log(e))
-    setValidaIp(data)
-
-}
-useEffect(()=>{
-
-     
-    valida()
-     
-
-},[])
-
-    const showSuccess = () => {
-        toast.current.show({severity:'info', summary: 'El correo no puede estar vacios ', detail:'Message Content', life: 2000});
+    const sumitEmail = async ()=>{
+      if(!dni.trim() || dni.trim().length<8){
+      setSumitTedLogin(true);
+      }else{
+        Service.enviarCorreoRecuperacionPassword(dni).then((res)=>{
+          setActivarMensaje(true)
+          setSumitTedLogin(false);
+        }).catch((response) => {
+          showSuccess(response.response.data.message);
+        });
+      }
     }
 
-    const showSuccess2 = () => {
-        toast2.current.show({severity:'info', summary: 'la contraseña no puede estar vacio ', detail:'Message Content', life: 2000});
-    }
-    
-    
-    const showSuccess3 = (a) => {
-        toast.current.show({severity:'error', summary:"Error : Tus credenciales estan incorrectas ", detail:'Message Content', life: 3000});
-    }
-
-    const sumitLogin = async e =>{
-        e.preventDefault();
-        const errors={};
-        actualizarError(errors)
-    if(correo.trim() === '' ){
-        showSuccess()
-        
-        errors.correo="El correo no puede estra vacia "
-    }
-
-if( contraseña.trim()===''){
-           
-    showSuccess2()
-    errors.contraseña="la contraseña no puede estra vacia "
-}
-
-
-const {data}= await axios.post(`http://localhost:8080/System/login?correo=${ingresar.correo}&contraseña=${ingresar.contraseña}`,{
-
-    withCredentials:true,
-        headers:{'Accept':'application/json','Content-type':'application/json'}
-    
-    }).catch( response =>{
-
-        actualizarError({ auth :"no se puede iniciar sesion con esas credenciales"});
-        showSuccess3(errors.auth)
-    })
-
-
-
-    console.log(data['access_token']);
-
-    localStorage.setItem("jwtToken",'Bearer '+data['access_token']);
-    localStorage.setItem("jwtToken-Refresh",'Bearer '+data['refrest_Token']);
-
-    setAuchToken('Bearer '+data['access_token'])
-    const decoded= jwt_decode ('Bearer '+data['access_token']);
-
-    dispatch(setCurrentUser({user:decoded,loggedIn:true}))
-   
-    redirect("/Sistema-Administrador")
-
- 
-    }
-  
-    if(validaIp){
-return(
-
-<Fragment>  <Toast ref={toast} 
- />    <Toast ref={toast2} style={{marginTop:"11%"}}  
- /> 
-
-<form  onSubmit={sumitLogin} >
-
-<div className="mb-3" style={{marginLeft:"5%",width:"100%" ,marginTop:"4%"}}><p style={{alignContent:"center",color:"rgb(0,0,0)",marginLeft:"2%",fontSize:"30px",letterSpacing:"10px"}} className="form-label"  > CIRCULO A1 SCHOOL  </p></div>
-
-<div className="mb-3" style={{margin:"30%" , marginLeft:"10%",  marginTop:"0",width:"80%"}}>
-<label className="form-label" style={{color:"rgb(0,0,0)",marginTop:"10%"}}>USUARIO</label>
-<input type="text" onChange={ingresarStado} name="correo" className="form-control"  value={correo}/>
-</div>
-<div className="mb-3" style={{margin:"10%" , marginTop:"5%" , width:"80%"}}>
-<label className="form-label" style={{color:"rgb(0,0,0)"}} >CONTRASEÑA</label>
-<input type="password" onChange={ingresarStado} name="contraseña"  className="form-control" value={contraseña} />
-</div>
-
-<button type="submit" style={{width:"80%",marginLeft:"10%" ,marginBottom:"20px"}} className="btn btn-primary">INGRESAR</button>
-</form>
-
-</Fragment>
-)}
-else{
-
-return(
-
-<>
-
-El servidor de servicios APACHE se cayo por favor contactar con soporte de sistema +926695038
-
-</>
-
-
-)
-
-
-}
-} 
-
-export default FormularioLogin;
-
-
-export const setCurrentUser=({user , loggedIn}) =>{
-    return {  
-        type:SET_CURRENT_USER,
-        payload:{user,loggedIn}
-    }
+    const ingresarStado = (e) => {
+      setIngresar({ ...ingresar, [e.target.name]: e.target.value });
     };
+  
+    const showSuccess = (a) => {
+      toast.current.show({
+        severity: "error",
+        summary: `Error de solicitud`,
+        detail: `Error: ${a}`,
+        life: 3000,
+      });
+    };
+
+    const showSuccessAfirmative = (a) => {
+      toast.current.show({
+        severity: "success",
+        summary: `Actualizacion existosa`,
+        detail: `Actualizacion: ${a}`,
+        life: 3000,
+      });
+    };
+  
+    const sumitLogin = async () => {
+      console.log("click")
+      if (!correo.trim() || !contraseña.trim() || !validarCorreo(correo)) {
+        setSumitTedLogin(true);
+      } else {
+        ingresarPage();
+      }
+    };
+  
+    const ingresarPage = async () => {
+      const { data } = await axios
+        .post(
+          `http://localhost:8080/users/authentication/signIn`,
+          { login: ingresar.correo, password: ingresar.contraseña },
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        )
+        
+        .catch((response) => {
+          showSuccess(response.response.data.message);
+        });
+      localStorage.setItem("jwtToken", "Bearer " + data.data["token"]);
+      localStorage.setItem("jwtToken-Refresh", "Bearer " + data.data["refrest_token"]);
+  
+      setAuchToken("Bearer " + data.data["token"]);
+      const decoded = jwt_decode("Bearer " + data.data["token"]);
+  
+      dispatch(setCurrentUser({ user: decoded, loggedIn: true }));
+      navigate("/Sistema-Administrador");
+    };
+
+   
+
+
+  
+    const login = useGoogleLogin({
+      onSuccess: (codeResponse) => setToken(codeResponse),
+    });
+  
+    const [token, setToken] = useState();
+    const [user, setUser] = useState();
+  
+
+    useEffect(() => {
+      if (token) {
+        axios
+          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${token.access_token}`,
+              Accept: "application/json",
+            },
+          })
+          .then((res) => {
+            setUser(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+    }, [token]);
+  
+    const handleLogout = () => {
+      googleLogout();
+      setUser(null);
+      setToken(null);
+    };
+
+    const loginGoogle = async ()=>{
+      const { data } = await axios
+      .post(
+        `http://localhost:8080/users/authentication/signIn-Google`,
+        { login: user.email },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      )
+      .catch((response) => {
+        console.log(response.response.data.message);
+        showSuccess(response.response.data.message);
+      });
+    localStorage.setItem("jwtToken", "Bearer " + data.data["token"]);
+    localStorage.setItem(
+      "jwtToken-Refresh",
+      "Bearer " + data.data["refrest_token"]
+    );
+  
+    setAuchToken("Bearer " + data.data["token"]);
+    const decoded = jwt_decode("Bearer " + data.data["token"]);
+  
+    dispatch(setCurrentUser({ user: decoded, loggedIn: true }));
+  
+    navigate("/Sistema-Administrador");
+  }
+  useEffect(()=>{
+    if(user){
+loginGoogle();
+ }
+  },[user])
+
+    const contextValue = {
+      ingresar,
+      setIngresar,
+      sumitTedLogin,
+      setSumitTedLogin,
+      sumitLogin,
+      ingresarStado,
+      sumitEmail,login
+      ,activarMensaje,
+      setActivarMensaje,
+      enviarRecuperacion,
+      submitRecuperacion
+      ,
+    };
+
+
+
+    if (validaIp) {
+      return (
+    
+
+
+
+
+            <AuthContext.Provider
+      value={contextValue}
+    >
+
+<Toast ref={toast} />
+<div
+        style={{
+          marginTop: "10%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >   
+        <div
+          className="card login_container"
+          style={{
+            paddingTop: "2%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+
+   
+{children}
+    </div>
+    </div>
+                </AuthContext.Provider>
+    
+      );
+    } else {
+      return <>La plataforma de servicios APACHE no se encuentra activa por favor contactar con soporte de sistema sistemacia@circuloa1school.org</>;
+    }
+};
+export default  FormularioLogin;
+
+export const setCurrentUser = ({ user, loggedIn, time }) => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: { user, loggedIn, time },
+  };
+};

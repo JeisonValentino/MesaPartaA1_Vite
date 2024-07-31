@@ -1,13 +1,12 @@
 import { Fragment, useEffect, useState } from 'react'
 import Loading from '../../ControladorPage/Loading'
-import  Cabecera  from '../Complemets/Cabecera'
-import { Suelo } from '../Complemets/Suelo'
 import banner from "../Nosotros/banner-nosotros.png"
-import { Table } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 import './estilos.css'
+import { useNavigate } from 'react-router-dom'
 const Page_admision = () => {
   const [loading, setLoading] = useState(true)
-
+  const navegacion = useNavigate();
   const cambiarEstado = () => {
   
     
@@ -21,11 +20,11 @@ const Page_admision = () => {
 
   return (
     <Fragment>
-      <Cabecera  />
+
       {loading ? (
         <Loading />
       ) : (
-        <div>
+        <div className='page_admision'>
         <div className="fotoNosotros">
             <div className="fondobanner">
               <img src={banner}></img> 
@@ -158,6 +157,8 @@ const Page_admision = () => {
 </div>
 </div>
 </div>
+    <Button style={{width:"80%"}}  onClick={()=>navegacion("/Admision/Solicitud")} >REGISTRATE AQUI</Button>{' '}
+
 </div>
 <div style={{display:"flex",justifyContent:"center"}} >
 <hr style={{width:"80%"}} />
@@ -192,7 +193,7 @@ const Page_admision = () => {
 
         </div> 
       )}
-      <Suelo/>
+      
     </Fragment>
   )
 }

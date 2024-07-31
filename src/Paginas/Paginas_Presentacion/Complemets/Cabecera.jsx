@@ -1,6 +1,7 @@
 import {
   faList,
   faShareNodes,
+  faUser,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -10,21 +11,19 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import imagenCole from "./../Imagenes/imagenCole.png";
 import Logo from "../Imagenes/Logo.png";
 import "./cabecerca.css";
 import "./CabeceraSass.scss";
 import { Style_link } from "./Style_link.jsx";
-
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-
+import { Toast } from "primereact/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { changeToast } from "../../Paginas_Login_panel/ConfigurationAuthenticacion/reducer/toastReducer.js";
 export default function Cabecera() {
   const [menuIcon, SetMenuIcon] = useState(true);
 
   const [bajarEvento, setBajarEvento] = useState(false);
-
 
   useEffect(() => {
     window.addEventListener("scroll", function () {
@@ -33,22 +32,6 @@ export default function Cabecera() {
     });
   }, []);
 
-  useEffect(() => {
-    if (bajarEvento) {
-      document.body.classList.add("scrollOverflow");
-    } else {
-      document.body.classList.remove("scrollOverflow");
-    }
-  }, [bajarEvento]);
-
-  useEffect(() => {
-    if (!menuIcon) {
-      document.body.classList.add("scrollOverflow");
-    } else {
-      document.body.classList.remove("scrollOverflow");
-    }
-  }, [menuIcon]);
-
   const cambiarCampo = () => {
     return bajarEvento ? " bajar" : "";
   };
@@ -56,12 +39,23 @@ export default function Cabecera() {
   const CambiarEstadoCabecera = () => {
     return menuIcon ? "" : "show";
   };
+  const toast = useRef();
 
-  const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: red;
-    font-size: 1.5rem;
-    cursor: pointer;
-  `;
+  const { onclick, severity, summary, detail, life } = useSelector(
+    (state) => state.toast
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (onclick) {
+      toast.current.show({ severity, summary, detail, life });
+    }
+  }, [onclick, severity, summary, detail, life]);
+
+  useEffect(() => {
+    if (onclick) {
+      dispatch(changeToast({ clicked: false }));
+    }
+  }, [onclick]);
 
   return (
     <>
@@ -72,7 +66,9 @@ export default function Cabecera() {
             setBajarEvento(!bajarEvento);
           }}
         >
-          <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+          <div className="">
+            <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+          </div>
         </div>
 
         <div className="iconos_RedesSociales">
@@ -93,7 +89,7 @@ export default function Cabecera() {
             href="https://www.instagram.com/circuloa1school.oficial/"
           >
             <div className="Instagram">
-              <i className="fa fa-instagram instagram" aria-hidden="true" />
+              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
             </div>{" "}
           </a>
 
@@ -104,34 +100,7 @@ export default function Cabecera() {
             href="https://www.tiktok.com/@circuloa1school?is_from_webapp=1&sender_device=pc"
           >
             <div className="tiktok">
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fab"
-                data-icon="tiktok"
-                className="svg-inline--fa fa-tiktok sc-iqcoie eKzIjO tiktok"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-              >
-                <defs>
-                  <linearGradient
-                    x1=".258%"
-                    y1="49.75%"
-                    x2="101.258%"
-                    y2="49.75%"
-                    id="bgGradient"
-                  >
-                    <stop offset="33%" />
-                  </linearGradient>
-                </defs>
-
-                <path
-                  fill="currentColor"
-                  d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.25V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.2 121.2 0 0 0 1.86 22.17h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.14z"
-                  stroke="url(#bgGradient)"
-                ></path>
-              </svg>
+              <FontAwesomeIcon icon={faTiktok}></FontAwesomeIcon>
             </div>
           </a>
         </div>
@@ -147,7 +116,7 @@ export default function Cabecera() {
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Nosotros" className="linkCabecera" >
+              <Style_link to="/Nosotros" className="linkCabecera">
                 NOSOTROS
               </Style_link>
             </li>
@@ -158,7 +127,7 @@ export default function Cabecera() {
             </li>
             <li>
               <Style_link to="/Admision" className="linkCabecera">
-              Admision
+                Admision
               </Style_link>
             </li>
 
@@ -170,7 +139,7 @@ export default function Cabecera() {
 
             <li>
               <Style_link to="/Contacto" className="linkCabecera">
-             CONTACTO
+                CONTACTO
               </Style_link>
             </li>
 
@@ -184,14 +153,18 @@ export default function Cabecera() {
                 <FontAwesomeIcon icon={faShareNodes} />{" "}
               </div>
             </li>
+
           </ul>
+
         </nav>
+     
+            <div>  <Style_link to="/Login/Identification" className="linkCabecera">
+            <FontAwesomeIcon icon={faUser} />{" "}
+              </Style_link></div>
+            
       </div>
 
-      <div className="header_Presentacion_recubridor">
-
-      </div>
-
+      <div className="header_Presentacion_recubridor"></div>
 
       <div className={"nav_PresentacionMovil " + CambiarEstadoCabecera()}>
         <span className="CerrarNav" onClick={() => SetMenuIcon(!menuIcon)}>
@@ -210,7 +183,7 @@ export default function Cabecera() {
               </Style_link>
             </li>
             <li>
-              <Style_link to="/Nosotros" className="linkCabecera" >
+              <Style_link to="/Nosotros" className="linkCabecera">
                 Nosotros{" "}
               </Style_link>
             </li>
@@ -221,7 +194,7 @@ export default function Cabecera() {
             </li>
             <li>
               <Style_link to="/Admision" className="linkCabecera">
-              Admision{" "}
+                Admision{" "}
               </Style_link>
             </li>
 
@@ -236,7 +209,6 @@ export default function Cabecera() {
                 Contacto{" "}
               </Style_link>
             </li>
-
             <li>
               <div
                 className="iconfanpages"
@@ -247,8 +219,14 @@ export default function Cabecera() {
                 <FontAwesomeIcon icon={faShareNodes} />{" "}
               </div>
             </li>
+            <li>
+  <Style_link to="/Login/Identification" className="linkCabecera">
+            <FontAwesomeIcon icon={faUser} />{" "}
+              </Style_link>
+</li>
           </ul>
         </nav>
+           
       </div>
 
       <div className="menu-Icon-Header">
@@ -258,6 +236,8 @@ export default function Cabecera() {
       </div>
 
       <div className="menu-Icon-Header_cubridor"></div>
+      <Toast ref={toast} />
+
     </>
   );
 }

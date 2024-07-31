@@ -98,7 +98,7 @@
           .contenedor_border_matricula3 .borde-mitad2{
             display: block;
             width: 100%; /* Ancho del cuadrado */
-            height: 60%; 
+            height: 40%; 
           
             background-color: #ffffff;
           }
@@ -106,7 +106,7 @@
           .contenedor_border_matricula3 .borde-mitad1{
             display: block;
             width: 100%; /* Ancho del cuadrado */
-            height: 40%; 
+            height: 60%; 
         
             background-color: rgb(255,255,255);
           }

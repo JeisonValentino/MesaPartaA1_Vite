@@ -1,0 +1,118 @@
+.formulario_opinion{
+padding: 2rem;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+.formulario_opinion .subtitulos{
+font-weight: bold;
+}
+
+.formulario_opinion .form_comentario{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:row;
+    padding-bottom: 1rem;
+    }
+
+    .formulario_opinion  .imagen_perfil{
+        width: 50;
+        height: 50;
+        border-radius: 50%;
+        margin-right: 10;
+        object-fit: cover;
+        overflow: hidden;
+    }
+    .formulario_opinion .form_comentario button{
+        background-color: white !important;
+    }
+
+    .comentarios_fijos  .imagen_perfil{
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        margin-right: 10;
+
+    }
+
+    .comentarios_fijos {
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        display: flex;
+        word-wrap: break-word;
+        padding: 3rem;
+        gap: 1rem;
+    }
+    .comentarios_fijos .cuerpo_comentario{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
+        word-wrap: break-word;
+        width: 100%;
+    }
+
+    .comentarios_fijos .cuerpo_comentario>div{
+        flex: 1;
+     height: auto;
+     overflow: auto;
+     word-wrap: break-word;
+     text-align: justify;
+     width:100%;
+    }
+    .comentarios_fijos .cuerpo_comentario span>label{
+
+        font-weight: bold;
+
+    }
+    .comentarios_fijos .cuerpo_comentario span{
+        display: flex;
+justify-content: space-between;
+        width: 100%;
+    }
+  
+    @media only screen and (max-width: 500px) {
+        .formulario_opinion .form_comentario{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            padding-bottom: 1rem;
+            }
+            .comentarios_fijos {
+
+                padding: 1rem;
+            }
+    }
+
+
+    @media only screen and (max-width: 700px) {
+        .textEditor{
+            width: 100%;
+            max-width: 300px!important ;
+            margin: 0 auto;
+        }
+}
+
+@media only screen and (max-width: 300px) {
+    .textEditor{
+        width: 100%;
+        max-width: 240px!important ;
+        margin: 0 auto;
+    }
+    .comentarios_fijos {
+
+        padding: 5px;
+    }
+}
+.textEditor{
+    width: 100%;
+    max-width: 600px ;
+    margin: 0 auto;
+}

@@ -22,7 +22,7 @@ export default function Formulario_Reclamaciones(){
 
     return(      <Fragment>
 
-        <Cabecera  />
+     
         
         {loading ? <Loading/>:<div>
         
@@ -34,7 +34,7 @@ export default function Formulario_Reclamaciones(){
 </div>
         
         
-        <Suelo/>
+     
 </div>
 
 }

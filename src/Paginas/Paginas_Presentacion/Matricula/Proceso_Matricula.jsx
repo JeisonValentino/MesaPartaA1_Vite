@@ -20,7 +20,7 @@ const Proceso_Matricula = () => {
 
   return (
     <Fragment>
-      <Cabecera  />
+    
       {loading ? (
         <Loading />
       ) : (
@@ -51,7 +51,7 @@ const Proceso_Matricula = () => {
      
         </div> 
       )}
-      <Suelo/>
+      
     </Fragment>
   )
 }

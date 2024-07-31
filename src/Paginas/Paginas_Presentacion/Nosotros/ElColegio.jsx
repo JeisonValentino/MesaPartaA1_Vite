@@ -32,7 +32,7 @@ import ojo from './ojo.png'
     
         <Fragment>
 
-<Cabecera  />
+
 
 {loading ? <Loading/>:<div>
 
@@ -89,7 +89,7 @@ import ojo from './ojo.png'
 </div>
 
 
-    <Suelo/>
+   
 </div>
 
 }

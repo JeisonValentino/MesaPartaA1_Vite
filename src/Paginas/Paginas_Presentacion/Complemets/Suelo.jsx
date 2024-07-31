@@ -20,6 +20,9 @@ color: rgb(255,255,255);
 }`
 
 
+// Función para mover el scroll a una posición específica
+
+
 export const Suelo = () => {
   return (
     <Fragment>
@@ -34,17 +37,17 @@ export const Suelo = () => {
               <ul>
                 <li>
                 
-                <Style_link to="/" className="linkCabecera">
+                <Style_link to="/Nosotros" className="linkCabecera">
                 Nosotros
               </Style_link>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
+                <Style_link to="/Servicios" className="linkCabecera">
                 Servicios
               </Style_link>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
+                <Style_link to="/Blog" className="linkCabecera">
                 Blog
               </Style_link>
                 </li>
@@ -53,13 +56,13 @@ export const Suelo = () => {
             <div className="contenedores">
               <h3>Soporte</h3>
               <ul>
-                <li>
-                <Style_link to="/" className="linkCabecera">
+                <li >
+                <Style_link  to="/Libro-Reclamaciones" className="linkCabecera">
                 Libro de reclamaciones
               </Style_link>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
+                <Style_link to="/Preguntas-Frecuentes" className="linkCabecera">
                 Preguntas frecuentes
               </Style_link>
                 </li>
@@ -74,19 +77,34 @@ export const Suelo = () => {
               <h3>Contacto</h3>
               <ul>
                 <li>
-                <Style_link to="/" className="linkCabecera">
-                993 180 314
-              </Style_link>
+                <a
+                      className="linkCabecera"
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      href="https://api.whatsapp.com/send/?phone=51905444655"
+                    >
+                      905 444 655
+                    </a>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
-                admision@circuloa1school.org
-              </Style_link>
+                <a
+                      className="linkCabecera"
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      href="mailto:admision@circuloa1school.org"
+                    >
+                      admision@circuloa1school.org
+                    </a>
                 </li>
                 <li>
-                <Style_link to="/" className="linkCabecera">
-                Facebook
-              </Style_link> 
+                <a
+                      className="linkCabecera"
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      href="https://www.facebook.com/CirculoCantoRey"
+                    >
+                      Facebook
+                    </a>
                 </li>
               </ul>
             </div>

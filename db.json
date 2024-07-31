@@ -1,0 +1,45 @@
+{
+  "Preguntas": [
+    {
+      "id": "1",
+      "cabecera": "¿Evaluan permanentemente a los alumnos?",
+      "cuerpo": "Buscamos que nuestros alumnos esten familiarizados con un sistema de evaluacion integral.Los evaluamos mediante tareas domiciliarias , practicas por curso, evaluacion de participacion, evaluacion final.Solamente para secundaria contamos con simulacros tipo admision"
+    },
+    {
+      "id": "2",
+      "cabecera": "¿Evaluan permanentemente a los alumnos?",
+      "cuerpo": "Buscamos que nuestros alumnos esten familiarizados con un sistema de evaluacion integral.Los evaluamos mediante tareas domiciliarias , practicas por curso, evaluacion de participacion, evaluacion final.Solamente para secundaria contamos con simulacros tipo admision"
+    },
+    {
+      "id": "3",
+      "cabecera": "¿Evaluan permanentemente a los alumnos?",
+      "cuerpo": "Buscamos que nuestros alumnos esten familiarizados con un sistema de evaluacion integral.Los evaluamos mediante tareas domiciliarias , practicas por curso, evaluacion de participacion, evaluacion final.Solamente para secundaria contamos con simulacros tipo admision"
+    }
+  ],
+  "Comentarios": [
+    {
+      "id": "lwstx4q3l9n3a",
+      "notas_id": 1,
+      "user": "Jheison Chaves",
+      "imagen": "https://lh3.googleusercontent.com/a/ACg8ocJKV9GCAPTbS5FVP7Prc9zLPx9q8QCd2icfcA5q0h9zI3Ap9g=s96-c",
+      "comentario": {
+        "mensaje": "<p>hola uwu</p>",
+        "fecha": "2024-05-30T05:43:08.331Z"
+      }
+    }
+  ],
+  "Notas": [
+    {
+      "titulo": "Titulo Blog",
+      "imagen": "https://th.bing.com/th/id/OIP.-8jZAMjGr409xX_BWlP5-wAAAA?rs=1&pid=ImgDetMain",
+      "contenido": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque sit magni ut placeat labore incidunt adipisci autem fuga totam commodi cum vitae, quidem unde velit deleniti, hic ullam ab repellat?",
+      "categorias": [],
+      "data": {
+        "id": 1,
+        "titulo": "Titulo Blog",
+        "contenido": ""
+      },
+      "id": "0193"
+    }
+  ]
+}

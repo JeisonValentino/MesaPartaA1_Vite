@@ -1,4 +1,3 @@
-import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea"
 import { classNames } from "primereact/utils"
 import { Fragment } from "react"
@@ -76,7 +75,7 @@ return(
                             Solo se puede subir 5 archivos.
                           </label>
                         ):""}
-                <label for="file-upload" className={ validarArchivo()}>
+                <label htmlFor="file-upload" className={ validarArchivo()}>
     <i className="fa fa-cloud-upload"></i> Subir Archivos
 </label>
 <input id="file-upload" type="file" disabled={(Array.from(file).length>=5)} onChange={(e)=>invoiceUploadHandler(e)}/>

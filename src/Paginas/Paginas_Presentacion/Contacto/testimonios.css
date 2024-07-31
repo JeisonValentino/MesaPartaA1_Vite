@@ -10,6 +10,7 @@ background-color:#EBEBED ;
 width: 40%;
 padding:  3rem  2rem  2rem  2rem;
 border-radius: 1rem;
+min-width: 21rem;
 }
 .informacion_contacto{
     width: 40%;

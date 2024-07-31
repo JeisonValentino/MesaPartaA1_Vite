@@ -23,7 +23,7 @@ useEffect(()=>{
 }, [])
 
     return (<Fragment>
-<Cabecera  />
+
 <div className="fotoNosotros">
             <div className="fondobanner">
               <img src={banner}></img> 
@@ -86,6 +86,6 @@ useEffect(()=>{
 
 }
 
-<Suelo/> 
+
     </Fragment>)
 }
